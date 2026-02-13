@@ -1,5 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'primeicons/primeicons.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Sobrescribir solo colores del tema Aura con la paleta Konecta */
+:root {
+  --p-primary-50: #f3f0ff;
+  --p-primary-100: #e0d9ff;
+  --p-primary-200: #c7bbff;
+  --p-primary-300: #a899ff;
+  --p-primary-400: #8677ff;
+  --p-primary-500: #2A01CD;
+  --p-primary-600: #2400ad;
+  --p-primary-700: #1e008e;
+  --p-primary-800: #180070;
+  --p-primary-900: #110053;
+  
+  --p-surface-0: #ffffff;
+  --p-surface-50: #F2F3F7;
+  --p-surface-100: #f2f2f2;
+  --p-surface-200: #e5e5e5;
+  --p-surface-300: #cccccc;
+  --p-surface-400: #b3b3b3;
+  --p-surface-500: #999999;
+  --p-surface-600: #808080;
+  --p-surface-700: #666666;
+  --p-surface-800: #262626;
+  --p-surface-900: #0F0F0F;
+}
+
+.my-app-dark {
+  --p-primary-50: #110053;
+  --p-primary-100: #180070;
+  --p-primary-200: #1e008e;
+  --p-primary-300: #2400ad;
+  --p-primary-400: #2A01CD;
+  --p-primary-500: #A6B7FF;
+  --p-primary-600: #b8c5ff;
+  --p-primary-700: #c9d3ff;
+  --p-primary-800: #dbe1ff;
+  --p-primary-900: #edefff;
+  
+  --p-surface-0: #0F0F0F;
+  --p-surface-50: #262626;
+  --p-surface-100: #333333;
+  --p-surface-200: #4d4d4d;
+  --p-surface-300: #666666;
+  --p-surface-400: #808080;
+  --p-surface-500: #999999;
+  --p-surface-600: #b3b3b3;
+  --p-surface-700: #cccccc;
+  --p-surface-800: #e5e5e5;
+  --p-surface-900: #F2F3F7;
+}

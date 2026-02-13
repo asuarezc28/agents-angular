@@ -136,27 +136,7 @@ export default plugin(function ({ addBase, addComponents, theme }) {
       },
     },
 
-    // Toast/Message styles - Solo colores personalizados
-    '.p-toast-message': {
-      backgroundColor: theme('colors.white'),
-      borderLeftColor: theme('colors.konecta.blue'),
-    },
-    '.my-app-dark .p-toast-message': {
-      backgroundColor: theme('colors.konecta.dark'),
-      color: theme('colors.konecta.light'),
-    },
-    '.p-toast-message-success': {
-      borderLeftColor: theme('colors.system.green.500'),
-    },
-    '.p-toast-message-error': {
-      borderLeftColor: theme('colors.system.red.500'),
-    },
-    '.p-toast-message-warn': {
-      borderLeftColor: theme('colors.konecta.yellow'),
-    },
-    '.p-toast-message-info': {
-      borderLeftColor: theme('colors.konecta.blue2'),
-    },
+
 
     // Component base
     '.p-component': {
