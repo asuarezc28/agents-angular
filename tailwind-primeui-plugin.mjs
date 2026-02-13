@@ -136,8 +136,6 @@ export default plugin(function ({ addBase, addComponents, theme }) {
       },
     },
 
-
-
     // Component base
     '.p-component': {
       fontFamily: theme('fontFamily.sans'),
