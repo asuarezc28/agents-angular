@@ -1,0 +1,100 @@
+{
+  "app": {
+    "title": "SAE Analytics",
+    "subtitle": "Sistema de Análisis Empresarial"
+  },
+  "buttons": {
+    "accept": "Aceptar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "export": "Exportar",
+    "import": "Importar",
+    "refresh": "Actualizar",
+    "download": "Descargar",
+    "upload": "Subir",
+    "submit": "Enviar",
+    "reset": "Reiniciar",
+    "clear": "Limpiar"
+  },
+  "labels": {
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "country": "País",
+    "status": "Estado",
+    "date": "Fecha",
+    "time": "Hora",
+    "actions": "Acciones",
+    "description": "Descripción",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "amount": "Monto",
+    "quantity": "Cantidad"
+  },
+  "messages": {
+    "success": {
+      "saved": "Guardado correctamente",
+      "deleted": "Eliminado correctamente",
+      "updated": "Actualizado correctamente",
+      "created": "Creado correctamente",
+      "operationSuccess": "Operación realizada con éxito"
+    },
+    "error": {
+      "generic": "Ha ocurrido un error",
+      "network": "Error de conexión",
+      "notFound": "No se encontró el recurso",
+      "unauthorized": "No autorizado",
+      "forbidden": "Acceso denegado",
+      "serverError": "Error del servidor"
+    },
+    "confirmation": {
+      "delete": "¿Está seguro de que desea eliminar este elemento?",
+      "cancel": "¿Está seguro de que desea cancelar?",
+      "unsavedChanges": "Tiene cambios sin guardar. ¿Desea continuar?"
+    },
+    "loading": "Cargando...",
+    "noData": "No hay datos disponibles",
+    "selectOption": "Seleccione una opción"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel de Control",
+    "users": "Usuarios",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión"
+  },
+  "demo": {
+    "welcome": "Bienvenido a SAE Analytics",
+    "description": "Esta aplicación demuestra la integración de PrimeNG, ECharts y ngx-translate",
+    "features": {
+      "title": "Características",
+      "primeng": "PrimeNG: Componentes UI modernos",
+      "icons": "Iconos PrimeNG elegantes",
+      "echarts": "ECharts: Gráficos interactivos",
+      "translate": "ngx-translate: Internacionalización"
+    },
+    "chart": {
+      "title": "Ventas Mensuales 2024"
+    },
+    "actions": {
+      "showMessage": "Mostrar Mensaje"
+    },
+    "toast": {
+      "success": "¡Éxito!",
+      "message": "Todas las librerías funcionan correctamente"
+    }
+  }
+}
