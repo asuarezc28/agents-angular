@@ -96,5 +96,58 @@
       "success": "Success!",
       "message": "All libraries are working correctly"
     }
+  },
+  "workspace": {
+    "title": "Navigation Workspace",
+    "language": {
+      "ariaLabel": "Language selector",
+      "es": "ES",
+      "en": "EN",
+      "esAria": "Switch language to Spanish",
+      "enAria": "Switch language to English"
+    },
+    "menubar": {
+      "ariaLabel": "Main modules menu"
+    },
+    "sidebar": {
+      "ariaLabel": "Module options sidebar"
+    },
+    "menu": {
+      "analytics": "Analytics",
+      "operations": "Operations",
+      "users": "Users"
+    },
+    "panel": {
+      "analytics": {
+        "overview": {
+          "title": "Analytics Overview",
+          "description": "General module view with key indicators and current status."
+        },
+        "kpis": {
+          "title": "KPIs",
+          "description": "Panel to visualize key metrics and their trend over time."
+        }
+      },
+      "operations": {
+        "projects": {
+          "title": "Projects",
+          "description": "Operational initiatives management, priorities, and execution tracking."
+        },
+        "security": {
+          "title": "Security",
+          "description": "Operational policies, permissions, and environment controls configuration."
+        }
+      },
+      "users": {
+        "directory": {
+          "title": "Directory",
+          "description": "User list, status, and key data for daily management."
+        },
+        "roles": {
+          "title": "Roles and Access",
+          "description": "Permission assignment and role definition by system module."
+        }
+      }
+    }
   }
 }

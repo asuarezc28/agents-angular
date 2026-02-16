@@ -1,0 +1,21 @@
+<aside
+  class="rounded-xl border border-surface-300 dark:border-surface-700 p-2"
+  [attr.aria-label]="'workspace.sidebar.ariaLabel' | translate"
+>
+  <div class="flex lg:flex-col gap-2">
+    @for (panel of panels(); track panel.id) {
+      <button
+        pButton
+        type="button"
+        [text]="!isActive(panel.id)"
+        [rounded]="true"
+        [severity]="isActive(panel.id) ? 'primary' : 'secondary'"
+        (click)="selectPanel(panel)"
+        [attr.aria-label]="panel.titleKey | translate"
+        class="w-10 h-10 flex items-center justify-center"
+      >
+        <lucide-icon [img]="iconFor(panel.icon)" [size]="16" />
+      </button>
+    }
+  </div>
+</aside>

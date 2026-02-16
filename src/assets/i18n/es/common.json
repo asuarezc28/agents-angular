@@ -96,5 +96,58 @@
       "success": "¡Éxito!",
       "message": "Todas las librerías funcionan correctamente"
     }
+  },
+  "workspace": {
+    "title": "Workspace de Navegación",
+    "language": {
+      "ariaLabel": "Selector de idioma",
+      "es": "ES",
+      "en": "EN",
+      "esAria": "Cambiar idioma a español",
+      "enAria": "Cambiar idioma a inglés"
+    },
+    "menubar": {
+      "ariaLabel": "Menú principal de módulos"
+    },
+    "sidebar": {
+      "ariaLabel": "Sidebar de opciones del módulo"
+    },
+    "menu": {
+      "analytics": "Analítica",
+      "operations": "Operaciones",
+      "users": "Usuarios"
+    },
+    "panel": {
+      "analytics": {
+        "overview": {
+          "title": "Resumen Analítico",
+          "description": "Vista general del módulo analítico con indicadores principales y estado actual."
+        },
+        "kpis": {
+          "title": "KPIs",
+          "description": "Panel para visualizar métricas clave y su evolución en el tiempo."
+        }
+      },
+      "operations": {
+        "projects": {
+          "title": "Proyectos",
+          "description": "Gestión de iniciativas operativas, prioridades y seguimiento de ejecución."
+        },
+        "security": {
+          "title": "Seguridad",
+          "description": "Configuración de políticas operativas, permisos y controles del entorno."
+        }
+      },
+      "users": {
+        "directory": {
+          "title": "Directorio",
+          "description": "Listado de usuarios, estado y datos principales para gestión diaria."
+        },
+        "roles": {
+          "title": "Roles y Accesos",
+          "description": "Asignación de permisos y definición de roles por módulo del sistema."
+        }
+      }
+    }
   }
 }

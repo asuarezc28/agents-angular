@@ -1,0 +1,16 @@
+<div class="mt-4 flex items-center gap-2 flex-wrap" [attr.aria-label]="'workspace.menubar.ariaLabel' | translate">
+  @for (menu of menus(); track menu.id) {
+    <button
+      pButton
+      type="button"
+      [text]="!isActive(menu.id)"
+      [severity]="isActive(menu.id) ? 'primary' : 'secondary'"
+      (click)="selectMenu(menu)"
+      class="flex items-center gap-2"
+      [attr.aria-label]="menu.titleKey | translate"
+    >
+      <lucide-icon [img]="iconFor(menu.icon)" [size]="16" />
+      <span>{{ menu.titleKey | translate }}</span>
+    </button>
+  }
+</div>
