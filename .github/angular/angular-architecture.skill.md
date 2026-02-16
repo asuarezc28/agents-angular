@@ -5,17 +5,17 @@ description: >
   Trigger: When structuring Angular projects or deciding where to place components.
 metadata:
   author: gentleman-programming
-  version: "1.0"
+  version: '1.0'
 ---
 
 ## The Scope Rule (REQUIRED)
 
 **"Scope determines structure"** - Where a component lives depends on its usage.
 
-| Usage | Placement |
-|-------|-----------|
-| Used by 1 feature | `features/[feature]/components/` |
-| Used by 2+ features | `features/shared/components/` |
+| Usage               | Placement                        |
+| ------------------- | -------------------------------- |
+| Used by 1 feature   | `features/[feature]/components/` |
+| Used by 2+ features | `shared/components/`             |
 
 ### Example
 
@@ -30,10 +30,11 @@ features/
     checkout.ts
     components/
       payment-form.ts         # Used ONLY by checkout
-  shared/
-    components/
-      button.ts               # Used by shopping-cart AND checkout
-      modal.ts                # Used by multiple features
+
+shared/
+  components/
+    button.ts               # Used by shopping-cart AND checkout
+    modal.ts                # Used by multiple features
 ```
 
 ---
@@ -48,10 +49,10 @@ src/app/
       components/             # Feature-specific components
       services/               # Feature-specific services
       models/                 # Feature-specific types
-    shared/                   # ONLY for 2+ feature usage
-      components/
-      services/
-      pipes/
+  shared/                     # Reutilizable por 2+ features
+    components/
+    services/
+    pipes/
   core/                       # App-wide singletons
     services/
     interceptors/
@@ -98,18 +99,18 @@ No `.component`, `.service`, `.model` suffixes. The folder tells you what it is.
 export class UserProfileComponent {
   // 1. Injected dependencies
   private readonly userService = inject(UserService);
-  
+
   // 2. Inputs/Outputs
   readonly userId = input.required<string>();
   readonly userSaved = output<User>();
-  
+
   // 3. Internal state
   private readonly _loading = signal(false);
   readonly loading = this._loading.asReadonly();
-  
+
   // 4. Computed
   protected readonly displayName = computed(() => ...);
-  
+
   // 5. Methods
   save(): void { ... }
 }
@@ -117,10 +118,10 @@ export class UserProfileComponent {
 
 ### What We Override
 
-| Official Says | We Do | Why |
-|---------------|-------|-----|
+| Official Says               | We Do             | Why                              |
+| --------------------------- | ----------------- | -------------------------------- |
 | `user-profile.component.ts` | `user-profile.ts` | Redundant - folder tells context |
-| `user.service.ts` | `user.ts` | Same |
+| `user.service.ts`           | `user.ts`         | Same                             |
 
 ---
 
@@ -133,7 +134,7 @@ ng new my-app --style=scss --ssr=false
 # Component in feature
 ng g c features/products/components/product-card --flat
 
-# Service in feature  
+# Service in feature
 ng g s features/products/services/product --flat
 
 # Guard in core
