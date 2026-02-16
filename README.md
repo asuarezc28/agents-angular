@@ -61,37 +61,67 @@ colors.constants.ts + tailwind.config.ts + tailwind-css-variables.mjs → CSS Va
 
 ## 🚀 Comandos de Desarrollo
 
+Los siguientes comandos están sincronizados con los scripts de `package.json`:
+
 ### Servidor de desarrollo
 
 ```bash
 pnpm start
 ```
 
-Abre `http://localhost:4200/`. La aplicación se recarga automáticamente al modificar archivos.
+Inicia `ng serve` en `http://localhost:4200/`.
 
-### Build de producción
+### Build (default)
 
 ```bash
 pnpm build
 ```
 
-Compila el proyecto en el directorio `dist/` optimizado para producción.
+Ejecuta `ng build`.
 
-### Watch mode
+### Build producción
+
+```bash
+pnpm build:prod
+```
+
+Ejecuta `ng build --configuration production`.
+
+### Build en watch (desarrollo)
 
 ```bash
 pnpm watch
 ```
 
-Compila en modo desarrollo con recarga automática.
+Ejecuta `ng build --watch --configuration development`.
 
-### Tests
+### Tests unitarios
 
 ```bash
 pnpm test
 ```
 
-Ejecuta tests unitarios con el test builder configurado en Angular (`ng test`).
+Ejecuta `ng test`.
+
+### Tests con cobertura (CI/DevOps)
+
+```bash
+pnpm test:coverage
+```
+
+Ejecuta `ng test --watch=false --coverage --coverage-reporters=lcov --coverage-reporters=text-summary`.
+
+### Angular CLI (passthrough)
+
+```bash
+pnpm ng -- <comando>
+```
+
+Ejemplo:
+
+```bash
+pnpm ng -- version
+```
 
 ---
 
