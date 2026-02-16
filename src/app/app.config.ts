@@ -16,16 +16,19 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura,
         options: {
-          darkModeSelector: '.my-app-dark',
+          darkModeSelector: '.dark',
         },
       },
       ripple: false,
+      // Configuración para usar Lucide en lugar de PrimeIcons
+      // Los iconos se manejan mediante templates personalizados en cada componente
     }),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: './assets/i18n/',
         suffix: '/common.json',
       }),
+      defaultLanguage: 'es',
       useDefaultLang: true,
     }),
   ],

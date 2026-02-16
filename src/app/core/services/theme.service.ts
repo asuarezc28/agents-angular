@@ -30,8 +30,27 @@ export class ThemeService {
 
   private applyTheme(isDark: boolean): void {
     if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.classList.toggle('my-app-dark', isDark);
+      // Añadir clase para prevenir transiciones durante el toggle inicial
+      const html = document.documentElement;
+
+      // Deshabilitar transiciones temporalmente para evitar flickering
+      html.classList.add('theme-transitioning');
+
+      // Cambiar el tema
+      html.classList.toggle('dark', isDark);
+
+      // Aplicar color-scheme para mejorar renderizado del navegador
+      html.style.colorScheme = isDark ? 'dark' : 'light';
+
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+      // Forzar reflow para que los estilos se apliquen sincronizadamente
+      void html.offsetHeight;
+
+      // Re-habilitar transiciones después de que el tema se haya aplicado
+      setTimeout(() => {
+        html.classList.remove('theme-transitioning');
+      }, 50);
     }
   }
 }

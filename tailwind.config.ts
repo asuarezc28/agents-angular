@@ -1,51 +1,48 @@
 import type { Config } from 'tailwindcss';
-import primeUIPlugin from './tailwind-primeui-plugin.mjs';
+import cssVariablesPlugin from './tailwind-css-variables.mjs';
+import { COLORS } from './src/app/core/constants/colors.constants';
+import { TYPOGRAPHY } from './src/app/core/constants/typography.constants';
 
 export default {
   content: ['./src/**/*.{html,ts}'],
-  darkMode: ['class', 'my-app-dark'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        // Colores base Konecta
+        // All color values imported from single source of truth (colors.constants.ts)
+        primary: COLORS.primary,
+        surface: COLORS.surface,
+        success: COLORS.success,
+        danger: COLORS.danger,
+        warning: COLORS.warning,
+        info: COLORS.info,
+        gray: COLORS.gray,
+
+        // Legacy konecta aliases (for backwards compatibility)
         konecta: {
-          black: '#0F0F0F',
-          white: '#FFFFFF',
-          blue: '#2A01CD',
-          blue2: '#A6B7FF',
-          yellow: '#F0FA00',
-          dark: '#262626',
-          darkBlue: '#0F0F72',
-          light: '#F2F3F7',
-          gray: '#F2F3F7',
-          successStory: '#DF622B',
+          black: COLORS.surface[950],
+          white: COLORS.surface[0],
+          blue: COLORS.primary[500],
+          blue2: '#A6B7FF', // Lighter variant used in dark mode
+          yellow: COLORS.warning[500],
+          dark: COLORS.surface[900],
+          darkBlue: COLORS.primary[900],
+          light: COLORS.surface[50],
+          successStory: '#DF622B', // Brand-specific color
         },
-        // Colores del sistema
-        system: {
-          red: {
-            500: '#F05252',
-            800: '#9B1C1C',
-          },
-          green: {
-            500: '#0E9F6E',
-          },
-        },
-        // Laravel red (adicional)
-        laravel: '#FF2D20',
       },
       fontFamily: {
-        sans: [
-          'Inter',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Roboto',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-        ],
+        sans: [...TYPOGRAPHY.fontFamily.sans],
+      },
+      boxShadow: {
+        sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
       },
     },
   },
-  plugins: [primeUIPlugin],
+  plugins: [cssVariablesPlugin],
 } satisfies Config;

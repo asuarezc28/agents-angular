@@ -32,7 +32,7 @@ const timer$ = interval(1000); // Every second
 const clicks$ = fromEvent(document, 'click');
 
 // Custom observable
-const custom$ = new Observable(subscriber => {
+const custom$ = new Observable((subscriber) => {
   subscriber.next(1);
   subscriber.next(2);
   subscriber.complete();
@@ -47,7 +47,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient) {}
@@ -84,34 +84,35 @@ import { of } from 'rxjs';
 
 // map - transform values
 const numbers$ = of(1, 2, 3).pipe(
-  map(n => n * 2) // 2, 4, 6
+  map((n) => n * 2), // 2, 4, 6
 );
 
 // pluck - extract property (deprecated, use map)
-const users$ = of(
-  { name: 'John', age: 30 },
-  { name: 'Jane', age: 25 }
-).pipe(
-  map(user => user.name) // 'John', 'Jane'
+const users$ = of({ name: 'John', age: 30 }, { name: 'Jane', age: 25 }).pipe(
+  map((user) => user.name), // 'John', 'Jane'
 );
 
 // switchMap - cancel previous, emit new
-searchControl.valueChanges.pipe(
-  switchMap(term => this.searchService.search(term))
-).subscribe(results => {
-  this.results = results;
-});
+searchControl.valueChanges
+  .pipe(switchMap((term) => this.searchService.search(term)))
+  .subscribe((results) => {
+    this.results = results;
+  });
 
 // mergeMap - run in parallel
 const ids$ = of(1, 2, 3);
-ids$.pipe(
-  mergeMap(id => this.getUser(id)) // All requests in parallel
-).subscribe();
+ids$
+  .pipe(
+    mergeMap((id) => this.getUser(id)), // All requests in parallel
+  )
+  .subscribe();
 
 // concatMap - run in sequence
-ids$.pipe(
-  concatMap(id => this.getUser(id)) // One at a time
-).subscribe();
+ids$
+  .pipe(
+    concatMap((id) => this.getUser(id)), // One at a time
+  )
+  .subscribe();
 ```
 
 ### Filtering Operators
@@ -121,23 +122,21 @@ import { filter, take, takeUntil, takeWhile, distinctUntilChanged } from 'rxjs/o
 
 // filter - only emit matching values
 of(1, 2, 3, 4, 5).pipe(
-  filter(n => n % 2 === 0) // 2, 4
+  filter((n) => n % 2 === 0), // 2, 4
 );
 
 // take - first N values
 interval(1000).pipe(
-  take(5) // First 5 emissions
+  take(5), // First 5 emissions
 );
 
 // takeUntil - until another observable emits
 const destroy$ = new Subject();
-source$.pipe(
-  takeUntil(destroy$)
-).subscribe();
+source$.pipe(takeUntil(destroy$)).subscribe();
 
 // distinctUntilChanged - skip duplicate consecutive values
 of(1, 1, 2, 2, 3, 3).pipe(
-  distinctUntilChanged() // 1, 2, 3
+  distinctUntilChanged(), // 1, 2, 3
 );
 ```
 
@@ -148,41 +147,27 @@ import { combineLatest, merge, concat, forkJoin, zip } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 // combineLatest - emit when any source emits
-combineLatest([
-  this.user$,
-  this.settings$
-]).pipe(
-  map(([user, settings]) => ({ user, settings }))
-).subscribe();
+combineLatest([this.user$, this.settings$])
+  .pipe(map(([user, settings]) => ({ user, settings })))
+  .subscribe();
 
 // merge - emit from any source
-merge(
-  this.clicks$,
-  this.hovers$
-).subscribe();
+merge(this.clicks$, this.hovers$).subscribe();
 
 // concat - emit in sequence
-concat(
-  this.loadUser$,
-  this.loadSettings$
-).subscribe();
+concat(this.loadUser$, this.loadSettings$).subscribe();
 
 // forkJoin - wait for all to complete
 forkJoin({
   user: this.getUser(),
   posts: this.getPosts(),
-  comments: this.getComments()
+  comments: this.getComments(),
 }).subscribe(({ user, posts, comments }) => {
   // All complete
 });
 
 // zip - pair values from sources
-zip(
-  of(1, 2, 3),
-  of('a', 'b', 'c')
-).pipe(
-  map(([num, letter]) => `${num}${letter}`)
-); // '1a', '2b', '3c'
+zip(of(1, 2, 3), of('a', 'b', 'c')).pipe(map(([num, letter]) => `${num}${letter}`)); // '1a', '2b', '3c'
 ```
 
 ### Utility Operators
@@ -192,28 +177,28 @@ import { tap, delay, debounceTime, throttleTime, distinctUntilChanged } from 'rx
 
 // tap - side effects (logging, etc.)
 source$.pipe(
-  tap(value => console.log('Value:', value)),
-  map(value => value * 2)
+  tap((value) => console.log('Value:', value)),
+  map((value) => value * 2),
 );
 
 // delay - delay emissions
 of(1, 2, 3).pipe(
-  delay(1000) // Delay 1 second
+  delay(1000), // Delay 1 second
 );
 
 // debounceTime - wait for pause in emissions
 searchControl.valueChanges.pipe(
-  debounceTime(300) // Wait 300ms after user stops typing
+  debounceTime(300), // Wait 300ms after user stops typing
 );
 
 // throttleTime - emit first value, ignore for duration
 clicks$.pipe(
-  throttleTime(1000) // Only once per second
+  throttleTime(1000), // Only once per second
 );
 
 // distinctUntilChanged - skip duplicates
 input$.pipe(
-  distinctUntilChanged() // Only when value changes
+  distinctUntilChanged(), // Only when value changes
 );
 ```
 
@@ -227,33 +212,33 @@ import { of, EMPTY, throwError } from 'rxjs';
 
 // Return fallback value
 this.http.get('/api/data').pipe(
-  catchError(error => {
+  catchError((error) => {
     console.error('Error:', error);
     return of([]); // Return empty array
-  })
+  }),
 );
 
 // Return empty observable
 source$.pipe(
-  catchError(() => EMPTY) // Complete without emitting
+  catchError(() => EMPTY), // Complete without emitting
 );
 
 // Re-throw error
 source$.pipe(
-  catchError(error => {
+  catchError((error) => {
     console.error('Error:', error);
     return throwError(() => new Error('Custom error'));
-  })
+  }),
 );
 
 // Handle different error types
 source$.pipe(
-  catchError(error => {
+  catchError((error) => {
     if (error.status === 404) {
       return of(null);
     }
     return throwError(() => error);
-  })
+  }),
 );
 ```
 
@@ -264,22 +249,22 @@ import { retry, retryWhen, delay, take } from 'rxjs/operators';
 
 // Simple retry
 this.http.get('/api/data').pipe(
-  retry(3) // Retry up to 3 times
+  retry(3), // Retry up to 3 times
 );
 
 // Retry with delay
 this.http.get('/api/data').pipe(
-  retryWhen(errors =>
+  retryWhen((errors) =>
     errors.pipe(
       delay(1000), // Wait 1 second
-      take(3) // Max 3 retries
-    )
-  )
+      take(3), // Max 3 retries
+    ),
+  ),
 );
 
 // Exponential backoff
 this.http.get('/api/data').pipe(
-  retryWhen(errors =>
+  retryWhen((errors) =>
     errors.pipe(
       mergeMap((error, index) => {
         if (index >= 3) {
@@ -287,9 +272,9 @@ this.http.get('/api/data').pipe(
         }
         const delayMs = Math.pow(2, index) * 1000;
         return of(error).pipe(delay(delayMs));
-      })
-    )
-  )
+      }),
+    ),
+  ),
 );
 ```
 
@@ -302,7 +287,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-my-component'
+  selector: 'app-my-component',
 })
 export class MyComponent implements OnDestroy {
   private subscription = new Subscription();
@@ -310,15 +295,15 @@ export class MyComponent implements OnDestroy {
   ngOnInit() {
     // Add subscriptions
     this.subscription.add(
-      this.data$.subscribe(data => {
+      this.data$.subscribe((data) => {
         this.data = data;
-      })
+      }),
     );
 
     this.subscription.add(
-      this.other$.subscribe(other => {
+      this.other$.subscribe((other) => {
         this.other = other;
-      })
+      }),
     );
   }
 
@@ -337,21 +322,17 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-my-component'
+  selector: 'app-my-component',
 })
 export class MyComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.data$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
+    this.data$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.data = data;
     });
 
-    this.other$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(other => {
+    this.other$.pipe(takeUntil(this.destroy$)).subscribe((other) => {
       this.other = other;
     });
   }
@@ -372,15 +353,19 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-user-list',
   template: `
-    <div *ngIf="users$ | async as users">
-      <div *ngFor="let user of users">
-        {{ user.name }}
-      </div>
-    </div>
+    @if (users$ | async; as users) {
+      @for (user of users; track user.id) {
+        <div>{{ user.name }}</div>
+      }
+    }
 
-    <div *ngIf="loading$ | async">Loading...</div>
-    <div *ngIf="error$ | async as error">Error: {{ error }}</div>
-  `
+    @if (loading$ | async) {
+      <div>Loading...</div>
+    }
+    @if (error$ | async; as error) {
+      <div>Error: {{ error }}</div>
+    }
+  `,
 })
 export class UserListComponent {
   users$: Observable<User[]>;
@@ -405,8 +390,8 @@ import { Subject } from 'rxjs';
 const subject = new Subject<number>();
 
 // Multiple subscribers
-subject.subscribe(val => console.log('A:', val));
-subject.subscribe(val => console.log('B:', val));
+subject.subscribe((val) => console.log('A:', val));
+subject.subscribe((val) => console.log('B:', val));
 
 subject.next(1); // A: 1, B: 1
 subject.next(2); // A: 2, B: 2
@@ -419,16 +404,16 @@ import { BehaviorSubject } from 'rxjs';
 
 const subject = new BehaviorSubject<number>(0); // Initial value
 
-subject.subscribe(val => console.log('A:', val)); // A: 0
+subject.subscribe((val) => console.log('A:', val)); // A: 0
 
 subject.next(1); // A: 1
 subject.next(2); // A: 2
 
-subject.subscribe(val => console.log('B:', val)); // B: 2 (latest value)
+subject.subscribe((val) => console.log('B:', val)); // B: 2 (latest value)
 
 // Common pattern for state management
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StateService {
   private stateSubject = new BehaviorSubject<State>(initialState);
@@ -455,11 +440,11 @@ subject.next(1);
 subject.next(2);
 subject.next(3);
 
-subject.subscribe(val => console.log('A:', val)); // A: 2, A: 3
+subject.subscribe((val) => console.log('A:', val)); // A: 2, A: 3
 
 subject.next(4); // A: 4
 
-subject.subscribe(val => console.log('B:', val)); // B: 3, B: 4
+subject.subscribe((val) => console.log('B:', val)); // B: 3, B: 4
 ```
 
 ### AsyncSubject - Last Value on Complete
@@ -469,7 +454,7 @@ import { AsyncSubject } from 'rxjs';
 
 const subject = new AsyncSubject<number>();
 
-subject.subscribe(val => console.log('A:', val));
+subject.subscribe((val) => console.log('A:', val));
 
 subject.next(1);
 subject.next(2);
@@ -485,9 +470,9 @@ subject.complete(); // A: 3 (only last value when complete)
 // Each subscription creates new execution
 const cold$ = interval(1000);
 
-cold$.subscribe(val => console.log('A:', val)); // A: 0, 1, 2...
+cold$.subscribe((val) => console.log('A:', val)); // A: 0, 1, 2...
 setTimeout(() => {
-  cold$.subscribe(val => console.log('B:', val)); // B: 0, 1, 2... (separate execution)
+  cold$.subscribe((val) => console.log('B:', val)); // B: 0, 1, 2... (separate execution)
 }, 2000);
 ```
 
@@ -502,22 +487,22 @@ const subject = new Subject();
 const source$ = interval(1000);
 source$.subscribe(subject);
 
-subject.subscribe(val => console.log('A:', val)); // A: 0, 1, 2...
+subject.subscribe((val) => console.log('A:', val)); // A: 0, 1, 2...
 setTimeout(() => {
-  subject.subscribe(val => console.log('B:', val)); // B: 2, 3, 4... (shared)
+  subject.subscribe((val) => console.log('B:', val)); // B: 2, 3, 4... (shared)
 }, 2000);
 
 // Using share operator
 const shared$ = interval(1000).pipe(share());
 
-shared$.subscribe(val => console.log('A:', val));
+shared$.subscribe((val) => console.log('A:', val));
 setTimeout(() => {
-  shared$.subscribe(val => console.log('B:', val)); // Shares source
+  shared$.subscribe((val) => console.log('B:', val)); // Shares source
 }, 2000);
 
 // Using shareReplay
 const cached$ = this.http.get('/api/data').pipe(
-  shareReplay(1) // Cache last 1 value
+  shareReplay(1), // Cache last 1 value
 );
 
 // Multiple subscribers get cached result
@@ -536,7 +521,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, catchError, finalize } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private usersSubject = new BehaviorSubject<User[]>([]);
@@ -553,14 +538,17 @@ export class UserService {
     this.loadingSubject.next(true);
     this.errorSubject.next(null);
 
-    this.http.get<User[]>('/api/users').pipe(
-      tap(users => this.usersSubject.next(users)),
-      catchError(error => {
-        this.errorSubject.next(error.message);
-        return of([]);
-      }),
-      finalize(() => this.loadingSubject.next(false))
-    ).subscribe();
+    this.http
+      .get<User[]>('/api/users')
+      .pipe(
+        tap((users) => this.usersSubject.next(users)),
+        catchError((error) => {
+          this.errorSubject.next(error.message);
+          return of([]);
+        }),
+        finalize(() => this.loadingSubject.next(false)),
+      )
+      .subscribe();
   }
 
   getUser(id: string): Observable<User> {
@@ -578,7 +566,7 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
   private searchTerms = new Subject<string>();
@@ -589,7 +577,7 @@ export class SearchService {
     this.results$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(term => this.search(term))
+      switchMap((term) => this.search(term)),
     );
   }
 
@@ -621,7 +609,7 @@ describe('UserService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [UserService]
+      providers: [UserService],
     });
 
     service = TestBed.inject(UserService);
@@ -635,7 +623,7 @@ describe('UserService', () => {
   it('should fetch users', () => {
     const mockUsers = [{ id: 1, name: 'John' }];
 
-    service.getUsers().subscribe(users => {
+    service.getUsers().subscribe((users) => {
       expect(users).toEqual(mockUsers);
     });
 

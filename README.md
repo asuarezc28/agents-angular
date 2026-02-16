@@ -1,57 +1,217 @@
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+# 🚀 SAE Analytics - Angular 21 + Tailwind + PrimeNG + Konecta
 
-## Development server
+Proyecto generado con [Angular CLI](https://github.com/angular/angular-cli) versión 21.1.3.
 
-To start a local development server, run:
+## 📦 Stack Tecnológico Actual
 
-```bash
-ng serve
+| Tecnología              | Versión | Propósito                                       |
+| ----------------------- | ------- | ----------------------------------------------- |
+| **Angular**             | ^21.1.0 | Framework (Standalone por defecto, Signals API) |
+| **Angular CLI / Build** | ^21.1.3 | Tooling de desarrollo y build                   |
+| **TypeScript**          | ~5.9.2  | Lenguaje (strict mode)                          |
+| **Tailwind CSS**        | 3.x     | Utility-first CSS + plugin custom               |
+| **PrimeNG**             | 21.1.1  | Componentes UI                                  |
+| **Lucide Angular**      | 0.563.0 | 1,400+ iconos outline                           |
+| **PrimeIcons**          | 7.0.0   | Iconos de PrimeNG internals                     |
+| **ECharts**             | ^6.0.0  | Visualización de datos                          |
+| **ngx-translate**       | 17.x    | Internacionalización (i18n)                     |
+| **RxJS**                | ~7.8.0  | Programación reactiva                           |
+| **Vitest**              | ^4.0.8  | Dependencia de testing disponible               |
+| **pnpm**                | 9.15.0  | Gestor de paquetes recomendado                  |
+
+## 🎨 Sistema de Temas Konecta
+
+### Integración PrimeNG + Tailwind
+
+Este proyecto usa una integración custom entre **PrimeNG** y **Tailwind CSS** con la **paleta de colores Konecta**. Todos los componentes PrimeNG se adaptan automáticamente al modo claro/oscuro.
+
+**Características clave:**
+
+- 🎯 **Single Source of Truth**: Colores en `src/app/core/constants/colors.constants.ts`
+- 🔤 **Tipografía centralizada**: `src/app/core/constants/typography.constants.ts`
+- 🌗 **Dark mode automático**: Clase `.dark` en documentElement
+- 🎨 **Paleta Konecta**: `primary-500: #2A01CD`, `surface-0/50/900/950`
+- ⚡ **Build-time CSS variables**: Plugin genera `--p-*` vars automáticamente
+- 🔧 **Cero configuración manual**: PrimeNG usa variables CSS directamente
+
+### Colores Principales
+
+```typescript
+primary-500: #2A01CD   // Konecta Blue
+surface-0:   #ffffff   // White
+surface-50:  #F2F3F7   // Light
+surface-900: #262626   // Dark
+surface-950: #0F0F0F   // Black
+success-500: #0E9F6E   // Green
+danger-500:  #F05252   // Red
+warning-500: #F0FA00   // Yellow
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Arquitectura del Sistema
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+colors.constants.ts + tailwind.config.ts + tailwind-css-variables.mjs → CSS Variables (--p-*)
+                                                         ↓
+                                    ThemeService → .dark class
+                                                         ↓
+                                        PrimeNG Components + Custom UI
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
+
+## 🚀 Comandos de Desarrollo
+
+### Servidor de desarrollo
 
 ```bash
-ng generate --help
+pnpm start
 ```
 
-## Building
+Abre `http://localhost:4200/`. La aplicación se recarga automáticamente al modificar archivos.
 
-To build the project run:
+### Build de producción
 
 ```bash
-ng build
+pnpm build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Compila el proyecto en el directorio `dist/` optimizado para producción.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Watch mode
 
 ```bash
-ng test
+pnpm watch
 ```
 
-## Running end-to-end tests
+Compila en modo desarrollo con recarga automática.
 
-For end-to-end (e2e) testing, run:
+### Tests
 
 ```bash
-ng e2e
+pnpm test
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Ejecuta tests unitarios con el test builder configurado en Angular (`ng test`).
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🎓 Documentación del Proyecto
+
+### Guías Principales
+
+- **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** - Arquitectura general del proyecto
+- **[CHARTS-LIBRARIES.MD](./CHARTS-LIBRARIES.MD)** - Guía de librerías para gráficos
+- **[ROADMAP-BASE-ESTABLE.md](./ROADMAP-BASE-ESTABLE.md)** - Roadmap técnico base
+- **[.github/README.md](.github/README.md)** - Estructura completa de skills
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Instrucciones globales del proyecto
+
+### Skills por Categoría
+
+**Angular:**
+
+- `angular-architecture.skill.md` - Estructura y best practices
+- `angular-signals.skill.md` - Manejo de estado con signals
+- `angular-forms.skill.md` - Formularios reactivos
+
+**UI/UX:**
+
+- `konecta-theme-system.skill.md` - Sistema de temas completo
+- `tailwind-primeng-integration.skill.md` - Integración Tailwind + PrimeNG
+- `icons-dual-system.skill.md` - Sistema de iconos (Lucide + PrimeIcons)
+
+### Recursos Externos
+
+- [Angular Docs](https://angular.dev) - Documentación oficial
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS
+- [PrimeNG](https://primeng.org) - Componentes Angular
+- [Lucide Icons](https://lucide.dev) - 1,400+ iconos outline
+
+---
+
+## ⚠️ Reglas Críticas
+
+### 🎨 Colores
+
+1. ✅ Edita colores **SOLO** en `src/app/core/constants/colors.constants.ts`
+2. ❌ **NO** agregues CSS variables manualmente
+3. ❌ **NO** uses `theme()` en CSS (builds lentos)
+4. ❌ **NO** hardcodees valores de color
+
+### 🔤 Tipografía
+
+1. ✅ Define tipografía **SOLO** en `src/app/core/constants/typography.constants.ts`
+2. ✅ Consume tipografía vía `tailwind.config.ts` (`fontFamily.sans`)
+3. ❌ **NO** hardcodees `font-family` en `styles.css` o componentes
+
+### 📝 Texto
+
+1. ✅ Deja que el texto herede color de `body { color: var(--p-text-color) }`
+2. ❌ **NO** uses clases `text-surface-*` en elementos de texto
+3. ✅ Usa `opacity-80` / `opacity-70` para jerarquía de texto
+
+### 🎭 Iconos
+
+1. ✅ **Lucide** para UI custom que escribes tú
+2. ✅ **PrimeIcons** automático en componentes PrimeNG
+3. ❌ **NO** uses PrimeIcons manualmente en UI custom
+
+### ⚡ Angular 21
+
+1. ✅ Standalone components (default)
+2. ✅ Signals para estado (`signal()`, `computed()`)
+3. ✅ Control flow nativo (`@if`, `@for`, `@switch`)
+4. ❌ **NO** uses `*ngIf`, `*ngFor`, `*ngSwitch`
+5. ❌ **NO** uses `ngClass`, `ngStyle`
+6. ✅ `input()` y `output()` funciones (no decoradores)
+7. ✅ `host` object en decoradores (sin `@HostBinding`/`@HostListener`)
+
+---
+
+## 🐛 Troubleshooting
+
+| Problema                        | Solución                                                                                                           |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **Texto oscuro en modo oscuro** | Verifica que NO hay clases `text-surface-*`. El texto debe heredar de `body`.                                      |
+| **Colores no actualizan**       | Reinicia dev server (`pnpm start`) después de editar `src/app/core/constants/colors.constants.ts`                  |
+| **Tipografía no actualiza**     | Verifica `typography.constants.ts` y que `body` use `@apply font-sans`                                             |
+| **Build tarda 60+ segundos**    | Verifica que NO hay llamadas `theme()` en CSS. Usa `var(--p-*)` directamente.                                      |
+| **Iconos no se ven**            | Importa específicos: `import { Home } from 'lucide-angular'`                                                       |
+| **PrimeNG sin estilos**         | Verifica `providePrimeNG()` en `src/app/app.config.ts` y que existan las variables `--p-*` generadas por el plugin |
+
+---
+
+## 📂 Estructura del Proyecto
+
+```
+src/
+├── app/
+│   ├── core/
+│   │   ├── constants/
+│   │   │   ├── colors.constants.ts     # Single source of truth de colores
+│   │   │   └── typography.constants.ts # Configuración central de tipografía
+│   │   └── services/
+│   │       └── theme.service.ts        # ThemeService con signals
+│   ├── shared/
+│   │   └── components/
+│   │       ├── theme-toggle/          # Botón toggle tema
+│   │       └── chart/                 # Wrapper ECharts
+│   ├── app.config.ts                  # Providers globales (PrimeNG, i18n)
+│   ├── app.routes.ts                  # Routing
+│   └── app.ts                         # Root component
+├── assets/
+│   └── i18n/
+│       ├── en/common.json             # Traducciones inglés
+│       └── es/common.json             # Traducciones español (default)
+└── styles.css                         # Global styles + Tailwind
+
+Raíz:
+├── tailwind.config.ts                 # Config Tailwind + tipografía central
+├── tailwind-css-variables.mjs         # Plugin CSS vars (build-time)
+└── .github/                           # Skills y documentación completa
+```
+
+---
+
+**Última actualización:** Febrero 2026  
+**Package Manager:** pnpm 9.15.0  
+**Node Version:** Compatible con Angular 21

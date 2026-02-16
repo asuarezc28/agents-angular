@@ -1,57 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
-@import 'primeicons/primeicons.css';
+/* ============================================
+   Global Styles - SAE Analytics
+   ============================================ */
 
+/* Tailwind directives - includes plugin-generated CSS variables */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Sobrescribir solo colores del tema Aura con la paleta Konecta */
-:root {
-  --p-primary-50: #f3f0ff;
-  --p-primary-100: #e0d9ff;
-  --p-primary-200: #c7bbff;
-  --p-primary-300: #a899ff;
-  --p-primary-400: #8677ff;
-  --p-primary-500: #2a01cd;
-  --p-primary-600: #2400ad;
-  --p-primary-700: #1e008e;
-  --p-primary-800: #180070;
-  --p-primary-900: #110053;
+/* ============================================
+   Global Custom Styles
+   ============================================ */
 
-  --p-surface-0: #ffffff;
-  --p-surface-50: #f2f3f7;
-  --p-surface-100: #f2f2f2;
-  --p-surface-200: #e5e5e5;
-  --p-surface-300: #cccccc;
-  --p-surface-400: #b3b3b3;
-  --p-surface-500: #999999;
-  --p-surface-600: #808080;
-  --p-surface-700: #666666;
-  --p-surface-800: #262626;
-  --p-surface-900: #0f0f0f;
-}
+@layer base {
+  /* Support for native color-scheme */
+  :root {
+    color-scheme: light;
+  }
 
-.my-app-dark {
-  --p-primary-50: #110053;
-  --p-primary-100: #180070;
-  --p-primary-200: #1e008e;
-  --p-primary-300: #2400ad;
-  --p-primary-400: #2a01cd;
-  --p-primary-500: #a6b7ff;
-  --p-primary-600: #b8c5ff;
-  --p-primary-700: #c9d3ff;
-  --p-primary-800: #dbe1ff;
-  --p-primary-900: #edefff;
+  :root.dark {
+    color-scheme: dark;
+  }
 
-  --p-surface-0: #0f0f0f;
-  --p-surface-50: #262626;
-  --p-surface-100: #333333;
-  --p-surface-200: #4d4d4d;
-  --p-surface-300: #666666;
-  --p-surface-400: #808080;
-  --p-surface-500: #999999;
-  --p-surface-600: #b3b3b3;
-  --p-surface-700: #cccccc;
-  --p-surface-800: #e5e5e5;
-  --p-surface-900: #f2f3f7;
+  /* Prevent transitions during programmatic theme changes to avoid flickering */
+  .theme-transitioning,
+  .theme-transitioning * {
+    transition: none !important;
+  }
+
+  /* Body defaults */
+  body,
+  html {
+    height: 100%;
+    margin: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply font-sans;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: var(--p-surface-0);
+    color: var(--p-text-color);
+    /* Smooth transition for theme changes */
+    transition:
+      background-color 200ms ease-in-out,
+      color 200ms ease-in-out;
+  }
+
+  /* Asegurar que todos los textos hereden el color correcto */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  div,
+  li {
+    color: inherit;
+  }
+
+  /* Transiciones suaves para componentes PrimeNG */
+  .p-card,
+  .p-button,
+  .p-inputtext,
+  .p-password,
+  .p-datatable {
+    transition:
+      background-color 200ms ease-in-out,
+      border-color 200ms ease-in-out,
+      color 200ms ease-in-out;
+  }
 }

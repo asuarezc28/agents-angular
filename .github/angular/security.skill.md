@@ -97,7 +97,6 @@ export class SanitizerService {
 // Usage in component
 @Component({
   selector: 'app-article',
-  standalone: true,
   imports: [CommonModule],
   template: ` <div [innerHTML]="safeContent"></div> `,
 })
@@ -605,7 +604,6 @@ import { AuthService } from '../../core/services/auth.service';
 
 @Directive({
   selector: '[appHasPermission]',
-  standalone: true
 })
 export class HasPermissionDirective {
   private authService = inject(AuthService);

@@ -1,18 +1,20 @@
-<div class="min-h-screen bg-gray-50 p-8">
+<div class="container mx-auto p-4">
   <p-toast />
 
   <!-- Header -->
   <header class="mb-8">
     <div class="flex items-center justify-between flex-wrap gap-4">
       <div class="flex items-center gap-3">
-        <i class="pi pi-home text-blue-600" style="font-size: 2rem"></i>
-        <h1 class="text-3xl font-bold text-gray-800">{{ 'demo.welcome' | translate }}</h1>
+        <lucide-icon [img]="Home" class="text-primary-500" [size]="32" />
+        <h1 class="text-3xl font-bold">
+          {{ 'demo.welcome' | translate }}
+        </h1>
       </div>
 
       <div class="flex items-center gap-4">
         <!-- Language Selector -->
         <div class="flex items-center gap-2">
-          <i class="pi pi-globe text-gray-600" style="font-size: 1.5rem"></i>
+          <lucide-icon [img]="Globe" [size]="24" />
           <p-button
             label="ES"
             [outlined]="currentLang() !== 'es'"
@@ -32,7 +34,7 @@
       </div>
     </div>
 
-    <p class="text-gray-600 mt-2">{{ 'demo.description' | translate }}</p>
+    <p class="mt-2 opacity-70">{{ 'demo.description' | translate }}</p>
   </header>
 
   <!-- Features Grid -->
@@ -41,37 +43,35 @@
     <p-card>
       <ng-template pTemplate="header">
         <div class="flex items-center gap-2 p-4">
-          <i class="pi pi-box text-green-600" style="font-size: 1.5rem"></i>
+          <lucide-icon [img]="Package" class="text-success-600 dark:text-success-400" [size]="24" />
           <h3 class="text-lg font-semibold">PrimeNG</h3>
         </div>
       </ng-template>
-      <p class="mb-4">{{ 'demo.features.primeng' | translate }}</p>
+      <p class="mb-4 opacity-80">
+        {{ 'demo.features.primeng' | translate }}
+      </p>
       <p-button
         [label]="'demo.actions.showMessage' | translate"
-        icon="pi pi-check"
         (onClick)="showMessage()"
         severity="success"
-      />
+      >
+        <lucide-icon [img]="Check" [size]="16" class="mr-2" />
+      </p-button>
     </p-card>
 
     <!-- Icons Card -->
     <p-card>
-      <lucide-angular [img]="FileIcon" class="my-icon"></lucide-angular>
-      <lucide-icon [img]="FileIcon" class="my-icon"></lucide-icon>
-      <i-lucide [img]="FileIcon" class="my-icon"></i-lucide>
-      <span-lucide [img]="FileIcon" class="my-icon"></span-lucide>
       <ng-template pTemplate="header">
         <div class="flex items-center gap-2 p-4">
-          <i class="pi pi-star-fill text-blue-600" style="font-size: 1.5rem"></i>
-          <h3 class="text-lg font-semibold">PrimeNG Icons</h3>
+          <lucide-icon [img]="Star" class="text-primary-600 dark:text-primary-300" [size]="24" />
+          <h3 class="text-lg font-semibold">Lucide Icons</h3>
         </div>
       </ng-template>
-      <p class="mb-4">{{ 'demo.features.icons' | translate }}</p>
       <div class="flex gap-4">
-        <i class="pi pi-home text-purple-500" style="font-size: 2rem"></i>
-        <i class="pi pi-chart-bar text-blue-500" style="font-size: 2rem"></i>
-        <i class="pi pi-globe text-green-500" style="font-size: 2rem"></i>
-        <i class="pi pi-box text-orange-500" style="font-size: 2rem"></i>
+        <lucide-icon [img]="Home" class="text-primary-500 dark:text-primary-300" [size]="32" />
+        <lucide-icon [img]="BarChart3" class="text-info-500 dark:text-info-300" [size]="32" />
+        <lucide-icon [img]="Globe" class="text-success-500 dark:text-success-300" [size]="32" />
+        <lucide-icon [img]="Package" class="text-warning-600 dark:text-warning-400" [size]="32" />
       </div>
     </p-card>
   </div>
@@ -80,8 +80,10 @@
   <p-card class="mb-8">
     <ng-template pTemplate="header">
       <div class="flex items-center gap-2 p-4">
-        <i class="pi pi-chart-line text-indigo-600" style="font-size: 1.5rem"></i>
-        <h3 class="text-lg font-semibold">{{ 'demo.chart.title' | translate }}</h3>
+        <lucide-icon [img]="LineChart" class="text-info-600 dark:text-info-300" [size]="24" />
+        <h3 class="text-lg font-semibold">
+          {{ 'demo.chart.title' | translate }}
+        </h3>
       </div>
     </ng-template>
 
@@ -92,31 +94,50 @@
   <p-card>
     <ng-template pTemplate="header">
       <div class="p-4">
-        <h3 class="text-lg font-semibold">{{ 'demo.features.title' | translate }}</h3>
+        <h3 class="text-lg font-semibold">
+          {{ 'demo.features.title' | translate }}
+        </h3>
       </div>
     </ng-template>
 
     <ul class="space-y-3">
       <li class="flex items-center gap-3">
-        <i class="pi pi-check-circle text-green-500"></i>
-        <span>{{ 'demo.features.primeng' | translate }}</span>
+        <lucide-icon
+          [img]="CheckCircle"
+          class="text-success-500 dark:text-success-300"
+          [size]="20"
+        />
+        <span class="opacity-80">{{ 'demo.features.primeng' | translate }}</span>
       </li>
       <li class="flex items-center gap-3">
-        <i class="pi pi-check-circle text-green-500"></i>
-        <span>{{ 'demo.features.icons' | translate }}</span>
+        <lucide-icon
+          [img]="CheckCircle"
+          class="text-success-500 dark:text-success-300"
+          [size]="20"
+        />
+        <span class="opacity-80">{{ 'demo.features.icons' | translate }}</span>
       </li>
       <li class="flex items-center gap-3">
-        <i class="pi pi-check-circle text-green-500"></i>
-        <span>{{ 'demo.features.echarts' | translate }}</span>
+        <lucide-icon
+          [img]="CheckCircle"
+          class="text-success-500 dark:text-success-300"
+          [size]="20"
+        />
+        <span class="opacity-80">{{ 'demo.features.echarts' | translate }}</span>
       </li>
       <li class="flex items-center gap-3">
-        <i class="pi pi-check-circle text-green-500"></i>
-        <span>{{ 'demo.features.translate' | translate }}</span>
+        <lucide-icon
+          [img]="CheckCircle"
+          class="text-success-500 dark:text-success-300"
+          [size]="20"
+        />
+        <span class="opacity-80">{{ 'demo.features.translate' | translate }}</span>
       </li>
     </ul>
   </p-card>
+
+  <!-- Tree Component Demo -->
+  <app-tree-demo />
 </div>
 
-<input pInputText placeholder="Overriden" class="p-8!" />
-TEST
 <router-outlet />
