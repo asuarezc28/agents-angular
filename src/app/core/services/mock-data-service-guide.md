@@ -47,9 +47,9 @@ export class UserService {
   }
 
   getUserById(id: string): Observable<User | undefined> {
-    return this.mockDataService.loadJson<User[]>('users.json').pipe(
-      map(users => users.find(user => user.id === id))
-    );
+    return this.mockDataService
+      .loadJson<User[]>('users.json')
+      .pipe(map((users) => users.find((user) => user.id === id)));
   }
 }
 ```
@@ -178,7 +178,7 @@ getUsersWithRoles(): Observable<UserWithRole[]> {
     users: this.mockDataService.loadJson<User[]>('users.json'),
     roles: this.mockDataService.loadJson<Role[]>('roles.json'),
   }).pipe(
-    map(({ users, roles }) => 
+    map(({ users, roles }) =>
       users.map(user => ({
         ...user,
         role: roles.find(r => r.id === user.roleId),
@@ -271,7 +271,7 @@ export class UserService {
     if (this.mockDataService.isEnabled()) {
       return this.mockDataService.loadJson<User[]>('users.json');
     }
-    
+
     // API real
     return this.http.get<User[]>(`${this.environment.apiUrl}/users`);
   }
@@ -280,13 +280,13 @@ export class UserService {
 
 ## 📚 Métodos Disponibles
 
-| Método | Descripción | Parámetros |
-|--------|-------------|------------|
-| `loadJson<T>(filename, useCache?)` | Carga un archivo JSON genérico | `filename: string`, `useCache?: boolean` (default: true) |
-| `clearCache(filename?)` | Limpia caché específico o total | `filename?: string` |
-| `isEnabled()` | Verifica si mocks están habilitados | Ninguno |
-| `getCompanies()` | Carga compañías (método específico) | Ninguno |
-| `getProjectsByCompany(companyId)` | Carga proyectos filtrados | `companyId: string` |
+| Método                             | Descripción                         | Parámetros                                               |
+| ---------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| `loadJson<T>(filename, useCache?)` | Carga un archivo JSON genérico      | `filename: string`, `useCache?: boolean` (default: true) |
+| `clearCache(filename?)`            | Limpia caché específico o total     | `filename?: string`                                      |
+| `isEnabled()`                      | Verifica si mocks están habilitados | Ninguno                                                  |
+| `getCompanies()`                   | Carga compañías (método específico) | Ninguno                                                  |
+| `getProjectsByCompany(companyId)`  | Carga proyectos filtrados           | `companyId: string`                                      |
 
 ## 🆘 Troubleshooting
 
@@ -297,6 +297,7 @@ export class UserService {
 ### El caché no se actualiza después de modificar el JSON
 
 ✅ **Solución**: Limpia el caché manualmente:
+
 ```typescript
 this.mockDataService.clearCache('users.json');
 ```

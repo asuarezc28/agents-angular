@@ -1,9 +1,5 @@
 import { inject } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { defer, Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -52,7 +48,11 @@ export abstract class BaseDataService {
     body: unknown,
     customHeaders: HeaderEntry[] = [],
   ): Observable<T> {
-    return this.http.post<T>(this.apiUrl(path), JSON.stringify(body), this.buildHttpHeaders(customHeaders));
+    return this.http.post<T>(
+      this.apiUrl(path),
+      JSON.stringify(body),
+      this.buildHttpHeaders(customHeaders),
+    );
   }
 
   protected apiPut<T>(
@@ -60,14 +60,14 @@ export abstract class BaseDataService {
     body: unknown,
     customHeaders: HeaderEntry[] = [],
   ): Observable<T> {
-    return this.http.put<T>(this.apiUrl(path), JSON.stringify(body), this.buildHttpHeaders(customHeaders));
+    return this.http.put<T>(
+      this.apiUrl(path),
+      JSON.stringify(body),
+      this.buildHttpHeaders(customHeaders),
+    );
   }
 
-  protected simulateMockResponse<T>(
-    data: T,
-    minDelayMs = 200,
-    maxDelayMs = 700,
-  ): Observable<T> {
+  protected simulateMockResponse<T>(data: T, minDelayMs = 200, maxDelayMs = 700): Observable<T> {
     const randomDelay = Math.floor(Math.random() * (maxDelayMs - minDelayMs + 1)) + minDelayMs;
     return of(data).pipe(delay(randomDelay));
   }

@@ -7,12 +7,12 @@ import { BaseDataService } from './base-data.service';
 
 /**
  * Servicio genérico para cargar datos mock desde archivos JSON.
- * 
+ *
  * Uso:
  * 1. Para añadir nuevos endpoints, simplemente usa loadJson<T>('nombre-archivo.json')
  * 2. Los archivos JSON deben estar en /src/app/core/mocks/ (servidos en runtime desde /mocks/)
  * 3. El caché está habilitado por defecto para optimizar peticiones
- * 
+ *
  * Ejemplo:
  * ```typescript
  * // En otro servicio o componente
@@ -78,15 +78,15 @@ export class MockDataService extends BaseDataService {
   }
 
   // Ejemplo de cómo añadir nuevos endpoints sin modificar la lógica del servicio:
-  // 
+  //
   // getUsers(): Observable<User[]> {
   //   return this.loadJson<User[]>('users.json');
   // }
-  // 
+  //
   // getRoles(): Observable<Role[]> {
   //   return this.loadJson<Role[]>('roles.json');
   // }
-  // 
+  //
   // getSettings(): Observable<Settings> {
   //   return this.loadJson<Settings>('settings.json');
   // }
