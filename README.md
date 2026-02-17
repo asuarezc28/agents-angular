@@ -61,37 +61,67 @@ colors.constants.ts + tailwind.config.ts + tailwind-css-variables.mjs → CSS Va
 
 ## 🚀 Comandos de Desarrollo
 
+Los siguientes comandos están sincronizados con los scripts de `package.json`:
+
 ### Servidor de desarrollo
 
 ```bash
 pnpm start
 ```
 
-Abre `http://localhost:4200/`. La aplicación se recarga automáticamente al modificar archivos.
+Inicia `ng serve` en `http://localhost:4200/`.
 
-### Build de producción
+### Build (default)
 
 ```bash
 pnpm build
 ```
 
-Compila el proyecto en el directorio `dist/` optimizado para producción.
+Ejecuta `ng build`.
 
-### Watch mode
+### Build producción
+
+```bash
+pnpm build:prod
+```
+
+Ejecuta `ng build --configuration production`.
+
+### Build en watch (desarrollo)
 
 ```bash
 pnpm watch
 ```
 
-Compila en modo desarrollo con recarga automática.
+Ejecuta `ng build --watch --configuration development`.
 
-### Tests
+### Tests unitarios
 
 ```bash
 pnpm test
 ```
 
-Ejecuta tests unitarios con el test builder configurado en Angular (`ng test`).
+Ejecuta `ng test`.
+
+### Tests con cobertura (CI/DevOps)
+
+```bash
+pnpm test:coverage
+```
+
+Ejecuta `ng test --watch=false --coverage --coverage-reporters=lcov --coverage-reporters=text-summary`.
+
+### Angular CLI (passthrough)
+
+```bash
+pnpm ng -- <comando>
+```
+
+Ejemplo:
+
+```bash
+pnpm ng -- version
+```
 
 ---
 
@@ -100,10 +130,6 @@ Ejecuta tests unitarios con el test builder configurado en Angular (`ng test`).
 ### Guías Principales
 
 - **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** - Arquitectura general del proyecto
-- **[CHARTS-LIBRARIES.MD](./CHARTS-LIBRARIES.MD)** - Guía de librerías para gráficos
-- **[ROADMAP-BASE-ESTABLE.md](./ROADMAP-BASE-ESTABLE.md)** - Roadmap técnico base
-- **[.github/README.md](.github/README.md)** - Estructura completa de skills
-- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Instrucciones globales del proyecto
 
 ### Skills por Categoría
 
@@ -115,7 +141,6 @@ Ejecuta tests unitarios con el test builder configurado en Angular (`ng test`).
 
 **UI/UX:**
 
-- `konecta-theme-system.skill.md` - Sistema de temas completo
 - `tailwind-primeng-integration.skill.md` - Integración Tailwind + PrimeNG
 - `icons-dual-system.skill.md` - Sistema de iconos (Lucide + PrimeIcons)
 
@@ -207,7 +232,6 @@ src/
 Raíz:
 ├── tailwind.config.ts                 # Config Tailwind + tipografía central
 ├── tailwind-css-variables.mjs         # Plugin CSS vars (build-time)
-└── .github/                           # Skills y documentación completa
 ```
 
 ---
