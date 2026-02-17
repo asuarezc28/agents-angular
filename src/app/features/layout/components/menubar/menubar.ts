@@ -24,6 +24,7 @@ import { ThemeService } from '../../../../core/services/theme.service';
 interface MenubarItemData {
   menu: MenuConfig;
   icon: NavIconKey;
+  iconSize: number;
 }
 
 interface UserMenuItemData {
@@ -105,7 +106,11 @@ export class MenubarComponent {
       id: menu.id,
       label: menu.titleKey,
       styleClass: this.isActive(menu.id) ? 'font-semibold' : undefined,
-      data: { menu, icon: menu.icon } satisfies MenubarItemData,
+      data: {
+        menu,
+        icon: menu.icon,
+        iconSize: menu.iconSize ?? 16,
+      } satisfies MenubarItemData,
     })),
   );
 

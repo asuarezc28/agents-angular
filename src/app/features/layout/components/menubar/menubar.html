@@ -21,7 +21,7 @@
       (click)="selectMenuFromItem(item)"
     >
       @if (item['data']?.icon; as iconKey) {
-        <lucide-icon [img]="iconFor(iconKey)" [size]="16" />
+        <lucide-icon [img]="iconFor(iconKey)" [size]="item['data']?.iconSize ?? 16" />
       }
       <span>{{ item.label | translate }}</span>
     </button>
