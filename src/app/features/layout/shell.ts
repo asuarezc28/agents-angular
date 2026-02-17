@@ -18,6 +18,7 @@ import { NavigationService } from './services/navigation.service';
 import { MenubarComponent } from './components/menubar/menubar';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { ContentComponent } from './components/content/content';
+import { ContextSelectorComponent } from './components/context-selector/context-selector.component';
 
 interface LanguageOption {
   value: string;
@@ -34,15 +35,22 @@ interface LanguageOption {
     MenubarComponent,
     SidebarComponent,
     ContentComponent,
+    ContextSelectorComponent,
   ],
   template: `
     <div class="min-h-screen p-4 md:p-6">
-      <header class="mb-6">
-        <div class="flex items-center justify-between gap-4 flex-wrap">
-          <h1 class="text-2xl font-semibold">{{ 'workspace.title' | translate }}</h1>
+      <header class="mb-4">
+        <div class="mb-4 flex items-center gap-4">
+          <div class="min-w-0 flex-1">
+            <app-menubar
+              [menus]="menus()"
+              [activeMenuId]="activeMenu().id"
+              (menuSelected)="selectMenu($event)"
+            />
+          </div>
 
           <div
-            class="flex items-center gap-2"
+            class="shrink-0 flex items-center gap-2"
             [attr.aria-label]="'workspace.language.ariaLabel' | translate"
           >
             <p-select
@@ -67,13 +75,13 @@ interface LanguageOption {
             <app-theme-toggle />
           </div>
         </div>
-
-        <app-menubar
-          [menus]="menus()"
-          [activeMenuId]="activeMenu().id"
-          (menuSelected)="selectMenu($event)"
-        />
       </header>
+
+      <div class="mb-6 flex justify-center items-center">
+        <div class="w-full lg:max-w-[30%]">
+          <app-context-selector />
+        </div>
+      </div>
 
       <section class="grid grid-cols-1 lg:grid-cols-[88px_1fr] gap-4">
         <app-sidebar
