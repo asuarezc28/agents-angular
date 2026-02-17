@@ -15,6 +15,26 @@ export default plugin(function ({ addBase, theme }) {
   // Get colors from Tailwind config (which imports from colors.constants.ts)
   const colors = theme('colors');
 
+  const hexToRgb = (hexColor) => {
+    const sanitizedHex = hexColor.replace('#', '');
+    const normalizedHex =
+      sanitizedHex.length === 3
+        ? sanitizedHex
+            .split('')
+            .map((char) => `${char}${char}`)
+            .join('')
+        : sanitizedHex;
+
+    const numericValue = Number.parseInt(normalizedHex, 16);
+    const red = (numericValue >> 16) & 255;
+    const green = (numericValue >> 8) & 255;
+    const blue = numericValue & 255;
+
+    return `${red}, ${green}, ${blue}`;
+  };
+
+  const withOpacity = (hexColor, opacity) => `rgba(${hexToRgb(hexColor)}, ${opacity})`;
+
   // Generar variables para :root (light mode)
   const rootVars = {
     // Primary colors
@@ -72,12 +92,12 @@ export default plugin(function ({ addBase, theme }) {
     '--p-focus-ring-color': colors.primary[500],
     '--p-focus-ring-width': '2px',
 
-    // Content/Component backgrounds
-    '--p-content-background': colors.surface[0],
-    '--p-content-hover-background': colors.surface[50],
-    '--p-content-color': colors.surface[900],
-    '--p-content-border-color': colors.surface[300],
-    '--p-content-border-radius': '0.5rem',
+    // // Content/Component backgrounds
+    // '--p-content-background': colors.surface[0],
+    // '--p-content-hover-background': colors.surface[50],
+    // '--p-content-color': colors.surface[900],
+    // '--p-content-border-color': colors.surface[300],
+    // '--p-content-border-radius': '0.5rem',
 
     // Button component
     '--p-button-primary-background': colors.primary[500],
@@ -88,19 +108,40 @@ export default plugin(function ({ addBase, theme }) {
     '--p-button-primary-color': colors.surface[0],
     '--p-button-primary-hover-color': colors.surface[0],
 
-    // Card component
-    '--p-card-background': colors.surface[0],
-    '--p-card-border-color': colors.surface[300],
+    // Card component (theme-aware translucent backgrounds)
+    '--p-card-background': 'rgba(255, 255, 255, 0.25)',
+    '--p-card-border-color': 'rgba(224, 224, 224, 0.7)',
     '--p-card-color': colors.surface[900],
     '--p-card-shadow':
       '0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12)',
 
-    // Input component
-    '--p-inputtext-background': colors.surface[0],
-    '--p-inputtext-border-color': colors.surface[400],
+    // Input component (semi-transparent)
+    '--p-inputtext-background': 'rgba(255, 255, 255, 0.5)',
+    '--p-inputtext-border-color': 'rgba(203, 213, 225, 0.6)',
     '--p-inputtext-hover-border-color': colors.primary[500],
     '--p-inputtext-focus-border-color': colors.primary[500],
     '--p-inputtext-color': colors.surface[900],
+
+    // Select component (PrimeNG p-select - semi-transparent)
+    '--p-select-background': 'rgba(255, 255, 255, 0.5)',
+    '--p-select-border-color': 'rgba(203, 213, 225, 0.6)',
+    '--p-select-hover-border-color': colors.primary[500],
+    '--p-select-focus-border-color': colors.primary[500],
+    '--p-select-color': colors.surface[900],
+    '--p-select-disabled-background': 'rgba(242, 243, 247, 0.4)',
+    '--p-select-disabled-color': colors.surface[500],
+    '--p-select-placeholder-color': colors.surface[600],
+    '--p-select-dropdown-color': colors.surface[700],
+    '--p-select-overlay-background': 'rgba(255, 255, 255, 0.95)',
+    '--p-select-overlay-border-color': 'rgba(226, 232, 240, 0.8)',
+    '--p-select-overlay-color': colors.surface[900],
+    '--p-select-option-color': colors.surface[900],
+    '--p-select-option-focus-background': colors.surface[50],
+    '--p-select-option-focus-color': colors.surface[950],
+    '--p-select-option-selected-background': colors.primary[500],
+    '--p-select-option-selected-color': colors.surface[0],
+    '--p-select-option-selected-focus-background': colors.primary[600],
+    '--p-select-option-selected-focus-color': colors.surface[0],
 
     // Tree component
     '--p-tree-background': 'transparent',
@@ -119,10 +160,10 @@ export default plugin(function ({ addBase, theme }) {
   const darkVars = {
     // Primary - lighter for dark mode
     '--p-primary-500': '#A6B7FF',
-    '--p-primary-contrast': colors.surface[950],
+    '--p-primary-contrast': colors.surface[900],
 
     // Surface inverted
-    '--p-surface-0': colors.surface[950],
+    '--p-surface-0': colors.surface[900],
     '--p-surface-50': colors.surface[900],
     '--p-surface-100': colors.surface[800],
     '--p-surface-200': colors.surface[700],
@@ -133,7 +174,7 @@ export default plugin(function ({ addBase, theme }) {
     '--p-surface-700': colors.surface[200],
     '--p-surface-800': colors.surface[100],
     '--p-surface-900': colors.surface[50],
-    '--p-surface-950': colors.surface[0],
+    '--p-surface-950': colors.surface[950],
 
     // Text colors - lighter for better readability
     '--p-text-color': colors.surface[50],
@@ -156,22 +197,43 @@ export default plugin(function ({ addBase, theme }) {
     '--p-button-primary-active-background': colors.primary[300],
     '--p-button-primary-border-color': colors.primary[500],
     '--p-button-primary-hover-border-color': colors.primary[400],
-    '--p-button-primary-color': colors.surface[950],
-    '--p-button-primary-hover-color': colors.surface[950],
+    '--p-button-primary-color': colors.surface[900],
+    '--p-button-primary-hover-color': colors.surface[900],
 
-    // Card component (dark mode)
-    '--p-card-background': colors.surface[900],
-    '--p-card-border-color': colors.surface[800],
+    // Card component (dark mode - theme-aware translucent backgrounds)
+    '--p-card-background': withOpacity(colors.surface[900], 0.82),
+    '--p-card-border-color': withOpacity(colors.surface[500], 0.55),
     '--p-card-color': colors.surface[50],
     '--p-card-shadow':
       '0 2px 1px -1px rgba(0, 0, 0, 0.4), 0 1px 1px 0 rgba(0, 0, 0, 0.28), 0 1px 3px 0 rgba(0, 0, 0, 0.24)',
 
-    // Input component (dark mode)
-    '--p-inputtext-background': colors.surface[900],
-    '--p-inputtext-border-color': colors.surface[800],
+    // Input component (dark mode - semi-transparent)
+    '--p-inputtext-background': 'rgba(38, 38, 38, 0.6)',
+    '--p-inputtext-border-color': 'rgba(82, 82, 82, 0.6)',
     '--p-inputtext-hover-border-color': '#A6B7FF',
     '--p-inputtext-focus-border-color': '#A6B7FF',
     '--p-inputtext-color': colors.surface[50],
+
+    // Select component (dark mode - PrimeNG p-select - semi-transparent)
+    '--p-select-background': 'rgba(38, 38, 38, 0.6)',
+    '--p-select-border-color': 'rgba(82, 82, 82, 0.6)',
+    '--p-select-hover-border-color': colors.primary[500],
+    '--p-select-focus-border-color': colors.primary[500],
+    '--p-select-color': colors.surface[50],
+    '--p-select-disabled-background': 'rgba(82, 82, 82, 0.4)',
+    '--p-select-disabled-color': colors.surface[500],
+    '--p-select-placeholder-color': colors.surface[400],
+    '--p-select-dropdown-color': colors.surface[300],
+    '--p-select-overlay-background': 'rgba(38, 38, 38, 0.95)',
+    '--p-select-overlay-border-color': 'rgba(82, 82, 82, 0.8)',
+    '--p-select-overlay-color': colors.surface[50],
+    '--p-select-option-color': colors.surface[50],
+    '--p-select-option-focus-background': colors.surface[800],
+    '--p-select-option-focus-color': colors.surface[0],
+    '--p-select-option-selected-background': colors.primary[500],
+    '--p-select-option-selected-color': colors.surface[0],
+    '--p-select-option-selected-focus-background': colors.primary[600],
+    '--p-select-option-selected-focus-color': colors.surface[0],
 
     // Tree component (dark mode)
     '--p-tree-background': 'none',

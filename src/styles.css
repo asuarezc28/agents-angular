@@ -75,3 +75,28 @@
       color 200ms ease-in-out;
   }
 }
+
+/* ============================================
+   CSS Variables Override (after PrimeNG)
+   ============================================ */
+
+/* Override PrimeNG card variables with translucent backgrounds */
+:root {
+  --p-card-background: rgba(252, 252, 252, 0.82) !important;
+  --p-card-border-color: rgba(224, 224, 224, 0.7) !important;
+}
+
+:root.dark {
+  --p-card-background: rgba(38, 38, 38, 0.82) !important;
+  --p-card-border-color: rgba(158, 158, 158, 0.7) !important;
+}
+
+/* ============================================
+   PrimeNG Component Overrides
+   ============================================ */
+
+/* PrimeNG Card - must be outside @layer to override Aura preset */
+.p-card {
+  background-color: var(--p-card-background) !important;
+  border: 1px solid var(--p-card-border-color) !important;
+}

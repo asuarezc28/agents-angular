@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Project Alpha",
+    "companyId": "1",
+    "description": "First project"
+  },
+  {
+    "id": "2",
+    "name": "Project Beta",
+    "companyId": "1",
+    "description": "Second project"
+  },
+  {
+    "id": "3",
+    "name": "Project Gamma",
+    "companyId": "2",
+    "description": "Third project"
+  },
+  {
+    "id": "4",
+    "name": "Project Delta",
+    "companyId": "2",
+    "description": "Fourth project"
+  },
+  {
+    "id": "5",
+    "name": "Project Epsilon",
+    "companyId": "3",
+    "description": "Fifth project"
+  }
+]

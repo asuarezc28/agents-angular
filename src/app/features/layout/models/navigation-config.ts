@@ -1,3 +1,5 @@
+import { Type } from '@angular/core';
+
 export type NavIconKey =
   | 'home'
   | 'chart'
@@ -13,6 +15,7 @@ export interface PanelConfig {
   icon: NavIconKey;
   titleKey: string;
   descriptionKey: string;
+  component?: Type<any>; // Componente a renderizar en el content
 }
 
 export interface MenuConfig {
