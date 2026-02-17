@@ -1,4 +1,37 @@
-# Consideraciones para Nuevo Proyecto Angular21 + Tailwind CSS V4 + Prime NG (Componentes)
+# Arquitectura Frontend Actual (Angular 21 + Tailwind 3 + PrimeNG)
+
+## 0. Estado actual de decisiones (vigente)
+
+### Stack confirmado en el proyecto
+
+- **Angular**: `21.1.x` (standalone + signals)
+- **TypeScript**: `~5.9.x` (strict)
+- **Tailwind CSS**: `3.x`
+- **PrimeNG**: `21.1.x`
+- **PrimeIcons**: `7.x`
+- **Lucide Angular**: `0.563.x`
+- **ECharts**: `6.x`
+- **ngx-translate**: `17.x`
+- **Package manager**: `pnpm 9.15.0`
+
+### Decisiones funcionales ya tomadas
+
+- Arquitectura por capas `core / shared / features`.
+- `BaseDataService` reutilizable para peticiones reales.
+- Estrategia `useMocks` para alternar mock vs backend real.
+- Mocks disponibles solo en `development` (no se publican en `production`).
+
+### Decisión pendiente con negocio (UI/Theming)
+
+**Pendiente de confirmación:**
+
+1. Mantener **PrimeNG + Tailwind** adaptando el theme integrado (enfoque recomendado por velocidad), o
+2. Ir a una personalización más profunda con mayor coste de mantenimiento.
+
+Hasta nueva decisión, la estrategia vigente es:
+
+- Usar PrimeNG con integración Tailwind y tokens de color corporativos.
+- Evitar crear sistema visual paralelo salvo necesidad real de producto.
 
 ## 1. Setup Inicial
 
@@ -59,7 +92,9 @@ src/
 
 ## 2. Librerías de Iconos
 
-#### Opción A: **Lucide Angular** (Recomendada)
+**Estado actual:** Se usa **Lucide Angular** para iconos de UI custom y **PrimeIcons** para componentes internos de PrimeNG.
+
+### Lucide Angular
 
 https://lucide.dev/icons/
 
@@ -75,56 +110,19 @@ npm install lucide-angular
 - Customizable (color, size, stroke-width)
 - Excelente con Tailwind CSS
 
-#### Opción B: **Heroicons**
+### PrimeIcons
 
-https://heroicons.com/
+https://primeng.org/icons
 
-```bash
-npm install @ng-icons/core @ng-icons/heroicons
-```
-
-**Ventajas:**
-
-- Diseñados por Tailwind Labs
-- Perfecta integración con Tailwind
-- Outline y Solid variants
-- 292 iconos curados
-
-#### Opción C: **Phosphor Icons**
-
-https://phosphoricons.com/
-
-```bash
-npm install @phosphor-icons/angular
-```
-
-**Ventajas:**
-
-- 9,072+ iconos
-- 6 estilos diferentes (thin, light, regular, bold, fill, duotone)
-- Muy flexible
+Se utiliza para iconografía interna de componentes PrimeNG.
 
 ## 3. Librerías de Gráficas
 
-#### 1.ECHARTS
+**Estado actual:** Se usa **ECharts** como librería principal.
+
+### ECharts
 
 https://echarts.apache.org/examples/en/index.html#chart-type-radar
-
-#### 2.PRIME
-
-https://primeng.org/chart
-
-#### 3.NGX-ECHARTS
-
-https://xieziyu.github.io/ngx-echarts/#/basic/basic-usage
-
-#### 4.NG2-CHARTS
-
-https://valor-software.com/ng2-charts/
-
-#### 5.CHARTS JS
-
-https://www.chartjs.org/docs/latest/
 
 ## 4. Paleta de colores (Konecta)
 
