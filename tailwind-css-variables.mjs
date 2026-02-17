@@ -113,6 +113,23 @@ export default plugin(function ({ addBase, theme }) {
     '--p-tree-node-selected-color': colors.primary[800],
     '--p-tree-node-icon-color': colors.surface[600],
     '--p-tree-node-icon-hover-color': colors.surface[700],
+
+    // TieredMenu component
+    '--p-tieredmenu-background': colors.surface[0],
+    '--p-tieredmenu-border-color': colors.surface[300],
+    '--p-tieredmenu-color': colors.surface[900],
+    '--p-tieredmenu-item-color': colors.surface[900],
+    '--p-tieredmenu-item-focus-background': colors.surface[50],
+    '--p-tieredmenu-item-focus-color': colors.surface[950],
+    '--p-tieredmenu-item-active-background': colors.surface[100],
+    '--p-tieredmenu-item-active-color': colors.surface[950],
+    '--p-tieredmenu-item-icon-color': colors.surface[600],
+    '--p-tieredmenu-item-icon-focus-color': colors.surface[800],
+    '--p-tieredmenu-item-icon-active-color': colors.surface[900],
+    '--p-tieredmenu-submenu-icon-color': colors.surface[600],
+    '--p-tieredmenu-submenu-icon-focus-color': colors.surface[800],
+    '--p-tieredmenu-submenu-icon-active-color': colors.surface[900],
+    '--p-tieredmenu-separator-border-color': colors.surface[300],
   };
 
   // Generar variables para .dark (dark mode)
@@ -156,8 +173,8 @@ export default plugin(function ({ addBase, theme }) {
     '--p-button-primary-active-background': colors.primary[300],
     '--p-button-primary-border-color': colors.primary[500],
     '--p-button-primary-hover-border-color': colors.primary[400],
-    '--p-button-primary-color': colors.surface[950],
-    '--p-button-primary-hover-color': colors.surface[950],
+    '--p-button-primary-color': colors.surface[0],
+    '--p-button-primary-hover-color': colors.surface[0],
 
     // Card component (dark mode)
     '--p-card-background': colors.surface[900],
@@ -184,6 +201,23 @@ export default plugin(function ({ addBase, theme }) {
     '--p-tree-node-selected-color': '#A6B7FF',
     '--p-tree-node-icon-color': colors.surface[500],
     '--p-tree-node-icon-hover-color': colors.surface[400],
+
+    // TieredMenu component (dark mode)
+    '--p-tieredmenu-background': colors.surface[900],
+    '--p-tieredmenu-border-color': colors.surface[700],
+    '--p-tieredmenu-color': colors.surface[50],
+    '--p-tieredmenu-item-color': colors.surface[50],
+    '--p-tieredmenu-item-focus-background': colors.surface[800],
+    '--p-tieredmenu-item-focus-color': colors.surface[0],
+    '--p-tieredmenu-item-active-background': colors.surface[700],
+    '--p-tieredmenu-item-active-color': colors.surface[0],
+    '--p-tieredmenu-item-icon-color': colors.surface[300],
+    '--p-tieredmenu-item-icon-focus-color': colors.surface[100],
+    '--p-tieredmenu-item-icon-active-color': colors.surface[0],
+    '--p-tieredmenu-submenu-icon-color': colors.surface[300],
+    '--p-tieredmenu-submenu-icon-focus-color': colors.surface[100],
+    '--p-tieredmenu-submenu-icon-active-color': colors.surface[0],
+    '--p-tieredmenu-separator-border-color': colors.surface[700],
   };
 
   addBase({

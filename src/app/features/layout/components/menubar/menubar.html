@@ -15,8 +15,11 @@
 
   <ng-template #item let-item>
     <button
+      pButton
       type="button"
-      class="p-menubar-item-link cursor-pointer flex items-center gap-2"
+      [text]="!isActive(item['data']?.menu?.id ?? '')"
+      [severity]="isActive(item['data']?.menu?.id ?? '') ? 'primary' : 'secondary'"
+      class="cursor-pointer flex items-center gap-2"
       [attr.aria-label]="item.label | translate"
       (click)="selectMenuFromItem(item)"
     >
