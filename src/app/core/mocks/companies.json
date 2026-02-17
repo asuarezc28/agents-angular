@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "name": "Global Corp",
+    "description": "Global corporation"
+  },
+  {
+    "id": "2",
+    "name": "Tech Solutions",
+    "description": "Technology solutions provider"
+  },
+  {
+    "id": "3",
+    "name": "Innovation Labs",
+    "description": "Research and development laboratory"
+  }
+]
