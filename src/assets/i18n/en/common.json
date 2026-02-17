@@ -112,6 +112,14 @@
     "sidebar": {
       "ariaLabel": "Module options sidebar"
     },
+    "context": {
+      "companyLabel": "Company",
+      "companyPlaceholder": "Select company",
+      "companyAria": "Company selector",
+      "projectLabel": "Project",
+      "projectPlaceholder": "Select project",
+      "projectAria": "Project selector"
+    },
     "menu": {
       "analytics": "Analytics",
       "operations": "Operations",
