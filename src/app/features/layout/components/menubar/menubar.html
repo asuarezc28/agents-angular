@@ -1,16 +1,98 @@
-<div class="mt-4 flex items-center gap-2 flex-wrap" [attr.aria-label]="'workspace.menubar.ariaLabel' | translate">
-  @for (menu of menus(); track menu.id) {
+<p-menubar
+  styleClass="mt-4"
+  [model]="items()"
+  [attr.aria-label]="'layoutBase.menubar.ariaLabel' | translate"
+>
+  <ng-template #start>
+    <img
+      [ngSrc]="logoSrc()"
+      width="180"
+      height="56"
+      class="h-8 w-auto"
+      [alt]="'layoutBase.brand.logoAlt' | translate"
+    />
+  </ng-template>
+
+  <ng-template #item let-item>
+    <button
+      type="button"
+      class="p-menubar-item-link cursor-pointer flex items-center gap-2"
+      [attr.aria-label]="item.label | translate"
+      (click)="selectMenuFromItem(item)"
+    >
+      @if (item['data']?.icon; as iconKey) {
+        <lucide-icon [img]="iconFor(iconKey)" [size]="16" />
+      }
+      <span>{{ item.label | translate }}</span>
+    </button>
+  </ng-template>
+
+  <ng-template #end>
     <button
       pButton
       type="button"
-      [text]="!isActive(menu.id)"
-      [severity]="isActive(menu.id) ? 'primary' : 'secondary'"
-      (click)="selectMenu(menu)"
-      class="flex items-center gap-2"
-      [attr.aria-label]="menu.titleKey | translate"
+      text
+      rounded
+      class="cursor-pointer"
+      [attr.aria-label]="'layoutBase.userMenu.avatarAriaLabel' | translate"
+      (click)="userMenu.toggle($event)"
     >
-      <lucide-icon [img]="iconFor(menu.icon)" [size]="16" />
-      <span>{{ menu.titleKey | translate }}</span>
+      <p-avatar label="SA" shape="circle" />
     </button>
-  }
-</div>
+
+    <p-tieredMenu
+      #userMenu
+      [popup]="true"
+      [model]="userMenuItems()"
+      [autoDisplay]="false"
+      appendTo="body"
+    >
+      <ng-template #item let-item let-hasSubmenu="hasSubmenu">
+        @if (item['data']?.kind === 'theme-toggle') {
+          <div class="p-menu-item-content px-3 py-2 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              @if (item.icon) {
+                <span class="p-menu-item-icon" [class]="item.icon"></span>
+              }
+              <span class="p-menu-item-label">{{ item.label }}</span>
+            </div>
+
+            <div class="flex items-center gap-1" (click)="$event.stopPropagation()">
+              <button
+                pButton
+                type="button"
+                [text]="isDarkMode()"
+                [severity]="!isDarkMode() ? 'primary' : 'secondary'"
+                [attr.aria-label]="'layoutBase.userMenu.theme.light' | translate"
+                (click)="setThemeMode(false)"
+              >
+                <lucide-icon [img]="Sun" [size]="16" />
+              </button>
+
+              <button
+                pButton
+                type="button"
+                [text]="!isDarkMode()"
+                [severity]="isDarkMode() ? 'primary' : 'secondary'"
+                [attr.aria-label]="'layoutBase.userMenu.theme.dark' | translate"
+                (click)="setThemeMode(true)"
+              >
+                <lucide-icon [img]="Moon" [size]="16" />
+              </button>
+            </div>
+          </div>
+        } @else {
+          <a class="p-menu-item-link cursor-pointer" [attr.aria-label]="item.label">
+            @if (item.icon) {
+              <span class="p-menu-item-icon" [class]="item.icon"></span>
+            }
+            <span class="p-menu-item-label">{{ item.label }}</span>
+            @if (hasSubmenu) {
+              <i class="pi pi-angle-right ml-auto"></i>
+            }
+          </a>
+        }
+      </ng-template>
+    </p-tieredMenu>
+  </ng-template>
+</p-menubar>
