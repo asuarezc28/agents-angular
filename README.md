@@ -131,19 +131,6 @@ pnpm ng -- version
 
 - **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** - Arquitectura general del proyecto
 
-### Skills por Categoría
-
-**Angular:**
-
-- `angular-architecture.skill.md` - Estructura y best practices
-- `angular-signals.skill.md` - Manejo de estado con signals
-- `angular-forms.skill.md` - Formularios reactivos
-
-**UI/UX:**
-
-- `tailwind-primeng-integration.skill.md` - Integración Tailwind + PrimeNG
-- `icons-dual-system.skill.md` - Sistema de iconos (Lucide + PrimeIcons)
-
 ### Recursos Externos
 
 - [Angular Docs](https://angular.dev) - Documentación oficial
