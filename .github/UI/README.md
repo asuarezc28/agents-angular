@@ -1,6 +1,6 @@
 # 🎨 UI System Documentation
 
-Documentación completa del sistema de diseño Konecta para el agente UI/UX.
+Documentación completa del sistema de UI para el agente UI/UX.
 
 ---
 
@@ -12,7 +12,6 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 ├── ui-agent.instructions.md          # 🎯 INICIO AQUÍ - Instrucciones principales
 │
 ├── Core Skills/                      # Skills especializados por tema
-│   ├── konecta-theme-system.skill.md
 │   ├── tailwind-primeng-integration.skill.md
 │   ├── icons-dual-system.skill.md
 │   ├── echarts-theme-colors.skill.md
@@ -20,8 +19,7 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 │       └── tailwind-design-system.skill.md
 │
 ├── Reference Guides/                 # Guías de consulta
-│   ├── primeng-theming-guide.md
-│   └── PRIMENG-COMPONENTS-STATUS.md
+│   └── primeng-theming-guide.md
 │
 └── Examples/                         # Código de ejemplo
     └── EXAMPLES.md                   # 896+ líneas de ejemplos prácticos
@@ -39,8 +37,8 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 
 ### Para Desarrolladores
 
-1. **Single Source of Truth**: `src/app/core/constants/colors.constants.ts`
-2. **Workflow de colores**: Editar archivo → `pnpm start` → Variables regeneradas automáticamente
+1. **Theme global**: PrimeNG `Aura` en `src/app/app.config.ts`
+2. **Paleta programática (charts/TS específicos, por ahora)**: `src/app/core/constants/colors.constants.ts`
 3. **Sistema de iconos**: Lucide para UI custom, PrimeIcons para internos de PrimeNG
 4. **Temas**: Light/Dark con CSS variables (`--p-*`)
 
@@ -62,19 +60,11 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 
 ### 🎨 Core Skills (Usar según necesidad)
 
-**konecta-theme-system.skill.md** (Sistema de Temas)
-
-- ThemeService para toggle light/dark
-- CSS variables generadas automáticamente
-- Paleta de colores completa
-- Principio de herencia de color
-- Best practices de theming
-
 **tailwind-primeng-integration.skill.md** (Integración)
 
 - Arquitectura del sistema de colores
-- Plugin `tailwind-css-variables.mjs`
-- Workflow: editar → rebuild → auto-generación
+- Plugin oficial `tailwindcss-primeui`
+- Workflow: editar constantes/config → rebuild
 - Cómo añadir componentes PrimeNG nuevos
 - Troubleshooting común
 
@@ -106,20 +96,11 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 
 **primeng-theming-guide.md** (538 líneas)
 
-- Arquitectura del plugin de CSS variables
-- Cómo añadir soporte para nuevo componente PrimeNG
-- Variables `rootVars` (light) y `darkVars` (dark)
-- Estructura de variables por componente
+- Arquitectura de integración oficial PrimeNG + Tailwind
+- Cómo ajustar colores base del theme
+- Cómo extender tokens cuando negocio lo pida
+- Estrategia de overrides por componente
 - Ejemplos completos (Button, Card, InputText, Tree)
-
-**PRIMENG-COMPONENTS-STATUS.md** (283 líneas)
-
-- Lista de 115 componentes PrimeNG
-- Estado actual: 4 configurados, 111 pendientes
-- Prioridad de configuración
-- Categorías: Form, Data, Overlay, Menu, etc.
-
----
 
 ### 💡 Ejemplos (código práctico)
 
@@ -140,22 +121,22 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 
 ## 🎯 Selección de Skill por Tipo de Solicitud
 
-| Solicitud                  | Skill Principal                         | Ejemplos en                  |
-| -------------------------- | --------------------------------------- | ---------------------------- |
-| "Tema light/dark"          | `konecta-theme-system.skill.md`         | EXAMPLES.md → Temas          |
-| "Cambiar color primario"   | `tailwind-primeng-integration.skill.md` | (editar colors.constants.ts) |
-| "Añadir iconos"            | `icons-dual-system.skill.md`            | EXAMPLES.md → Iconos         |
-| "Dropdown PrimeNG"         | `tailwind-primeng-integration.skill.md` | EXAMPLES.md → Formularios    |
-| "Nuevo componente PrimeNG" | `primeng-theming-guide.md`              | (agregar al plugin)          |
-| "Gráfico con colores"      | `echarts-theme-colors.skill.md`         | EXAMPLES.md → Gráficos       |
-| "Layout responsive"        | `tailwind-design-system/`               | EXAMPLES.md → Layouts        |
-| "Ver componentes listos"   | `PRIMENG-COMPONENTS-STATUS.md`          | (referencia)                 |
+| Solicitud                         | Skill Principal                         | Ejemplos en                  |
+| --------------------------------- | --------------------------------------- | ---------------------------- |
+| "Tema light/dark"                 | `tailwind-primeng-integration.skill.md` | EXAMPLES.md → Temas          |
+| "Cambiar color primario (charts)" | `echarts-theme-colors.skill.md`         | (editar colors.constants.ts) |
+| "Cambiar theme global PrimeNG"    | `primeng-theming-guide.md`              | (config Aura/overrides)      |
+| "Añadir iconos"                   | `icons-dual-system.skill.md`            | EXAMPLES.md → Iconos         |
+| "Dropdown PrimeNG"                | `tailwind-primeng-integration.skill.md` | EXAMPLES.md → Formularios    |
+| "Nuevo componente PrimeNG"        | `primeng-theming-guide.md`              | (ajustar theme/overrides)    |
+| "Gráfico con colores"             | `echarts-theme-colors.skill.md`         | EXAMPLES.md → Gráficos       |
+| "Layout responsive"               | `tailwind-design-system/`               | EXAMPLES.md → Layouts        |
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-- **Tailwind CSS**: 3.x con plugin personalizado
+- **Tailwind CSS**: 3.x con `tailwindcss-primeui`
 - **PrimeNG**: 21.1.1 con tema Aura
 - **Lucide Angular**: 0.563.0 (iconos outline)
 - **PrimeIcons**: 7.0.0 (iconos internos PrimeNG)
@@ -166,49 +147,36 @@ Documentación completa del sistema de diseño Konecta para el agente UI/UX.
 
 ## 🔑 Archivos Críticos del Proyecto
 
-| Archivo                                         | Propósito                  | ¿Editar?                    |
-| ----------------------------------------------- | -------------------------- | --------------------------- |
-| `src/app/core/constants/colors.constants.ts`    | **Single source of truth** | ✅ SÍ (colores)             |
-| `tailwind.config.ts`                            | Config de Tailwind         | ⚠️ Solo escalas nuevas      |
-| `tailwind-css-variables.mjs`                    | Plugin generador           | ⚠️ Solo añadir componentes  |
-| `src/app/core/services/theme.service.ts`        | Toggle de tema             | ❌ Solo nueva funcionalidad |
-| `src/app/core/services/theme-colors.service.ts` | Colores para JS            | ❌ Solo nueva lógica        |
+| Archivo                                         | Propósito                                                   | ¿Editar?                    |
+| ----------------------------------------------- | ----------------------------------------------------------- | --------------------------- |
+| `src/app/core/constants/colors.constants.ts`    | Paleta programática charts/TS (casos específicos por ahora) | ✅ SÍ (charts/TS)           |
+| `tailwind.config.ts`                            | Config de Tailwind                                          | ⚠️ Solo escalas nuevas      |
+| `src/app/app.config.ts`                         | Config de theme PrimeNG                                     | ⚠️ Ajustes de theming       |
+| `src/app/core/services/theme.service.ts`        | Toggle de tema                                              | ❌ Solo nueva funcionalidad |
+| `src/app/core/services/theme-colors.service.ts` | Colores para JS                                             | ❌ Solo nueva lógica        |
 
 ---
 
 ## ✅ Reglas de Oro
 
-1. **Single Source of Truth**: Colores solo en `colors.constants.ts`
+1. **Fuente de theme global**: PrimeNG Aura en `app.config.ts`
 2. **Herencia de Color**: Texto hereda de `body`, NO usar `text-surface-*`
 3. **Iconos Duales**: Lucide para UI, PrimeIcons solo para PrimeNG interno
-4. **Plugin Automático**: Editar → `pnpm start` → Variables regeneradas
+4. **Integración oficial**: Editar → `pnpm start` → tokens/apariencia actualizada
 5. **Consultar Ejemplos**: `EXAMPLES.md` tiene 896 líneas de código de referencia
-6. **Estado de Componentes**: `PRIMENG-COMPONENTS-STATUS.md` muestra qué está listo
+6. **PrimeNG por ahora**: usar el theme configurado (`Aura`) sin matriz de estado por componente
 7. **i18n Accesible**: `aria-label`, `aria-describedby`, `title`, `alt` deben salir de `src/assets/i18n/{lang}/common.json`
 
 ---
 
 ## 📊 Estado Actual del Sistema
 
-### Componentes PrimeNG Configurados (4)
+### Sistema de Theming
 
-- ✅ Button
-- ✅ Card
-- ✅ InputText
-- ✅ Tree
-
-### Pendientes (111+)
-
-Ver lista completa en `PRIMENG-COMPONENTS-STATUS.md`
-
-### CSS Variables Generadas
-
-- ✅ Colores base (primary, surface, semantic)
-- ✅ Variables de componentes (button, card, input, tree)
-- ✅ Light mode (`:root`)
-- ✅ Dark mode (`:root.dark`)
-- ✅ Focus states
-- ✅ Hover/active states
+- ✅ Tokens de theme global gestionados por PrimeNG (Aura)
+- ✅ Tema oficial PrimeNG (`Aura`)
+- ✅ Integración con Tailwind (`tailwindcss-primeui`)
+- ✅ Light mode / dark mode por clase `.dark`
 
 ---
 
@@ -216,7 +184,7 @@ Ver lista completa en `PRIMENG-COMPONENTS-STATUS.md`
 
 ### "Los colores no cambian"
 
-→ Ejecutar `pnpm start` para regenerar variables
+→ Si es theming global, revisar `app.config.ts`/overrides. Si es charts, revisar `colors.constants.ts`
 
 ### "El texto no se ve en dark mode"
 
@@ -228,7 +196,7 @@ Ver lista completa en `PRIMENG-COMPONENTS-STATUS.md`
 
 ### "¿Cómo añadir componente PrimeNG?"
 
-→ Seguir `primeng-theming-guide.md` → Añadir al plugin
+→ Seguir `primeng-theming-guide.md` → ajustar configuración de theme cuando aplique
 
 ### "Necesito ejemplos de formularios"
 

@@ -1,6 +1,6 @@
 # Guía Completa de Ejemplos UI
 
-Guía completa con ejemplos prácticos del sistema de diseño Konecta, incluyendo componentes de PrimeNG, iconos de Lucide, y el sistema de colores centralizado.
+Guía completa con ejemplos prácticos del sistema de diseño Konecta, incluyendo componentes de PrimeNG, iconos de Lucide, y colores programáticos para charts/TS en casos específicos.
 
 ## 📋 Tabla de Contenidos
 
@@ -22,7 +22,7 @@ Guía completa con ejemplos prácticos del sistema de diseño Konecta, incluyend
 ### ✅ Uso Correcto de Colores
 
 ```typescript
-// colors.constants.ts - ÚNICA FUENTE DE VERDAD
+// colors.constants.ts - Uso actual: colores programáticos para charts/TS específicos (por ahora)
 export const COLORS = {
   primary: { 500: '#2A01CD' }, // Konecta Blue
   surface: {
@@ -835,7 +835,7 @@ export class AccessibleExamplesComponent {
 # 1. Editar colores
 # src/app/core/constants/colors.constants.ts
 
-# 2. Rebuild la aplicación (el plugin genera CSS variables automáticamente)
+# 2. Rebuild la aplicación (la integración oficial aplica cambios de theme/clases)
 pnpm start    # Development con watch mode
 # o
 pnpm build    # Production build
@@ -843,7 +843,7 @@ pnpm build    # Production build
 # 3. Verificar cambios
 # Todo se actualiza automáticamente:
 # - Tailwind CSS classes (bg-*, text-*, border-*)
-# - CSS Variables (--p-*) vía tailwind-css-variables.mjs
+# - Tokens del theme PrimeNG + clases Tailwind
 # - ThemeColorsService signals reactivos
 ```
 
@@ -855,11 +855,10 @@ Para estilizar nuevos componentes PrimeNG con los colores Konecta:
 # 1. Consultar la guía
 # .github/UI/primeng-theming-guide.md
 
-# 2. Editar el plugin
-# tailwind-css-variables.mjs
+# 2. Ajustar theme/configuración si hace falta
+# app.config.ts / estilos puntuales
 
-# 3. Añadir variables en rootVars y darkVars
-# Ejemplo: Dropdown component
+# 3. Validar comportamiento en light/dark y aplicar override mínimo si procede
 
 # 4. Rebuild
 pnpm start

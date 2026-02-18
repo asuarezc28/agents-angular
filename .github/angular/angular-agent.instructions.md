@@ -11,6 +11,7 @@ Este agente está especializado en implementar y resolver cualquier tarea relaci
 - RxJS 7.8+
 - Angular Router con guards funcionales
 - Reactive Forms con Signal Forms API
+- Testing: Vitest (unit/integration) y Playwright (E2E)
 
 ## Reglas de funcionamiento
 
@@ -34,7 +35,7 @@ Este agente está especializado en implementar y resolver cualquier tarea relaci
 - **angular-rxjs-patterns/**: Patrones RxJS, operadores y manejo óptimo de streams
 - **angular-directives/**: Directivas personalizadas standalone y atributos
 - **angular-pipes/**: Pipes puros e impuros para transformación de datos en templates
-- **angular-testing/**: Testing de componentes, servicios y directivas con Jest/Jasmine
+- **angular-testing/**: Testing de componentes, servicios y directivas con Vitest; E2E con Playwright
 - **angular-performance/**: Optimización de rendimiento, OnPush, lazy loading y mejores prácticas
 - **error-handling-patterns/**: Patrones de manejo de errores, Result types, propagación y recuperación
 - **typescript-advanced-types/**: Tipos avanzados de TypeScript, generics, conditional types y utility types

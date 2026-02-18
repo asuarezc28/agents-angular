@@ -2,550 +2,263 @@
 
 ## Overview
 
-This project uses a custom Tailwind CSS plugin that automatically generates CSS variables for PrimeNG v21 components at build time. The plugin reads color definitions from TypeScript constants and generates component-specific variables for seamless light/dark theming.
+This project uses the official integration path:
 
-## Architecture
+- PrimeNG with official `Aura` preset
+- Tailwind CSS with `tailwindcss-primeui`
+- `colors.constants.ts` only for programmatic colors in specific TS/charts cases for now (via `ThemeColorsService`)
 
-```
-colors.constants.ts (Single source of truth - TS values)
-    ↓ imported by
-    ├── tailwind.config.ts (exposes via theme('colors'))
-    │       ↓ used by
-    │       tailwind-css-variables.mjs (Tailwind plugin)
-    │           ↓ generates at build time
-    │           CSS Variables (--p-*) for :root and :root.dark
-    │               ↓ consumed by
-    │               PrimeNG Aura theme components
-    │
-    └── theme-colors.service.ts (TypeScript/ECharts reactive signals)
-```
+Use this skill when you need to style UI with Tailwind while keeping PrimeNG behavior consistent in light/dark mode.
 
-**Current Status:**
+## Current Architecture
 
-- ✅ Configured: Button, Card, InputText, Tree
-- ⚠️ Pending: 111 components (see `.github/UI/PRIMENG-COMPONENTS-STATUS.md`)
+```text
+ThemeService (.dark class on <html>)
+  ↓
+PrimeNG Aura (theme tokens --p-*)
+  ↓
+Tailwind utilities + tailwindcss-primeui
+  ↓
+Component UI (PrimeNG + custom wrappers)
 
-## Critical Learnings
+colors.constants.ts
+  └─ ThemeColorsService (only charts/TS specific use cases for now)
 
-**Why Tailwind Plugin with Auto-Generated CSS Variables?**
-
-- PrimeNG Aura theme expects specific CSS variable names (`--p-card-background`, `--p-button-primary-color`, etc.)
-- Plugin runs during Tailwind build process and generates all needed variables automatically
-- Uses `theme('colors')` to access color definitions (Tailwind processes TypeScript internally)
-- Ensures consistency between TS constants and CSS without manual duplication
-- Complete dark mode support for all configured components
-- Single source of truth: edit once in colors.constants.ts, rebuild, and all updates automatically
-- No generated files to commit (variables created in memory during build)
-
-## Color System
-
-### Step 1: Define Color Values (colors.constants.ts)
-
-**This is the ONLY place to edit color VALUES.**
-
-```typescript
-// src/app/core/constants/colors.constants.ts
-export const COLORS = {
-  primary: {
-    50: '#f0f0ff',
-    500: '#2A01CD', // Konecta Blue
-    900: '#0F0F72', // Konecta Dark Blue
-    // ... full scale 50-950
-  },
-  surface: {
-    0: '#ffffff', // Konecta White
-    50: '#F2F3F7', // Konecta Light
-    900: '#262626', // Konecta Dark
-    950: '#0F0F0F', // Konecta Black
-    // ... full scale 0-950
-  },
-  success: { 500: '#0E9F6E' },
-  danger: { 500: '#F05252' },
-  warning: { 500: '#F0FA00' },
-  info: { 500: '#3b82f6' },
-} as const;
+app.config.ts
+  └─ providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: '.dark' } } })
 ```
 
-### Step 2: Import in Tailwind Config (tailwind.config.ts)
+## Why This Integration Works
 
-### Step 2: Import in Tailwind Config (tailwind.config.ts)
+- PrimeNG provides semantic theme tokens (`--p-*`) for components.
+- `tailwindcss-primeui` aligns Tailwind utilities with Prime tokens.
+- Tailwind handles layout/composition quickly without replacing PrimeNG theming.
+- Dark mode is deterministic (`.dark` class), no duplicated theme engines.
 
-**Imports color objects from constants for automatic Tailwind class generation.**
+## Rules
 
-```typescript
-// tailwind.config.ts
-import { COLORS } from './src/app/core/constants/colors.constants';
+1. Edit color values in `colors.constants.ts` only when needed for specific charts/TS cases
+2. Rebuild app (`pnpm start` / `pnpm build`)
+3. Prefer official PrimeNG theming behavior before adding overrides
+4. Keep overrides minimal and justified
 
-export default {
-  content: ['./src/**/*.{html,ts}'],
-  darkMode: 'class', // CRITICAL: Use 'class', NOT ['class', 'dark']
-  theme: {
-    extend: {
-      colors: {
-        // Import complete color objects
-        primary: COLORS.primary,
-        surface: COLORS.surface,
-        success: COLORS.success,
-        danger: COLORS.danger,
-        warning: COLORS.warning,
-        info: COLORS.info,
-      },
-    },
-  },
-  plugins: [],
-};
-```
-
-### Step 3: Plugin Generates CSS Variables Automatically
-
-⚠️ **CSS variables are generated during build** - No file to edit manually
-
-**Plugin location:** `tailwind-css-variables.mjs` (root of project)
-
-**To regenerate after editing colors:**
-
-```bash
-pnpm start   # Development build with watch mode
-pnpm build   # Production build
-```
-
-The plugin automatically generates PrimeNG CSS variables during the Tailwind build process:
-
-**Light Mode (`:root`)**
-
-```css
-:root {
-  /* Primary colors */
-  --p-primary-50: #f0f0ff;
-  --p-primary-500: #2a01cd;
-  --p-primary-contrast: #ffffff;
-
-  /* Surface colors */
-  --p-surface-0: #ffffff;
-  --p-surface-50: #f2f3f7;
-  --p-surface-900: #262626;
-  --p-surface-950: #0f0f0f;
-
-  /* Text colors */
-  --p-text-color: #262626;
-  --p-text-hover-color: #0f0f0f;
-  --p-text-muted-color: #757575;
-
-  /* Component-specific */
-  --p-card-background: #ffffff;
-  --p-card-border-color: #e0e0e0;
-  --p-card-color: #262626;
-
-  --p-button-primary-background: #2a01cd;
-  --p-button-primary-color: #ffffff;
-  --p-button-primary-hover-background: #2400ad;
-
-  /* ... all other component variables for 4 configured components */
-}
-
-/* === DARK MODE === */
-:root.dark {
-  /* Primary colors - lighter for contrast */
-  --p-primary-500: #a6b7ff; /* Uses konecta.blue2 */
-  --p-primary-contrast: #0f0f0f;
-
-  /* Surface colors - inverted */
-  --p-surface-0: #0f0f0f;
-  --p-surface-50: #262626;
-  --p-surface-900: #f2f3f7;
-  --p-surface-950: #ffffff;
-
-  /* Text colors - light for readability */
-  --p-text-color: #f2f3f7;
-  --p-text-hover-color: #ffffff;
-  --p-text-muted-color: #bdbdbd;
-
-  /* Component-specific */
-  --p-card-background: #262626;
-  --p-card-border-color: #424242;
-  --p-card-color: #f2f3f7;
-
-  --p-button-primary-background: #a6b7ff;
-  --p-button-primary-color: #0f0f0f;
-  --p-button-primary-hover-background: #b8c5ff;
-
-  /* ... all other component variables */
-}
-```
-
-**CRITICAL Variables Needed:**
-
-- `--p-card-*` (background, border-color, color, shadow)
-- `--p-button-primary-*` (background, color, hover states)
-- `--p-button-secondary-*` (background, color, border)
-- `--p-inputtext-*` (background, border, color, focus)
-- Any other PrimeNG component you use
-
-## Theme Management
-
-### ThemeService
-
-```typescript
-@Injectable({ providedIn: 'root' })
-export class ThemeService {
-  readonly isDarkMode = signal(false);
-
-  toggleTheme(): void {
-    this.isDarkMode.update((v) => !v);
-  }
-
-  private applyTheme(isDark: boolean): void {
-    const html = document.documentElement;
-    html.classList.add('theme-transitioning');
-    html.classList.toggle('dark', isDark);
-    html.style.colorScheme = isDark ? 'dark' : 'light';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-    void html.offsetHeight; // Force reflow
-    setTimeout(() => html.classList.remove('theme-transitioning'), 50);
-  }
-}
-```
-
-### Preventing Flickering
-
-```css
-/* styles.css */
-.theme-transitioning,
-.theme-transitioning * {
-  transition: none !important;
-}
-
-body {
-  background-color: var(--p-surface-0);
-  color: var(--p-text-color);
-  transition:
-    background-color 200ms ease-in-out,
-    color 200ms ease-in-out;
-}
-```
-
-## PrimeNG Configuration
-
-### app.config.ts
+## PrimeNG Configuration (Reference)
 
 ```typescript
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    providePrimeNG({
-      theme: {
-        preset: Aura,
-        options: {
-          darkModeSelector: '.dark',
-        },
-      },
-      ripple: false,
-    }),
-    // ... other providers
-  ],
-};
+providePrimeNG({
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: '.dark',
+    },
+  },
+  ripple: false,
+});
 ```
 
-### Theme Files Structure
+## Tailwind Configuration (Reference)
 
-**src/styles/primeng-theme.css** (CSS Variables Definition)
+```typescript
+import type { Config } from 'tailwindcss';
+import PrimeUI from 'tailwindcss-primeui';
 
-```css
-/* Import PrimeIcons */
-@import 'primeicons/primeicons.css';
-
-/* Light mode variables */
-:root {
-  --p-primary-500: #2a01cd;
-  --p-surface-0: #ffffff;
-  --p-text-color: #262626;
-  --p-card-background: #ffffff;
-  --p-button-primary-background: #2a01cd;
-  /* ... all component variables */
-}
-
-/* Dark mode variables */
-:root.dark {
-  --p-primary-500: #a6b7ff;
-  --p-surface-0: #0f0f0f;
-  --p-text-color: #f2f3f7;
-  --p-card-background: #262626;
-  --p-button-primary-background: #a6b7ff;
-  /* ... all component variables */
-}
+export default {
+  content: ['./src/**/*.{html,ts}'],
+  darkMode: 'class',
+  plugins: [PrimeUI],
+} satisfies Config;
 ```
 
-**src/styles.css** (Main stylesheet)
+## Styling Strategy
 
-```css
-/* Import PrimeNG theme first */
-@import './styles/primeng-theme.css';
+### 1) PrimeNG first
 
-/* Tailwind directives */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+- Use PrimeNG component with Aura defaults.
+- Validate visual result in light and dark.
 
-@layer base {
-  :root {
-    color-scheme: light;
-  }
-  :root.dark {
-    color-scheme: dark;
-  }
+### 2) Tailwind for composition
 
-  /* Prevent flickering during theme toggle */
-  .theme-transitioning,
-  .theme-transitioning * {
-    transition: none !important;
-  }
+- Use Tailwind for spacing, layout, responsive behavior and wrappers.
+- Avoid replacing Prime internal styles unless necessary.
 
-  body {
-    background-color: var(--p-surface-0);
-    color: var(--p-text-color);
-    transition:
-      background-color 200ms ease-in-out,
-      color 200ms ease-in-out;
-  }
+### 3) Minimal overrides
 
-  /* Ensure text inherits color */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  span,
-  div,
-  li {
-    color: inherit;
-  }
-
-  /* Smooth transitions for PrimeNG components */
-  .p-card,
-  .p-button {
-    transition:
-      background-color 200ms ease-in-out,
-      border-color 200ms ease-in-out,
-      color 200ms ease-in-out;
-  }
-}
-```
+- Add local override only for real design/business gap.
+- Document reason and scope.
 
 ## Usage Patterns
 
-### Text Colors - Use Inheritance
-
-**DO NOT** use explicit text color classes:
+### Text colors: use inheritance
 
 ```html
-<!-- ❌ WRONG -->
-<p class="text-surface-900 dark:text-surface-100">Text</p>
-
 <!-- ✅ CORRECT -->
-<p>Text</p>
-<p class="opacity-80">Secondary text</p>
+<p>Texto principal</p>
+<p class="opacity-80">Texto secundario</p>
+
+<!-- ❌ AVOID -->
+<p class="text-surface-900 dark:text-surface-100">Texto</p>
 ```
 
-### PrimeNG Components
-
-PrimeNG components automatically use CSS variables:
+### PrimeNG inside Tailwind containers
 
 ```html
-<p-button label="Click me" severity="primary" />
-<!-- Uses --p-primary-500 automatically -->
-
-<p-card>
-  <p>Content inherits text color</p>
-</p-card>
+<section class="rounded-xl border border-surface-200/70 p-4 md:p-6">
+  <div class="flex items-center justify-between gap-3">
+    <h2 class="text-lg font-semibold">Filtros</h2>
+    <p-button label="Aplicar" severity="primary" />
+  </div>
+</section>
 ```
 
-### Tailwind Utilities
-
-Use Tailwind classes with the Konecta palette:
+### Responsive layout with PrimeNG blocks
 
 ```html
-<div class="bg-primary-500 text-white">
-  <!-- Tailwind classes -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+  <p-card class="lg:col-span-2"></p-card>
+  <p-card></p-card>
 </div>
-
-<button class="bg-success-500 hover:bg-success-600">Save</button>
 ```
 
-## Modifying Colors
+### Accessible icon button pattern
 
-### To Change a Color Value
-
-**CRITICAL: Use this automated process**
-
-**1. Edit value in `src/app/core/constants/colors.constants.ts`:**
-
-```typescript
-export const COLORS = {
-  primary: {
-    500: '#NEW_COLOR', // Step 1: Change value here ONLY
-  },
-  // ...
-} as const;
+```html
+<button
+  [attr.aria-label]="'layout.header.actions.chat' | translate"
+  class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+>
+  <lucide-icon [img]="MessageSquare" [size]="18" />
+</button>
 ```
 
-**2. Rebuild the application:**
+## Working with Colors
 
-```bash
-pnpm start   # Development with watch mode
-# or
-pnpm build   # Production build
-```
+### Global UI colors
 
-The Tailwind plugin automatically generates CSS variables during build.
+- Driven by PrimeNG Aura tokens + Tailwind utilities.
+- Do not assume `colors.constants.ts` controls full UI theming.
 
-Everything updates automatically:
+### Programmatic colors (charts/TS)
 
-- ✅ Tailwind CSS classes (bg-primary-500, etc.)
-- ✅ ThemeColorsService reactive signals
-- ✅ PrimeNG component CSS variables (--p-primary-500, etc.)
+- Use `ThemeColorsService`.
+- `colors.constants.ts` is currently scoped to those programmatic use cases.
 
-### Adding a New Color Scale
+## When a New PrimeNG Component is Added
 
-### Adding a New Color Scale
+1. Add component with default Aura styles.
+2. Validate light/dark + responsive + focus.
+3. If visual gap exists, add minimal local override.
+4. Keep override near component and document intent.
 
-**1. Add to colors.constants.ts:**
+## Troubleshooting
 
-```typescript
-export const COLORS = {
-  // Existing colors...
-  accent: {
-    50: '#...',
-    500: '#...',
-    900: '#...',
-  },
-} as const;
-```
+### Issue: text is hard to read in dark mode
 
-**2. Import in tailwind.config.ts:**
+Cause:
 
-```typescript
-colors: {
-  // Existing imports...
-  accent: COLORS.accent,
-}
-```
+- Explicit text classes are overriding inheritance.
 
-**3. Rebuild:**
+Fix:
 
-````bash
-pnpm start  # Plugin generates variables automatically
+- Remove forced text color classes and use inherited text + opacity hierarchy.
 
-## Common Issues & Solutions
+### Issue: component looks different than expected
 
-### Issue: Dark mode colors not working
+Cause:
 
-**Cause:** Missing CSS variables for dark mode in plugin
+- Custom override is fighting Aura defaults.
 
-**Solution:** Add `:root.dark` variables in `tailwind-css-variables.mjs` for the components you're using (see `primeng-theming-guide.md`)
+Fix:
 
-### Issue: Text invisible in dark mode
+- Remove broad override, keep only targeted selectors.
 
-**Cause:** Explicit `text-surface-*` classes override inheritance
+### Issue: styles seem stale after config changes
 
-**Solution:** Remove explicit text color classes, let text inherit from `body`
+Cause:
 
-### Issue: Cards have wrong background in dark mode
+- Dev server needs rebuild or cache refresh.
 
-**Cause:** Missing `--p-card-background` variable for dark mode
+Fix:
 
-**Solution:**
-```css
-:root.dark {
-  --p-card-background: #262626;
-  --p-card-border-color: #424242;
-  --p-card-color: #F2F3F7;
-}
-````
+- Restart `pnpm start` and verify final compiled CSS in browser devtools.
 
-### Issue: Build takes 60+ seconds
+### Issue: flicker on theme toggle
 
-**Cause:** Using `theme()` calls in CSS
+Cause:
 
-**Solution:** Use CSS variables (`var(--p-*)`) instead of `theme()` calls
+- Transitions applied while toggling `.dark`.
 
-### Issue: Theme flickering during toggle
+Fix:
 
-**Cause:** Transitions applying during programmatic class change
+- Keep `.theme-transitioning` strategy from `ThemeService`/`styles.css`.
 
-**Solution:** Already handled by `.theme-transitioning` class in ThemeService
-
-### DO NOT
-
-- ❌ Define colors in multiple places
-- ❌ Use `theme()` calls in CSS files
-- ❌ Hardcode colors in components
-- ❌ Edit plugin file unless adding new PrimeNG components
-
-## Debugging Theme Issues
-
-### Check Variable Application
+## Debugging Checklist
 
 ```javascript
-// In browser console
-getComputedStyle(document.documentElement).getPropertyValue('--p-text-color');
-// Light: #262626 (dark text)
-// Dark: #F2F3F7 (light text)
-```
-
-### Verify Class Toggle
-
-```javascript
+// 1) Verify dark class
 document.documentElement.classList.contains('dark');
-// true in dark mode, false in light mode
+
+// 2) Verify token values
+getComputedStyle(document.documentElement).getPropertyValue('--p-text-color');
+
+// 3) Verify body colors are token-driven
+getComputedStyle(document.body).getPropertyValue('color');
 ```
 
-### Build Output
+## Do / Don’t
 
-Variables are in the compiled `styles.css`:
+### Do
 
-```css
-:root {
-  --p-primary-500: #2a01cd;
-}
-:root.dark {
-  --p-primary-500: #a6b7ff;
-}
-```
+- Use official PrimeNG + Tailwind integration.
+- Keep Tailwind for layout/composition and Aura for component theming.
+- Validate accessibility and dark mode in every UI PR.
+- Use `ThemeColorsService` for chart/TS programmatic colors.
 
-## Common Issues
+### Don’t
 
-### Issue: Text not visible in dark mode
+- Reintroduce custom plugins to generate large token sets.
+- Build parallel theming systems.
+- Hardcode many colors in templates.
+- Add global overrides to solve one local issue.
 
-**Cause**: Explicit text color classes override inheritance
-**Fix**: Remove `text-*` classes, use `opacity-*` for secondary text
+## Official Docs
 
-### Issue: Slow builds (60+ seconds)
+- Tailwind v3 docs: https://v3.tailwindcss.com/docs
+- Tailwind dark mode: https://v3.tailwindcss.com/docs/dark-mode
+- PrimeNG docs: https://primeng.org
+- PrimeNG theming: https://primeng.org/theming
+- tailwindcss-primeui: https://www.npmjs.com/package/tailwindcss-primeui
 
-**Cause**: Using `theme()` calls in CSS
-**Fix**: Use CSS variables (`var(--p-*)`) instead
+## Internal References
 
-### Issue: Colors not updating after config change
+- `tailwind.config.ts`
+- `src/app/app.config.ts`
+- `src/styles.css`
+- `src/app/core/services/theme.service.ts`
+- `src/app/core/constants/colors.constants.ts`
+- `src/app/core/services/theme-colors.service.ts`
+- `.github/UI/primeng-theming-guide.md`
+- `.github/UI/echarts-theme-colors.skill.md`
 
-**Cause**: Need to rebuild
-**Fix**: Restart dev server (`pnpm start`)
+## When a new PrimeNG component is added
 
-### Issue: Flickering during theme toggle
+1. Use it with default Aura theme first
+2. Verify light/dark behavior
+3. If needed, add a focused override in component/global styles
+4. Document the override reason and scope
 
-**Cause**: Transitions on all elements
-**Fix**: Use `.theme-transitioning` class to disable transitions temporarily
+## Do / Don't
 
-## Best Practices
+### Do
 
-1. **Single Source**: Only edit colors in `colors.constants.ts`
-2. **Automated Plugin**: Tailwind plugin generates variables at build time
-3. **Inheritance**: Let text inherit color from body
-4. **CSS Variables**: Use `var(--p-*)` for dynamic theming
-5. **Build Time**: Variables generated at build, not runtime
-6. **Performance**: Specific transitions on specific elements only
-7. **Consistency**: Same colors across Tailwind, PrimeNG, and TypeScript
-8. **Component Addition**: Use `primeng-theming-guide.md` to add new PrimeNG components
+- Use official PrimeNG + Tailwind integration
+- Keep color values centralized
+- Keep accessibility and contrast checks
+
+### Don't
+
+- Reintroduce custom plugins to generate large token sets
+- Hardcode many colors in templates
+- Duplicate theme logic across multiple files

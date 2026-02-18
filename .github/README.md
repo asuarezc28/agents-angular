@@ -26,11 +26,9 @@ Documentación completa del sistema de skills organizados por dominio para agent
 │   └── typescript-advanced-types/
 ├── UI/                               # Skills de diseño visual y theming
 │   ├── ui-agent.instructions.md
-│   ├── konecta-theme-system.skill.md
 │   ├── tailwind-primeng-integration.skill.md
 │   ├── icons-dual-system.skill.md
 │   └── tailwind-design-system/
-├── testing/                          # Skills de testing
 └── skill-creator/                    # Meta-skills para crear nuevas skills
 ```
 
@@ -59,21 +57,15 @@ Documentación completa del sistema de skills organizados por dominio para agent
 ### `/UI/`
 
 **Agente**: UI/UX Skills Agent  
-**Especialización**: Diseño visual, theming, colores Konecta, Tailwind CSS, PrimeNG, iconos
+**Especialización**: Diseño visual, theming, colores del sistema, Tailwind CSS, PrimeNG, iconos
 
 **Skills disponibles**:
 
-- Sistema de temas Konecta (light/dark)
-- Integración Tailwind CSS v3 + PrimeNG v21
+- Integración oficial Tailwind CSS v3 + PrimeNG v21 (Aura)
 - Sistema dual de iconos (Lucide + PrimeIcons)
 - Design system con Tailwind
-- CSS variables plugin system
+- Colores programáticos para charts vía `colors.constants.ts`
 - Componentes visuales reutilizables
-
-### `/testing/`
-
-**Agente**: Testing Skills Agent (futuro)  
-**Especialización**: Testing strategies, unit tests, e2e tests, test automation
 
 ### `/skill-creator/`
 
@@ -93,9 +85,9 @@ Documentación completa del sistema de skills organizados por dominio para agent
 ### Styling & UI
 
 - **Tailwind CSS**: 3.x
-  - Custom plugin system
-  - CSS variables auto-generation
-  - Konecta color palette
+  - Integración oficial `tailwindcss-primeui`
+  - Utilidades de diseño y layout
+  - Utilidades alineadas con tokens de PrimeNG
 - **PrimeNG**: 21.1.1
   - Aura theme preset
   - Dark mode selector: `.dark`
@@ -128,7 +120,7 @@ Documentación completa del sistema de skills organizados por dominio para agent
 - **PostCSS**: 8.x
 - **Autoprefixer**: 10.x
 
-## 🎨 Sistema de Colores Konecta
+## 🎨 Sistema de Colores
 
 ### Paleta Oficial
 
@@ -146,36 +138,34 @@ warning: { 500: '#F0FA00' }      // Yellow
 info: { 500: '#3b82f6' }         // Blue
 ```
 
-### Principio: Single Source of Truth
+### Uso actual de `colors.constants.ts`
 
-**TODOS** los colores se definen ÚNICAMENTE en:
+Actualmente se usa como paleta programática para `ThemeColorsService` (charts/TS específicos, por ahora):
 
 ```
 /src/app/core/constants/colors.constants.ts
 ```
 
-El plugin `/tailwind-css-variables.mjs` los lee vía `theme('colors')` y auto-genera CSS variables (`--p-*`) durante el build de Tailwind.
+El theming global de PrimeNG viene del preset oficial `Aura` en `app.config.ts`.
 
 ## 🔧 Sistema de Temas
 
 ### Arquitectura
 
 ```
-colors.constants.ts (TypeScript - single source)
-    ↓ imported by
-    ├── tailwind.config.ts → exposes via theme('colors')
-    │       ↓
-    │   tailwind-css-variables.mjs (Tailwind plugin)
-    │       ↓ generates at build time
-    │       CSS variables (--p-*) for PrimeNG
-    │
-    └── theme-colors.service.ts → Reactive signals for TS/ECharts
+ThemeService → aplica clase `.dark` en `<html>`
+  ↓
+PrimeNG Aura (`app.config.ts`) → tokens de theme (`--p-*`)
+  ↓
+Tailwind + `tailwindcss-primeui` → utilidades alineadas con PrimeNG
+  ↓
+ThemeColorsService + `colors.constants.ts` → colores programáticos (charts/TS específicos, por ahora)
 ```
 
 **Current Status:**
 
-- ✅ Configured: Button, Card, InputText, Tree
-- ⚠️ Pending: 111 PrimeNG components (see `UI/PRIMENG-COMPONENTS-STATUS.md`)
+- ✅ PrimeNG theming configured with official `Aura` + `tailwindcss-primeui`
+- ℹ️ For now, no per-component PrimeNG status matrix is maintained
 
 ### Características
 
@@ -183,8 +173,8 @@ colors.constants.ts (TypeScript - single source)
 - ✅ Persistencia en `localStorage`
 - ✅ Soporte `prefers-color-scheme`
 - ✅ Sin flickering durante toggle
-- ✅ Plugin de generación automática en build-time
-- ✅ Performance optimizada (variables generadas en build)
+- ✅ Integración oficial PrimeNG + Tailwind
+- ✅ Performance optimizada
 
 ## 🎭 Sistema de Iconos Dual
 
@@ -233,19 +223,18 @@ Muchas tareas requieren múltiples skills:
 
 - **angular/angular-forms/** → Lógica del formulario
 - **angular/angular-component/** → Estructura del componente
-- **UI/konecta-theme-system.skill.md** → Theming
 - **UI/tailwind-primeng-integration.skill.md** → Componentes PrimeNG
 
 ## 🚀 Mejores Prácticas
 
 ### Para Colores y Temas
 
-1. ✅ Edita colores SOLO en `colors.constants.ts`
-2. ✅ Ejecuta `pnpm start` o `pnpm build` para regenerar variables
+1. ✅ Edita `colors.constants.ts` para colores programáticos (charts/TS específicos, por ahora)
+2. ✅ Ejecuta `pnpm start` o `pnpm build` para aplicar cambios
 3. ✅ Deja que el texto herede color de `body`
 4. ✅ Usa `opacity-*` para jerarquía de texto
 5. ✅ Iconos con colores semánticos explícitos
-6. ✅ Añade nuevos componentes en `tailwind-css-variables.mjs` (ver `primeng-theming-guide.md`)
+6. ✅ Si necesitas ajustar theming, sigue `primeng-theming-guide.md`
 7. ❌ No uses `text-surface-*` en elementos de texto
 8. ❌ No definas colores en múltiples lugares
 

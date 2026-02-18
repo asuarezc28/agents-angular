@@ -1,874 +1,430 @@
 ---
 name: tailwind-design-system
-description: Build scalable design systems with Tailwind CSS v4, design tokens, component libraries, and responsive patterns. Use when creating component libraries, implementing design systems, or standardizing UI patterns.
+description: Build and maintain a scalable design system with Tailwind CSS v3 in this Angular project, aligned with PrimeNG Aura and project color/typography constants.
 ---
 
 # Tailwind Design System (v3)
 
-> **🚨 IMPORTANTE - ESTE PROYECTO USA TAILWIND V3**  
-> Este documento es una **referencia futura** para cuando se migre el proyecto a Tailwind CSS v3.  
-> **Para la configuración actual del proyecto (Tailwind v3)**, consulta:
->
-> - [konecta-theme-system.skill.md](../konecta-theme-system.skill.md)
-> - [tailwind-primeng-integration.skill.md](../tailwind-primeng-integration.skill.md)
-> - [copilot-instructions.md](../../copilot-instructions.md)
-
-Build production-ready design systems with Tailwind CSS v4, including CSS-first configuration, design tokens, component variants, responsive patterns, and accessibility.
-
-> **Note**: This skill targets Tailwind CSS v4 (2024+). For v3 projects, refer to the [upgrade guide](https://tailwindcss.com/docs/upgrade-guide).
+Este proyecto usa **Tailwind CSS v3** con Angular + PrimeNG (`Aura`) mediante `tailwindcss-primeui`.
 
 ## When to Use This Skill
 
-- Creating a component library with Tailwind v4
-- Implementing design tokens and theming with CSS-first configuration
-- Building responsive and accessible components
-- Standardizing UI patterns across a codebase
-- Migrating from Tailwind v3 to v4
-- Setting up dark mode with native CSS features
+Usa esta skill cuando necesites:
 
-## Key v4 Changes
+- Construir layouts consistentes (header/sidebar/content, dashboards, cards, formularios).
+- Definir patrones reutilizables de spacing, jerarquía visual y estados.
+- Resolver dudas de estilo entre Tailwind utility classes y componentes PrimeNG.
+- Revisar calidad visual (responsive, foco, contraste, dark mode) antes de merge.
 
-| v3 Pattern                            | v4 Pattern                                                            |
-| ------------------------------------- | --------------------------------------------------------------------- |
-| `tailwind.config.ts`                  | `@theme` in CSS                                                       |
-| `@tailwind base/components/utilities` | `@import "tailwindcss"`                                               |
-| `darkMode: "class"`                   | `@custom-variant dark (&:where(.dark, .dark *))`                      |
-| `theme.extend.colors`                 | `@theme { --color-*: value }`                                         |
-| `require("tailwindcss-animate")`      | CSS `@keyframes` in `@theme` + `@starting-style` for entry animations |
+## Project Context (Source of Truth)
 
-## Quick Start
+- Tailwind: **v3** (`tailwind.config.ts`)
+- Integración UI: `tailwindcss-primeui` (oficial)
+- Theme global UI: PrimeNG `Aura` (`src/app/app.config.ts`)
+- Dark mode: clase `.dark` en `documentElement` (gestionada por `ThemeService`)
+- Tipografía central: `src/app/core/constants/typography.constants.ts`
+- Colores programáticos (solo casos específicos por ahora): `src/app/core/constants/colors.constants.ts` vía `ThemeColorsService` (charts/TS)
 
-```css
-/* app.css - Tailwind v4 CSS-first configuration */
-@import 'tailwindcss';
+## Architecture Mental Model
 
-/* Define your theme with @theme */
-@theme {
-  /* Semantic color tokens using OKLCH for better color perception */
-  --color-background: oklch(100% 0 0);
-  --color-foreground: oklch(14.5% 0.025 264);
-
-  --color-primary: oklch(14.5% 0.025 264);
-  --color-primary-foreground: oklch(98% 0.01 264);
-
-  --color-secondary: oklch(96% 0.01 264);
-  --color-secondary-foreground: oklch(14.5% 0.025 264);
-
-  --color-muted: oklch(96% 0.01 264);
-  --color-muted-foreground: oklch(46% 0.02 264);
-
-  --color-accent: oklch(96% 0.01 264);
-  --color-accent-foreground: oklch(14.5% 0.025 264);
-
-  --color-destructive: oklch(53% 0.22 27);
-  --color-destructive-foreground: oklch(98% 0.01 264);
-
-  --color-border: oklch(91% 0.01 264);
-  --color-ring: oklch(14.5% 0.025 264);
-
-  --color-card: oklch(100% 0 0);
-  --color-card-foreground: oklch(14.5% 0.025 264);
-
-  /* Ring offset for focus states */
-  --color-ring-offset: oklch(100% 0 0);
-
-  /* Radius tokens */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-
-  /* Animation tokens - keyframes inside @theme are output when referenced by --animate-* variables */
-  --animate-fade-in: fade-in 0.2s ease-out;
-  --animate-fade-out: fade-out 0.2s ease-in;
-  --animate-slide-in: slide-in 0.3s ease-out;
-  --animate-slide-out: slide-out 0.3s ease-in;
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fade-out {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes slide-in {
-    from {
-      transform: translateY(-0.5rem);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slide-out {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-0.5rem);
-      opacity: 0;
-    }
-  }
-}
-
-/* Dark mode variant - use @custom-variant for class-based dark mode */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/* Dark mode theme overrides */
-.dark {
-  --color-background: oklch(14.5% 0.025 264);
-  --color-foreground: oklch(98% 0.01 264);
-
-  --color-primary: oklch(98% 0.01 264);
-  --color-primary-foreground: oklch(14.5% 0.025 264);
-
-  --color-secondary: oklch(22% 0.02 264);
-  --color-secondary-foreground: oklch(98% 0.01 264);
-
-  --color-muted: oklch(22% 0.02 264);
-  --color-muted-foreground: oklch(65% 0.02 264);
-
-  --color-accent: oklch(22% 0.02 264);
-  --color-accent-foreground: oklch(98% 0.01 264);
-
-  --color-destructive: oklch(42% 0.15 27);
-  --color-destructive-foreground: oklch(98% 0.01 264);
-
-  --color-border: oklch(22% 0.02 264);
-  --color-ring: oklch(83% 0.02 264);
-
-  --color-card: oklch(14.5% 0.025 264);
-  --color-card-foreground: oklch(98% 0.01 264);
-
-  --color-ring-offset: oklch(14.5% 0.025 264);
-}
-
-/* Base styles */
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
-}
+```text
+PrimeNG Aura (theme tokens --p-*)
+	+
+Tailwind v3 utilities (+ tailwindcss-primeui)
+	+
+Component-level minimal overrides (solo cuando hace falta)
 ```
 
-## Core Concepts
+Regla práctica:
 
-### 1. Design Token Hierarchy
+1. Primero usa PrimeNG + Aura tal cual.
+2. Después aplica utilidades Tailwind para layout/spacing/composición.
+3. Solo al final añade override puntual si hay gap real de negocio/diseño.
 
+## Core Principles
+
+1. **Consistency first**: reutiliza patrones antes de inventar nuevas clases.
+2. **Utility over custom CSS**: usa Tailwind para estructura y ritmo visual.
+3. **Theme-driven UI**: evita pelear contra Aura con overrides masivos.
+4. **Accessibility default**: foco visible, contraste y semántica correctos.
+5. **Minimal change surface**: cambios acotados por feature, sin side effects.
+
+## Layout Patterns
+
+### Shell base
+
+- Usa contenedores con `min-h-screen`, `flex`, `grid`, `gap-*`, `p-*`.
+- Define jerarquía clara por zonas: navegación, contexto, contenido.
+- En desktop prioriza estabilidad visual; en mobile prioriza legibilidad y toque.
+
+Ejemplo de estructura:
+
+```html
+<div class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-50"></header>
+  <div class="flex flex-1 min-h-0">
+    <aside class="hidden lg:block w-64"></aside>
+    <main class="flex-1 min-w-0 p-4 md:p-6"></main>
+  </div>
+</div>
 ```
-Brand Tokens (abstract)
-    └── Semantic Tokens (purpose)
-        └── Component Tokens (specific)
 
-Example:
-    oklch(45% 0.2 260) → --color-primary → bg-primary
+### Spacing rhythm
+
+- Usa escala consistente (`gap-2/3/4/6`, `p-3/4/6`, `mb-2/4/6`).
+- Evita mezclar muchos valores arbitrarios (`[13px]`, `[27px]`) sin motivo.
+
+### Responsive
+
+- Mobile first: base sin prefijo + `sm/md/lg/xl` para ampliar.
+- Evita romper layout con anchos fijos cuando `min-w-0` resuelve truncado/overflow.
+
+## Typography & Visual Hierarchy
+
+- La familia tipográfica sale de `typography.constants.ts` a través de `font-sans`.
+- Patrón sugerido:
+  - Título sección: `text-xl md:text-2xl font-semibold`
+  - Subtítulo: `text-sm md:text-base opacity-80`
+  - Meta/auxiliar: `text-xs opacity-70`
+
+No hardcodear `font-family` en componentes.
+
+## Color & Theming Rules
+
+### Global UI
+
+- El color de texto base hereda desde `body { color: var(--p-text-color) }`.
+- Evita `text-surface-*` en texto general; usa opacidad para jerarquía.
+- Usa tokens del theme/Aura y utilidades alineadas por `tailwindcss-primeui`.
+
+### Programmatic colors (important)
+
+- `colors.constants.ts` **no** es la fuente global de theming UI.
+- Se usa **por ahora** solo para casos específicos programáticos (charts/TS) vía `ThemeColorsService`.
+
+### Icon colors
+
+- Sí usar color explícito en iconos con intención semántica (`success`, `warning`, etc.).
+
+## PrimeNG + Tailwind Collaboration
+
+### Recommended flow for any new UI piece
+
+1. Implementa con componente PrimeNG estándar.
+2. Aplica utilidades Tailwind para layout/spacing/container.
+3. Valida light/dark + responsive + foco.
+4. Si hay gap real, añade override mínimo (local y documentado).
+
+### Avoid
+
+- Sistemas paralelos de theming.
+- Override global agresivo para corregir un caso puntual.
+- Hardcodes de color por componente sin razón funcional.
+
+## State & Interaction Styling (Angular)
+
+### Conditional classes
+
+- Usa bindings de clase (`[class.xxx]`) en lugar de `ngClass`.
+
+```html
+<button
+  class="px-3 py-2 rounded-md transition-colors"
+  [class.opacity-60]="disabled()"
+  [class.pointer-events-none]="disabled()"
+>
+  Acción
+</button>
 ```
 
-### 2. Component Architecture
+### Focus visible
 
+- Todo control interactivo custom debe mostrar foco claro con teclado.
+
+```html
+<button class="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500">
+  Open
+</button>
 ```
-Base styles → Variants → Sizes → States → Overrides
+
+## Accessibility Checklist (WCAG AA)
+
+- [ ] Contraste suficiente texto/fondo en light y dark.
+- [ ] Foco visible en botones, links, inputs y elementos custom.
+- [ ] `aria-*` traducible (sin hardcodes) cuando aplique.
+- [ ] Objetivos táctiles razonables en mobile.
+- [ ] No depender solo del color para comunicar estado.
+
+## Performance & Maintainability
+
+- Prefiere utilidades composables sobre CSS largo específico.
+- Evita reglas globales que impacten todo el árbol DOM sin necesidad.
+- Mantén transiciones en propiedades concretas (`color`, `background-color`, `border-color`).
+
+## Common Pitfalls
+
+1. **Forzar colores de texto** en todos los nodos → rompe herencia y dark mode.
+2. **Sobre-escribir PrimeNG de forma global** para resolver un único componente.
+3. **Usar clases arbitrarias en exceso** y perder consistencia visual.
+4. **Olvidar `min-w-0`** en layouts flex y romper truncado/overflow.
+5. **Confundir `colors.constants.ts` con theming global** (no aplica por ahora).
+
+## Quick Recipes
+
+### Card container
+
+```html
+<section
+  class="rounded-xl border border-surface-200/70 p-4 md:p-6 bg-surface-0/80 backdrop-blur-sm"
+>
+  <h2 class="text-lg font-semibold">Resumen</h2>
+  <p class="opacity-80 mt-1">Descripción breve</p>
+</section>
 ```
 
-## Patterns
+### Responsive two-column block
 
-### Pattern 1: CVA (Class Variance Authority) Components
+```html
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+  <article class="rounded-lg p-4 border border-surface-200/70"></article>
+  <article class="rounded-lg p-4 border border-surface-200/70"></article>
+</div>
+```
 
-```typescript
-// components/ui/button.tsx
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
+## Tailwind v3 Docs (Reference Map)
 
-const buttonVariants = cva(
-  // Base styles - v4 uses native CSS variables
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-border bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
-        icon: 'size-10',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
-  }
-)
+> Importante: para esta skill toma como referencia **Tailwind v3**.
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-}
+### Base y configuración
 
-// React 19: No forwardRef needed
-export function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  ref,
-  ...props
-}: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
-  const Comp = asChild ? Slot : 'button'
-  return (
-    <Comp
-      className={cn(buttonVariants({ variant, size, className }))}
-      ref={ref}
-      {...props}
+- Tailwind v3 docs home: https://v3.tailwindcss.com/docs
+- Installation (v3): https://v3.tailwindcss.com/docs/installation
+- Configuration (tailwind.config): https://v3.tailwindcss.com/docs/configuration
+- Content config: https://v3.tailwindcss.com/docs/content-configuration
+- Dark mode: https://v3.tailwindcss.com/docs/dark-mode
+- Theme extension: https://v3.tailwindcss.com/docs/theme
+
+### Layout y spacing
+
+- Display: https://v3.tailwindcss.com/docs/display
+- Flexbox: https://v3.tailwindcss.com/docs/flex
+- Grid: https://v3.tailwindcss.com/docs/grid-template-columns
+- Gap: https://v3.tailwindcss.com/docs/gap
+- Width/Height: https://v3.tailwindcss.com/docs/width
+- Max width: https://v3.tailwindcss.com/docs/max-width
+- Spacing (padding/margin): https://v3.tailwindcss.com/docs/padding
+
+### Tipografía y color
+
+- Font family: https://v3.tailwindcss.com/docs/font-family
+- Font size: https://v3.tailwindcss.com/docs/font-size
+- Font weight: https://v3.tailwindcss.com/docs/font-weight
+- Text color: https://v3.tailwindcss.com/docs/text-color
+- Opacity: https://v3.tailwindcss.com/docs/opacity
+- Background color: https://v3.tailwindcss.com/docs/background-color
+- Border color: https://v3.tailwindcss.com/docs/border-color
+
+### Interacción y accesibilidad
+
+- Hover/focus states: https://v3.tailwindcss.com/docs/hover-focus-and-other-states
+- Ring/focus ring: https://v3.tailwindcss.com/docs/ring-width
+- Transition: https://v3.tailwindcss.com/docs/transition-property
+- Screen readers: https://v3.tailwindcss.com/docs/screen-readers
+
+### Responsive y variantes
+
+- Breakpoints: https://v3.tailwindcss.com/docs/responsive-design
+- Pseudo-class variants: https://v3.tailwindcss.com/docs/hover-focus-and-other-states
+- Arbitrary values: https://v3.tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values
+
+### Ecosistema del proyecto
+
+- PrimeNG: https://primeng.org
+- tailwindcss-primeui (plugin): https://www.npmjs.com/package/tailwindcss-primeui
+
+## Usage Examples (Angular + Tailwind v3)
+
+### 1) Page container with max width
+
+```html
+<main class="w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-4 md:py-6">
+  <section class="space-y-4 md:space-y-6">
+    <h1 class="text-xl md:text-2xl font-semibold">Dashboard</h1>
+    <p class="opacity-80">Resumen operativo del día</p>
+  </section>
+</main>
+```
+
+### 2) KPI cards grid
+
+```html
+<section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+  <article class="rounded-xl border border-surface-200/70 p-4">
+    <p class="text-sm opacity-80">Ventas</p>
+    <p class="text-2xl font-semibold mt-1">€124k</p>
+  </article>
+  <article class="rounded-xl border border-surface-200/70 p-4"></article>
+  <article class="rounded-xl border border-surface-200/70 p-4"></article>
+  <article class="rounded-xl border border-surface-200/70 p-4"></article>
+</section>
+```
+
+### 3) Sticky header + scrollable content
+
+```html
+<div class="min-h-screen flex flex-col">
+  <header class="sticky top-0 z-40 border-b border-surface-200/70 bg-surface-0/90 backdrop-blur-sm">
+    <div class="px-4 md:px-6 py-3">Header</div>
+  </header>
+  <div class="flex-1 min-h-0 overflow-y-auto p-4 md:p-6">Contenido</div>
+</div>
+```
+
+### 4) Form row with responsive layout
+
+```html
+<form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="space-y-2">
+    <label class="text-sm font-medium">Nombre</label>
+    <input
+      class="w-full rounded-md border border-surface-300 px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
     />
-  )
-}
-
-// Usage
-<Button variant="destructive" size="lg">Delete</Button>
-<Button variant="outline">Cancel</Button>
-<Button asChild><Link href="/home">Home</Link></Button>
+  </div>
+  <div class="space-y-2">
+    <label class="text-sm font-medium">Email</label>
+    <input class="w-full rounded-md border border-surface-300 px-3 py-2" />
+  </div>
+</form>
 ```
 
-### Pattern 2: Compound Components (React 19)
+### 5) Action bar with wrap
 
-```typescript
-// components/ui/card.tsx
-import { cn } from '@/lib/utils'
-
-// React 19: ref is a regular prop, no forwardRef
-export function Card({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
-  return (
-    <div
-      ref={ref}
-      className={cn(
-        'rounded-lg border border-border bg-card text-card-foreground shadow-sm',
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-export function CardHeader({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
-  return (
-    <div
-      ref={ref}
-      className={cn('flex flex-col space-y-1.5 p-6', className)}
-      {...props}
-    />
-  )
-}
-
-export function CardTitle({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLHeadingElement> & { ref?: React.Ref<HTMLHeadingElement> }) {
-  return (
-    <h3
-      ref={ref}
-      className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
-      {...props}
-    />
-  )
-}
-
-export function CardDescription({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLParagraphElement> & { ref?: React.Ref<HTMLParagraphElement> }) {
-  return (
-    <p
-      ref={ref}
-      className={cn('text-sm text-muted-foreground', className)}
-      {...props}
-    />
-  )
-}
-
-export function CardContent({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
-  return (
-    <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
-  )
-}
-
-export function CardFooter({
-  className,
-  ref,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
-  return (
-    <div
-      ref={ref}
-      className={cn('flex items-center p-6 pt-0', className)}
-      {...props}
-    />
-  )
-}
-
-// Usage
-<Card>
-  <CardHeader>
-    <CardTitle>Account</CardTitle>
-    <CardDescription>Manage your account settings</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <form>...</form>
-  </CardContent>
-  <CardFooter>
-    <Button>Save</Button>
-  </CardFooter>
-</Card>
+```html
+<div class="flex flex-wrap items-center gap-2 md:gap-3">
+  <button
+    class="px-3 py-2 rounded-md border border-surface-300 hover:bg-surface-50 transition-colors"
+  >
+    Cancelar
+  </button>
+  <button
+    class="px-3 py-2 rounded-md bg-primary-500 text-white hover:bg-primary-600 transition-colors"
+  >
+    Guardar
+  </button>
+</div>
 ```
 
-### Pattern 3: Form Components
+### 6) Angular conditional classes (sin ngClass)
 
-```typescript
-// components/ui/input.tsx
-import { cn } from '@/lib/utils'
-
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: string
-  ref?: React.Ref<HTMLInputElement>
-}
-
-export function Input({ className, type, error, ref, ...props }: InputProps) {
-  return (
-    <div className="relative">
-      <input
-        type={type}
-        className={cn(
-          'flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-          error && 'border-destructive focus-visible:ring-destructive',
-          className
-        )}
-        ref={ref}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${props.id}-error` : undefined}
-        {...props}
-      />
-      {error && (
-        <p
-          id={`${props.id}-error`}
-          className="mt-1 text-sm text-destructive"
-          role="alert"
-        >
-          {error}
-        </p>
-      )}
-    </div>
-  )
-}
-
-// components/ui/label.tsx
-import { cva, type VariantProps } from 'class-variance-authority'
-
-const labelVariants = cva(
-  'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-)
-
-export function Label({
-  className,
-  ref,
-  ...props
-}: React.LabelHTMLAttributes<HTMLLabelElement> & { ref?: React.Ref<HTMLLabelElement> }) {
-  return (
-    <label ref={ref} className={cn(labelVariants(), className)} {...props} />
-  )
-}
-
-// Usage with React Hook Form + Zod
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-
-const schema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-})
-
-function LoginForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(schema),
-  })
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          {...register('email')}
-          error={errors.email?.message}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
-        <Input
-          id="password"
-          type="password"
-          {...register('password')}
-          error={errors.password?.message}
-        />
-      </div>
-      <Button type="submit" className="w-full">Sign In</Button>
-    </form>
-  )
-}
+```html
+<button
+  class="px-3 py-2 rounded-md transition-colors"
+  [class.bg-primary-500]="isActive()"
+  [class.text-white]="isActive()"
+  [class.border]="!isActive()"
+  [class.border-surface-300]="!isActive()"
+>
+  Estado
+</button>
 ```
 
-### Pattern 4: Responsive Grid System
+### 7) Empty state pattern
 
-```typescript
-// components/ui/grid.tsx
-import { cn } from '@/lib/utils'
-import { cva, type VariantProps } from 'class-variance-authority'
-
-const gridVariants = cva('grid', {
-  variants: {
-    cols: {
-      1: 'grid-cols-1',
-      2: 'grid-cols-1 sm:grid-cols-2',
-      3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
-      4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
-      5: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5',
-      6: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
-    },
-    gap: {
-      none: 'gap-0',
-      sm: 'gap-2',
-      md: 'gap-4',
-      lg: 'gap-6',
-      xl: 'gap-8',
-    },
-  },
-  defaultVariants: {
-    cols: 3,
-    gap: 'md',
-  },
-})
-
-interface GridProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof gridVariants> {}
-
-export function Grid({ className, cols, gap, ...props }: GridProps) {
-  return (
-    <div className={cn(gridVariants({ cols, gap, className }))} {...props} />
-  )
-}
-
-// Container component
-const containerVariants = cva('mx-auto w-full px-4 sm:px-6 lg:px-8', {
-  variants: {
-    size: {
-      sm: 'max-w-screen-sm',
-      md: 'max-w-screen-md',
-      lg: 'max-w-screen-lg',
-      xl: 'max-w-screen-xl',
-      '2xl': 'max-w-screen-2xl',
-      full: 'max-w-full',
-    },
-  },
-  defaultVariants: {
-    size: 'xl',
-  },
-})
-
-interface ContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof containerVariants> {}
-
-export function Container({ className, size, ...props }: ContainerProps) {
-  return (
-    <div className={cn(containerVariants({ size, className }))} {...props} />
-  )
-}
-
-// Usage
-<Container>
-  <Grid cols={4} gap="lg">
-    {products.map((product) => (
-      <ProductCard key={product.id} product={product} />
-    ))}
-  </Grid>
-</Container>
+```html
+<section class="rounded-xl border border-dashed border-surface-300 p-8 text-center">
+  <h2 class="text-lg font-semibold">Sin resultados</h2>
+  <p class="opacity-80 mt-1">Ajusta filtros y vuelve a intentar.</p>
+  <button class="mt-4 px-3 py-2 rounded-md border border-surface-300">Limpiar filtros</button>
+</section>
 ```
 
-### Pattern 5: Native CSS Animations (v4)
+### 8) Table wrapper with safe overflow
 
-```css
-/* In your CSS file - native @starting-style for entry animations */
-@theme {
-  --animate-dialog-in: dialog-fade-in 0.2s ease-out;
-  --animate-dialog-out: dialog-fade-out 0.15s ease-in;
-}
-
-@keyframes dialog-fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(-0.5rem);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes dialog-fade-out {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.95) translateY(-0.5rem);
-  }
-}
-
-/* Native popover animations using @starting-style */
-[popover] {
-  transition:
-    opacity 0.2s,
-    transform 0.2s,
-    display 0.2s allow-discrete;
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-[popover]:popover-open {
-  opacity: 1;
-  transform: scale(1);
-}
-
-@starting-style {
-  [popover]:popover-open {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-}
+```html
+<div class="rounded-xl border border-surface-200/70 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[640px]">
+      <thead class="bg-surface-50">
+        <tr>
+          <th class="text-left px-4 py-3 text-sm font-semibold">Nombre</th>
+          <th class="text-left px-4 py-3 text-sm font-semibold">Estado</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
 ```
 
-```typescript
-// components/ui/dialog.tsx - Using native popover API
-import * as DialogPrimitive from '@radix-ui/react-dialog'
-import { cn } from '@/lib/utils'
+### 9) Sidebar item pattern
 
-const DialogPortal = DialogPrimitive.Portal
-
-export function DialogOverlay({
-  className,
-  ref,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & {
-  ref?: React.Ref<HTMLDivElement>
-}) {
-  return (
-    <DialogPrimitive.Overlay
-      ref={ref}
-      className={cn(
-        'fixed inset-0 z-50 bg-black/80',
-        'data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out',
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-export function DialogContent({
-  className,
-  children,
-  ref,
-  ...props
-}: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-  ref?: React.Ref<HTMLDivElement>
-}) {
-  return (
-    <DialogPortal>
-      <DialogOverlay />
-      <DialogPrimitive.Content
-        ref={ref}
-        className={cn(
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border border-border bg-background p-6 shadow-lg sm:rounded-lg',
-          'data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </DialogPrimitive.Content>
-    </DialogPortal>
-  )
-}
+```html
+<a
+  class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors"
+  [class.bg-surface-100]="isCurrent()"
+  [class.font-medium]="isCurrent()"
+  href="#"
+>
+  <span class="size-5"></span>
+  <span class="truncate">Analytics</span>
+</a>
 ```
 
-### Pattern 6: Dark Mode with CSS (v4)
+### 10) Dark-mode-safe text hierarchy
 
-```typescript
-// providers/ThemeProvider.tsx - Simplified for v4
-'use client'
-
-import { createContext, useContext, useEffect, useState } from 'react'
-
-type Theme = 'dark' | 'light' | 'system'
-
-interface ThemeContextType {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-  resolvedTheme: 'dark' | 'light'
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
-
-export function ThemeProvider({
-  children,
-  defaultTheme = 'system',
-  storageKey = 'theme',
-}: {
-  children: React.ReactNode
-  defaultTheme?: Theme
-  storageKey?: string
-}) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme)
-  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('light')
-
-  useEffect(() => {
-    const stored = localStorage.getItem(storageKey) as Theme | null
-    if (stored) setTheme(stored)
-  }, [storageKey])
-
-  useEffect(() => {
-    const root = document.documentElement
-    root.classList.remove('light', 'dark')
-
-    const resolved = theme === 'system'
-      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : theme
-
-    root.classList.add(resolved)
-    setResolvedTheme(resolved)
-
-    // Update meta theme-color for mobile browsers
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]')
-    if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', resolved === 'dark' ? '#09090b' : '#ffffff')
-    }
-  }, [theme])
-
-  return (
-    <ThemeContext.Provider value={{
-      theme,
-      setTheme: (newTheme) => {
-        localStorage.setItem(storageKey, newTheme)
-        setTheme(newTheme)
-      },
-      resolvedTheme,
-    }}>
-      {children}
-    </ThemeContext.Provider>
-  )
-}
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext)
-  if (!context) throw new Error('useTheme must be used within ThemeProvider')
-  return context
-}
-
-// components/ThemeToggle.tsx
-import { Moon, Sun } from 'lucide-react'
-import { useTheme } from '@/providers/ThemeProvider'
-
-export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme()
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-    >
-      <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
-    </Button>
-  )
-}
+```html
+<article class="p-4 rounded-lg border border-surface-200/70">
+  <h3 class="font-semibold">Título</h3>
+  <p class="opacity-80 mt-1">Texto secundario</p>
+  <p class="opacity-70 mt-2 text-sm">Texto terciario</p>
+</article>
 ```
 
-## Utility Functions
+### 11) Glass-style container (compatible with current theme)
 
-```typescript
-// lib/utils.ts
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-// Focus ring utility
-export const focusRing = cn(
-  'focus-visible:outline-none focus-visible:ring-2',
-  'focus-visible:ring-ring focus-visible:ring-offset-2',
-);
-
-// Disabled utility
-export const disabled = 'disabled:pointer-events-none disabled:opacity-50';
+```html
+<section
+  class="rounded-xl border border-surface-200/60 bg-surface-0/80 dark:bg-surface-900/50 backdrop-blur-md p-4 md:p-6"
+>
+  <h2 class="text-lg font-semibold">Contexto</h2>
+  <p class="opacity-80">Selecciona compañía y proyecto</p>
+</section>
 ```
 
-## Advanced v4 Patterns
+### 12) Focus ring for icon-only button
 
-### Custom Utilities with `@utility`
-
-Define reusable custom utilities:
-
-```css
-/* Custom utility for decorative lines */
-@utility line-t {
-  @apply relative before:absolute before:top-0 before:-left-[100vw] before:h-px before:w-[200vw] before:bg-gray-950/5 dark:before:bg-white/10;
-}
-
-/* Custom utility for text gradients */
-@utility text-gradient {
-  @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
-}
+```html
+<button
+  [attr.aria-label]="'layout.header.actions.chat' | translate"
+  class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+>
+  <lucide-icon [img]="MessageSquare" [size]="18" />
+</button>
 ```
 
-### Theme Modifiers
+## Example Validation Checklist
 
-```css
-/* Use @theme inline when referencing other CSS variables */
-@theme inline {
-  --font-sans: var(--font-inter), system-ui;
-}
+- [ ] Se ve correcto en `sm`, `md`, `lg`.
+- [ ] No usa `ngClass` / `ngStyle`.
+- [ ] Respeta herencia de color en texto.
+- [ ] Tiene `focus-visible` en elementos interactivos custom.
+- [ ] Funciona en dark mode sin hardcodes conflictivos.
 
-/* Use @theme static to always generate CSS variables (even when unused) */
-@theme static {
-  --color-brand: oklch(65% 0.15 240);
-}
+## PR Review Checklist
 
-/* Import with theme options */
-@import 'tailwindcss' theme(static);
-```
+- [ ] ¿Usa componentes PrimeNG primero y overrides mínimos?
+- [ ] ¿Mantiene consistencia de spacing/typography?
+- [ ] ¿Evita hardcodes de color/tema innecesarios?
+- [ ] ¿Se valida en light/dark y en breakpoints clave?
+- [ ] ¿Respeta accesibilidad (focus + contraste + aria)?
 
-### Namespace Overrides
+## Internal References
 
-```css
-@theme {
-  /* Clear all default colors and define your own */
-  --color-*: initial;
-  --color-white: #fff;
-  --color-black: #000;
-  --color-primary: oklch(45% 0.2 260);
-  --color-secondary: oklch(65% 0.15 200);
-
-  /* Clear ALL defaults for a minimal setup */
-  /* --*: initial; */
-}
-```
-
-### Semi-transparent Color Variants
-
-```css
-@theme {
-  /* Use color-mix() for alpha variants */
-  --color-primary-50: color-mix(in oklab, var(--color-primary) 5%, transparent);
-  --color-primary-100: color-mix(in oklab, var(--color-primary) 10%, transparent);
-  --color-primary-200: color-mix(in oklab, var(--color-primary) 20%, transparent);
-}
-```
-
-### Container Queries
-
-```css
-@theme {
-  --container-xs: 20rem;
-  --container-sm: 24rem;
-  --container-md: 28rem;
-  --container-lg: 32rem;
-}
-```
-
-## v3 to v4 Migration Checklist
-
-- [ ] Replace `tailwind.config.ts` with CSS `@theme` block
-- [ ] Change `@tailwind base/components/utilities` to `@import "tailwindcss"`
-- [ ] Move color definitions to `@theme { --color-*: value }`
-- [ ] Replace `darkMode: "class"` with `@custom-variant dark`
-- [ ] Move `@keyframes` inside `@theme` blocks (ensures keyframes output with theme)
-- [ ] Replace `require("tailwindcss-animate")` with native CSS animations
-- [ ] Update `h-10 w-10` to `size-10` (new utility)
-- [ ] Remove `forwardRef` (React 19 passes ref as prop)
-- [ ] Consider OKLCH colors for better color perception
-- [ ] Replace custom plugins with `@utility` directives
-
-## Best Practices
-
-### Do's
-
-- **Use `@theme` blocks** - CSS-first configuration is v4's core pattern
-- **Use OKLCH colors** - Better perceptual uniformity than HSL
-- **Compose with CVA** - Type-safe variants
-- **Use semantic tokens** - `bg-primary` not `bg-blue-500`
-- **Use `size-*`** - New shorthand for `w-* h-*`
-- **Add accessibility** - ARIA attributes, focus states
-
-### Don'ts
-
-- **Don't use `tailwind.config.ts`** - Use CSS `@theme` instead
-- **Don't use `@tailwind` directives** - Use `@import "tailwindcss"`
-- **Don't use `forwardRef`** - React 19 passes ref as prop
-- **Don't use arbitrary values** - Extend `@theme` instead
-- **Don't hardcode colors** - Use semantic tokens
-- **Don't forget dark mode** - Test both themes
-
-## Resources
-
-- [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs)
-- [Tailwind v4 Beta Announcement](https://tailwindcss.com/blog/tailwindcss-v4-beta)
-- [CVA Documentation](https://cva.style/docs)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Radix Primitives](https://www.radix-ui.com/primitives)
+- `tailwind.config.ts`
+- `src/app/app.config.ts`
+- `src/styles.css`
+- `src/app/core/constants/typography.constants.ts`
+- `src/app/core/constants/colors.constants.ts`
+- `src/app/core/services/theme-colors.service.ts`
+- `.github/UI/tailwind-primeng-integration.skill.md`
+- `.github/UI/primeng-theming-guide.md`
+- `.github/UI/echarts-theme-colors.skill.md`

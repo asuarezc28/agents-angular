@@ -4,7 +4,7 @@
 
 The `ThemeColorsService` provides centralized, theme-aware colors that automatically update when switching between light and dark modes. This eliminates the need to hardcode colors in each component that uses charts or other visual elements.
 
-All color values are imported from `src/app/core/constants/colors.constants.ts`, which is the **single source of truth** for all color values in the application.
+Color values for this service are imported from `src/app/core/constants/colors.constants.ts` (uso específico en charts/TS por ahora).
 
 ## Service Location
 
@@ -15,23 +15,19 @@ src/app/core/services/theme-colors.service.ts
 ## Architecture
 
 ```
-colors.constants.ts (single source of truth)
-    ↓ imported by
-    ├── tailwind.config.ts (exposes to Tailwind plugin)
-    │       ↓
-    │   tailwind-css-variables.mjs (generates CSS variables at build)
-    │       ↓
-    │   :root and :root.dark CSS variables (--p-*)
-    │
-    └── theme-colors.service.ts (TypeScript/Charts reactive access)
+ThemeService (.dark class toggle)
+  ↓
+ThemeColorsService + colors.constants.ts
+  ↓
+ECharts options (reactive colors)
 ```
 
 **Workflow to edit colors:**
 
 1. Edit `src/app/core/constants/colors.constants.ts`
 2. Run `pnpm start` or `pnpm build`
-3. Plugin automatically generates CSS variables during build
-4. All systems updated automatically (Tailwind classes, ThemeColorsService signals, PrimeNG variables)
+3. ThemeColorsService values update
+4. Charts and TS-driven visuals update automatically
 
 ## Basic Usage
 
@@ -309,7 +305,7 @@ export class SalesChartComponent {
 
 ## Color Reference
 
-All colors are defined in `src/app/core/constants/colors.constants.ts` (single source of truth):
+For these chart/TS use cases, colors are defined in `src/app/core/constants/colors.constants.ts`:
 
 ```typescript
 // Primary palette (Konecta)
