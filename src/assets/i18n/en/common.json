@@ -108,7 +108,9 @@
       "companyAria": "Company selector",
       "projectLabel": "Project",
       "projectPlaceholder": "Select project",
-      "projectAria": "Project selector"
+      "projectAria": "Project selector",
+      "hideSelectorAria": "Hide context selector",
+      "showSelectorAria": "Show context selector"
     },
     "language": {
       "ariaLabel": "Language selector",
@@ -135,7 +137,9 @@
       "ariaLabel": "Main modules menu"
     },
     "sidebar": {
-      "ariaLabel": "Module options sidebar"
+      "ariaLabel": "Module options sidebar",
+      "hide": "Hide sidebar",
+      "show": "Show sidebar"
     },
     "menu": {
       "analytics": "Analytics",

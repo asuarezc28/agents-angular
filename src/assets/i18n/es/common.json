@@ -127,7 +127,9 @@
       "ariaLabel": "Menú principal de módulos"
     },
     "sidebar": {
-      "ariaLabel": "Sidebar de opciones del módulo"
+      "ariaLabel": "Sidebar de opciones del módulo",
+      "hide": "Ocultar sidebar",
+      "show": "Mostrar sidebar"
     },
     "context": {
       "companyLabel": "Compañía",
@@ -135,7 +137,9 @@
       "companyAria": "Selector de compañía",
       "projectLabel": "Proyecto",
       "projectPlaceholder": "Seleccionar proyecto",
-      "projectAria": "Selector de proyecto"
+      "projectAria": "Selector de proyecto",
+      "hideSelectorAria": "Ocultar selector de contexto",
+      "showSelectorAria": "Mostrar selector de contexto"
     },
     "menu": {
       "analytics": "Analítica",
