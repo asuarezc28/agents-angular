@@ -67,7 +67,11 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
       }
 
       :host ::ng-deep .menu-tabs .p-tablist-active-bar {
-        inset-block-end: 0;
+        display: none;
+      }
+
+      :host ::ng-deep .menu-tabs .p-tab.p-tab-active {
+        border-bottom: 2px solid var(--p-primary-color);
       }
     `,
   ],

@@ -1,4 +1,6 @@
-<div class="menu-layout rounded-xl border border-surface-200 dark:border-surface-700 p-2">
+<div
+  class="menu-layout rounded-xl border border-surface-200 dark:border-surface-700 px-2 pt-2 pb-0"
+>
   <img
     [ngSrc]="logoSrc()"
     width="180"
@@ -8,7 +10,7 @@
   />
 
   <p-tabs
-    class="menu-tabs"
+    class="menu-tabs self-end"
     [value]="activeMenuId()"
     [attr.aria-label]="'layoutBase.menubar.ariaLabel' | translate"
     (valueChange)="selectMenuById($event)"

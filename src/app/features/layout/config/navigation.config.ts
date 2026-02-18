@@ -8,7 +8,7 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
     id: 'analytics',
     icon: 'chart',
     titleKey: '',
-    iconSize: 40,
+    iconSize: 30,
     panels: [
       {
         id: 'overview',
@@ -29,7 +29,7 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
   {
     id: 'operations',
     icon: 'folder',
-    iconSize: 40,
+    iconSize: 30,
     titleKey: '',
     panels: [
       {
@@ -50,7 +50,7 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
   {
     id: 'users',
     icon: 'users',
-    iconSize: 40,
+    iconSize: 30,
     titleKey: '',
     panels: [
       {
