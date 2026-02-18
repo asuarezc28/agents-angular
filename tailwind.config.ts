@@ -1,6 +1,5 @@
 import type { Config } from 'tailwindcss';
-import cssVariablesPlugin from './tailwind-css-variables.mjs';
-import { COLORS } from './src/app/core/constants/colors.constants';
+import PrimeUI from 'tailwindcss-primeui';
 import { TYPOGRAPHY } from './src/app/core/constants/typography.constants';
 
 export default {
@@ -8,29 +7,6 @@ export default {
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        // All color values imported from single source of truth (colors.constants.ts)
-        primary: COLORS.primary,
-        surface: COLORS.surface,
-        success: COLORS.success,
-        danger: COLORS.danger,
-        warning: COLORS.warning,
-        info: COLORS.info,
-        gray: COLORS.gray,
-
-        // Legacy konecta aliases (for backwards compatibility)
-        konecta: {
-          black: COLORS.surface[950],
-          white: COLORS.surface[0],
-          blue: COLORS.primary[500],
-          blue2: '#A6B7FF', // Lighter variant used in dark mode
-          yellow: COLORS.warning[500],
-          dark: COLORS.surface[900],
-          darkBlue: COLORS.primary[900],
-          light: COLORS.surface[50],
-          successStory: '#DF622B', // Brand-specific color
-        },
-      },
       fontFamily: {
         sans: [...TYPOGRAPHY.fontFamily.sans],
       },
@@ -44,5 +20,5 @@ export default {
       },
     },
   },
-  plugins: [cssVariablesPlugin],
+  plugins: [PrimeUI],
 } satisfies Config;

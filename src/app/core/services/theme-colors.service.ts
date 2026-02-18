@@ -5,7 +5,7 @@ import { COLORS } from '../constants/colors.constants';
 /**
  * Service that provides theme-aware colors for charts and other components.
  * Colors are computed based on the current theme (light/dark) and use values
- * from colors.constants.ts (single source of truth shared with Tailwind)
+ * from colors.constants.ts.
  */
 @Injectable({
   providedIn: 'root',
