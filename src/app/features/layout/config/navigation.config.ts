@@ -2,6 +2,7 @@ import { MenuConfig } from '../models/navigation-config';
 import { OverviewDashboardComponent } from '../components/overview-dashboard/overview-dashboard.component';
 import { KpisDashboardComponent } from '../components/kpis-dashboard/kpis-dashboard.component';
 import { TreeDemoComponent } from '../../../shared/components/tree-demo/tree-demo.component';
+import { PlainPanelViewComponent } from '../components/plain-panel-view/plain-panel-view.component';
 
 export const NAVIGATION_CONFIG: MenuConfig[] = [
   {
@@ -58,6 +59,7 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
         icon: 'users',
         titleKey: 'layoutBase.panel.users.directory.title',
         descriptionKey: 'layoutBase.panel.users.directory.description',
+        component: PlainPanelViewComponent,
       },
       {
         id: 'roles',
