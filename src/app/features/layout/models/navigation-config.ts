@@ -21,6 +21,7 @@ export interface PanelConfig {
 export interface MenuConfig {
   id: string;
   icon: NavIconKey;
+  iconSize?: number;
   titleKey: string;
   panels: PanelConfig[];
 }

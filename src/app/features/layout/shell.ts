@@ -1,37 +1,20 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  signal,
-} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { SelectModule } from 'primeng/select';
-import { ThemeToggleComponent } from '../../shared/components/theme-toggle/theme-toggle.component';
 import { MenuConfig, PanelConfig } from './models/navigation-config';
 import { NavigationService } from './services/navigation.service';
 import { MenubarComponent } from './components/menubar/menubar';
+import { UserMenuAction } from './components/menubar/menubar';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { ContentComponent } from './components/content/content';
 import { ContextSelectorComponent } from './components/context-selector/context-selector.component';
 
-interface LanguageOption {
-  value: string;
-  labelKey: string;
-}
-
 @Component({
   selector: 'app-shell',
   imports: [
-    FormsModule,
     TranslateModule,
-    SelectModule,
-    ThemeToggleComponent,
     MenubarComponent,
     SidebarComponent,
     ContentComponent,
@@ -39,42 +22,13 @@ interface LanguageOption {
   ],
   template: `
     <div class="min-h-screen p-4 md:p-6">
-      <header class="mb-4">
-        <div class="mb-4 flex items-center gap-4">
-          <div class="min-w-0 flex-1">
-            <app-menubar
-              [menus]="menus()"
-              [activeMenuId]="activeMenu().id"
-              (menuSelected)="selectMenu($event)"
-            />
-          </div>
-
-          <div
-            class="shrink-0 flex items-center gap-2"
-            [attr.aria-label]="'workspace.language.ariaLabel' | translate"
-          >
-            <p-select
-              [options]="languageOptions"
-              [ngModel]="currentLang()"
-              optionValue="value"
-              (ngModelChange)="changeLang($event)"
-              [attr.aria-label]="'workspace.language.ariaLabel' | translate"
-              styleClass="min-w-[110px]"
-            >
-              <ng-template pTemplate="selectedItem" let-selected>
-                @if (selected) {
-                  <span>{{ selected.labelKey | translate }}</span>
-                }
-              </ng-template>
-
-              <ng-template pTemplate="item" let-option>
-                <span>{{ option.labelKey | translate }}</span>
-              </ng-template>
-            </p-select>
-
-            <app-theme-toggle />
-          </div>
-        </div>
+      <header class="mb-6">
+        <app-menubar
+          [menus]="menus()"
+          [activeMenuId]="activeMenu().id"
+          (menuSelected)="selectMenu($event)"
+          (userActionSelected)="handleUserAction($event)"
+        />
       </header>
 
       <div class="mb-6 flex justify-center items-center">
@@ -109,16 +63,8 @@ export class ShellComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly navigation = inject(NavigationService);
-  private readonly translate = inject(TranslateService);
 
   readonly menus = this.navigation.menus;
-  protected readonly currentLang = signal(
-    this.translate.currentLang || this.translate.getDefaultLang() || 'es',
-  );
-  protected readonly languageOptions: LanguageOption[] = [
-    { value: 'es', labelKey: 'workspace.language.es' },
-    { value: 'en', labelKey: 'workspace.language.en' },
-  ];
 
   private readonly menuId = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('menuId'))),
@@ -162,9 +108,18 @@ export class ShellComponent {
     this.navigateTo(this.activeMenu().id, panel.id);
   }
 
-  protected changeLang(lang: string): void {
-    this.translate.use(lang);
-    this.currentLang.set(lang);
+  protected handleUserAction(action: UserMenuAction): void {
+    if (action === 'logout') {
+      return;
+    }
+
+    if (action === 'profile') {
+      return;
+    }
+
+    if (action === 'settings') {
+      return;
+    }
   }
 
   private navigateTo(menuId: string, panelId: string): void {

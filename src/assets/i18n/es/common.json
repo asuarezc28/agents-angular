@@ -97,14 +97,31 @@
       "message": "Todas las librerías funcionan correctamente"
     }
   },
-  "workspace": {
-    "title": "Workspace de Navegación",
+  "layoutBase": {
+    "title": "",
+    "brand": {
+      "logoAlt": "Logo de CYRA"
+    },
     "language": {
       "ariaLabel": "Selector de idioma",
       "es": "ES",
       "en": "EN",
       "esAria": "Cambiar idioma a español",
       "enAria": "Cambiar idioma a inglés"
+    },
+    "userMenu": {
+      "avatarAriaLabel": "Abrir menú de usuario",
+      "profile": "Perfil",
+      "settings": "Configuración",
+      "logout": "Cerrar sesión",
+      "language": {
+        "label": "Idioma"
+      },
+      "theme": {
+        "label": "Tema",
+        "light": "Claro",
+        "dark": "Oscuro"
+      }
     },
     "menubar": {
       "ariaLabel": "Menú principal de módulos"

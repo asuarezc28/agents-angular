@@ -97,14 +97,39 @@
       "message": "All libraries are working correctly"
     }
   },
-  "workspace": {
-    "title": "Navigation Workspace",
+  "layoutBase": {
+    "title": "",
+    "brand": {
+      "logoAlt": "CYRA logo"
+    },
+    "context": {
+      "companyLabel": "Company",
+      "companyPlaceholder": "Select company",
+      "companyAria": "Company selector",
+      "projectLabel": "Project",
+      "projectPlaceholder": "Select project",
+      "projectAria": "Project selector"
+    },
     "language": {
       "ariaLabel": "Language selector",
       "es": "ES",
       "en": "EN",
       "esAria": "Switch language to Spanish",
       "enAria": "Switch language to English"
+    },
+    "userMenu": {
+      "avatarAriaLabel": "Open user menu",
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout",
+      "language": {
+        "label": "Language"
+      },
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark"
+      }
     },
     "menubar": {
       "ariaLabel": "Main modules menu"

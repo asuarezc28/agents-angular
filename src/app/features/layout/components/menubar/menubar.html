@@ -1,16 +1,98 @@
-<div class="mt-4 flex items-center gap-2 flex-wrap" [attr.aria-label]="'workspace.menubar.ariaLabel' | translate">
-  @for (menu of menus(); track menu.id) {
+<div class="menu-layout rounded-xl border border-surface-200 dark:border-surface-700 p-2">
+  <img
+    [ngSrc]="logoSrc()"
+    width="180"
+    height="56"
+    class="h-8 w-auto"
+    [alt]="'layoutBase.brand.logoAlt' | translate"
+  />
+
+  <p-tabs
+    class="menu-tabs"
+    [value]="activeMenuId()"
+    [attr.aria-label]="'layoutBase.menubar.ariaLabel' | translate"
+    (valueChange)="selectMenuById($event)"
+  >
+    <p-tablist>
+      @for (menu of menus(); track menu.id) {
+        <p-tab [value]="menu.id" [attr.aria-label]="'layoutBase.menu.' + menu.id | translate">
+          <app-tooltip-icon
+            [icon]="iconFor(menu.icon)"
+            [size]="menu.iconSize ?? 20"
+            [tooltip]="'layoutBase.menu.' + menu.id | translate"
+            [ariaLabel]="'layoutBase.menu.' + menu.id | translate"
+          />
+        </p-tab>
+      }
+    </p-tablist>
+  </p-tabs>
+
+  <div>
     <button
       pButton
       type="button"
-      [text]="!isActive(menu.id)"
-      [severity]="isActive(menu.id) ? 'primary' : 'secondary'"
-      (click)="selectMenu(menu)"
-      class="flex items-center gap-2"
-      [attr.aria-label]="menu.titleKey | translate"
+      text
+      rounded
+      class="cursor-pointer"
+      [attr.aria-label]="'layoutBase.userMenu.avatarAriaLabel' | translate"
+      (click)="userMenu.toggle($event)"
     >
-      <lucide-icon [img]="iconFor(menu.icon)" [size]="16" />
-      <span>{{ menu.titleKey | translate }}</span>
+      <p-avatar label="SA" shape="circle" />
     </button>
-  }
+
+    <p-tieredMenu
+      #userMenu
+      [popup]="true"
+      [model]="userMenuItems()"
+      [autoDisplay]="false"
+      appendTo="body"
+    >
+      <ng-template #item let-item let-hasSubmenu="hasSubmenu">
+        @if (item['data']?.kind === 'theme-toggle') {
+          <div class="p-menu-item-content px-3 py-2 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              @if (item.icon) {
+                <span class="p-menu-item-icon" [class]="item.icon"></span>
+              }
+              <span class="p-menu-item-label">{{ item.label }}</span>
+            </div>
+
+            <div class="flex items-center gap-1" (click)="$event.stopPropagation()">
+              <button
+                pButton
+                type="button"
+                [text]="isDarkMode()"
+                [severity]="!isDarkMode() ? 'primary' : 'secondary'"
+                [attr.aria-label]="'layoutBase.userMenu.theme.light' | translate"
+                (click)="setThemeMode(false)"
+              >
+                <lucide-icon [img]="Sun" [size]="16" />
+              </button>
+
+              <button
+                pButton
+                type="button"
+                [text]="!isDarkMode()"
+                [severity]="isDarkMode() ? 'primary' : 'secondary'"
+                [attr.aria-label]="'layoutBase.userMenu.theme.dark' | translate"
+                (click)="setThemeMode(true)"
+              >
+                <lucide-icon [img]="Moon" [size]="16" />
+              </button>
+            </div>
+          </div>
+        } @else {
+          <a class="p-menu-item-link cursor-pointer" [attr.aria-label]="item.label">
+            @if (item.icon) {
+              <span class="p-menu-item-icon" [class]="item.icon"></span>
+            }
+            <span class="p-menu-item-label">{{ item.label }}</span>
+            @if (hasSubmenu) {
+              <i class="pi pi-angle-right ml-auto"></i>
+            }
+          </a>
+        }
+      </ng-template>
+    </p-tieredMenu>
+  </div>
 </div>

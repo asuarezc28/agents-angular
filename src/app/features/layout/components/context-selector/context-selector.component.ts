@@ -16,7 +16,7 @@ import { Company, Project } from '../../../../core/mocks';
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="flex flex-col gap-1">
           <label for="company-select" class="text-sm opacity-80">
-            {{ 'workspace.context.companyLabel' | translate }}
+            {{ 'layoutBase.context.companyLabel' | translate }}
           </label>
           <p-select
             inputId="company-select"
@@ -25,8 +25,8 @@ import { Company, Project } from '../../../../core/mocks';
             optionLabel="name"
             optionValue="id"
             (ngModelChange)="onCompanyChange($event)"
-            [placeholder]="'workspace.context.companyPlaceholder' | translate"
-            [attr.aria-label]="'workspace.context.companyAria' | translate"
+            [placeholder]="'layoutBase.context.companyPlaceholder' | translate"
+            [attr.aria-label]="'layoutBase.context.companyAria' | translate"
           >
             <ng-template pTemplate="selectedItem" let-selected>
               @if (selected) {
@@ -42,7 +42,7 @@ import { Company, Project } from '../../../../core/mocks';
 
         <div class="flex flex-col gap-1">
           <label for="project-select" class="text-sm opacity-80">
-            {{ 'workspace.context.projectLabel' | translate }}
+            {{ 'layoutBase.context.projectLabel' | translate }}
           </label>
           <p-select
             inputId="project-select"
@@ -51,8 +51,8 @@ import { Company, Project } from '../../../../core/mocks';
             optionLabel="name"
             optionValue="id"
             (ngModelChange)="onProjectChange($event)"
-            [placeholder]="'workspace.context.projectPlaceholder' | translate"
-            [attr.aria-label]="'workspace.context.projectAria' | translate"
+            [placeholder]="'layoutBase.context.projectPlaceholder' | translate"
+            [attr.aria-label]="'layoutBase.context.projectAria' | translate"
             [disabled]="!selectedCompanyId()"
           >
             <ng-template pTemplate="selectedItem" let-selected>

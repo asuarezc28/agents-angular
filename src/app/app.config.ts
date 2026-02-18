@@ -79,8 +79,8 @@ export const appConfig: ApplicationConfig = {
         prefix: './assets/i18n/',
         suffix: '/common.json',
       }),
-      defaultLanguage: 'es',
-      useDefaultLang: true,
+      lang: 'es',
+      fallbackLang: 'es',
     }),
   ],
 };
