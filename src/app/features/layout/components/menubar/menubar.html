@@ -48,6 +48,7 @@
       [model]="userMenuItems()"
       [autoDisplay]="false"
       appendTo="body"
+      styleClass="user-menu-popup"
     >
       <ng-template #item let-item let-hasSubmenu="hasSubmenu">
         @if (item['data']?.kind === 'theme-toggle') {

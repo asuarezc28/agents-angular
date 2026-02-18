@@ -73,6 +73,11 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
       :host ::ng-deep .menu-tabs .p-tab.p-tab-active {
         border-bottom: 2px solid var(--p-primary-color);
       }
+
+      ::ng-deep .user-menu-popup .p-tieredmenu-item-content,
+      ::ng-deep .user-menu-popup .p-menu-item-content {
+        margin: 0.25rem 1rem;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
