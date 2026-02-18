@@ -39,7 +39,12 @@
       [attr.aria-label]="'layoutBase.userMenu.avatarAriaLabel' | translate"
       (click)="userMenu.toggle($event)"
     >
-      <p-avatar label="SA" shape="circle" />
+      <p-avatar
+        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+        class="mr-2"
+        size="large"
+        shape="circle"
+      />
     </button>
 
     <p-tieredMenu
