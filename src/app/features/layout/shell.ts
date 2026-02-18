@@ -16,8 +16,6 @@ import { ContentComponent } from './components/content/content';
   template: `
     <div class="min-h-screen p-4 md:p-6">
       <header class="mb-6">
-        <h1 class="text-2xl font-semibold">{{ 'layoutBase.title' | translate }}</h1>
-
         <app-menubar
           [menus]="menus()"
           [activeMenuId]="activeMenu().id"

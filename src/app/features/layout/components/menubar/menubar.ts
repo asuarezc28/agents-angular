@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NgOptimizedImage } from '@angular/common';
-import { MenubarModule } from 'primeng/menubar';
 import { MenuItem } from 'primeng/api';
+import { TabsModule } from 'primeng/tabs';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
@@ -18,14 +18,9 @@ import { LucideAngularModule, Moon, Sun } from 'lucide-angular';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { merge, map, startWith } from 'rxjs';
 import { getIcon } from '../../config/icons';
-import { MenuConfig, NavIconKey } from '../../models/navigation-config';
+import { MenuConfig } from '../../models/navigation-config';
 import { ThemeService } from '../../../../core/services/theme.service';
-
-interface MenubarItemData {
-  menu: MenuConfig;
-  icon: NavIconKey;
-  iconSize: number;
-}
+import { TooltipIconComponent } from '../../../../shared/components/tooltip-icon/tooltip-icon.component';
 
 interface UserMenuItemData {
   kind: 'action' | 'language' | 'theme-toggle';
@@ -39,12 +34,13 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
   selector: 'app-menubar',
   imports: [
     NgOptimizedImage,
-    MenubarModule,
+    TabsModule,
     TieredMenuModule,
     AvatarModule,
     ButtonModule,
     LucideAngularModule,
     TranslateModule,
+    TooltipIconComponent,
   ],
   templateUrl: './menubar.html',
   styles: [
@@ -53,15 +49,25 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
         display: block;
       }
 
-      :host ::ng-deep .p-menubar {
+      :host ::ng-deep .menu-layout {
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
+        gap: 0.75rem;
       }
 
-      :host ::ng-deep .p-menubar-root-list {
-        width: 100%;
+      :host ::ng-deep .menu-tabs .p-tablist-tab-list {
         justify-content: center;
+        width: 100%;
+        border-width: 0;
+      }
+
+      :host ::ng-deep .menu-tabs .p-tab {
+        border-width: 0;
+      }
+
+      :host ::ng-deep .menu-tabs .p-tablist-active-bar {
+        inset-block-end: 0;
       }
     `,
   ],
@@ -99,19 +105,6 @@ export class MenubarComponent {
   protected readonly isDarkMode = computed(() => this.themeService.isDarkMode());
   protected readonly logoSrc = computed(() =>
     this.isDarkMode() ? '/assets/branding/cyra-black.png' : '/assets/branding/cyra-white.png',
-  );
-
-  protected readonly items = computed<MenuItem[]>(() =>
-    this.menus().map((menu) => ({
-      id: menu.id,
-      label: menu.titleKey,
-      styleClass: this.isActive(menu.id) ? 'font-semibold' : undefined,
-      data: {
-        menu,
-        icon: menu.icon,
-        iconSize: menu.iconSize ?? 16,
-      } satisfies MenubarItemData,
-    })),
   );
 
   protected readonly userMenuItems = computed<MenuItem[]>(() => {
@@ -188,18 +181,18 @@ export class MenubarComponent {
     this.menuSelected.emit(menu);
   }
 
-  protected isActive(menuId: string): boolean {
-    return this.activeMenuId() === menuId;
-  }
-
-  protected selectMenuFromItem(item: MenuItem): void {
-    const data = item['data'] as MenubarItemData | undefined;
-
-    if (!data) {
+  protected selectMenuById(menuId: string | number | undefined): void {
+    if (menuId === undefined) {
       return;
     }
 
-    this.selectMenu(data.menu);
+    const menu = this.menus().find((currentMenu) => currentMenu.id === String(menuId));
+
+    if (!menu) {
+      return;
+    }
+
+    this.selectMenu(menu);
   }
 
   private changeLang(lang: 'es' | 'en'): void {

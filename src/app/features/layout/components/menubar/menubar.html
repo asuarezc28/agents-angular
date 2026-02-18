@@ -1,36 +1,33 @@
-<p-menubar
-  styleClass="mt-4"
-  [model]="items()"
-  [attr.aria-label]="'layoutBase.menubar.ariaLabel' | translate"
->
-  <ng-template #start>
-    <img
-      [ngSrc]="logoSrc()"
-      width="180"
-      height="56"
-      class="h-8 w-auto"
-      [alt]="'layoutBase.brand.logoAlt' | translate"
-    />
-  </ng-template>
+<div class="menu-layout rounded-xl border border-surface-200 dark:border-surface-700 p-2">
+  <img
+    [ngSrc]="logoSrc()"
+    width="180"
+    height="56"
+    class="h-8 w-auto"
+    [alt]="'layoutBase.brand.logoAlt' | translate"
+  />
 
-  <ng-template #item let-item>
-    <button
-      pButton
-      type="button"
-      [text]="!isActive(item['data']?.menu?.id ?? '')"
-      [severity]="isActive(item['data']?.menu?.id ?? '') ? 'primary' : 'secondary'"
-      class="cursor-pointer flex items-center gap-2"
-      [attr.aria-label]="item.label | translate"
-      (click)="selectMenuFromItem(item)"
-    >
-      @if (item['data']?.icon; as iconKey) {
-        <lucide-icon [img]="iconFor(iconKey)" [size]="item['data']?.iconSize ?? 16" />
+  <p-tabs
+    class="menu-tabs"
+    [value]="activeMenuId()"
+    [attr.aria-label]="'layoutBase.menubar.ariaLabel' | translate"
+    (valueChange)="selectMenuById($event)"
+  >
+    <p-tablist>
+      @for (menu of menus(); track menu.id) {
+        <p-tab [value]="menu.id" [attr.aria-label]="'layoutBase.menu.' + menu.id | translate">
+          <app-tooltip-icon
+            [icon]="iconFor(menu.icon)"
+            [size]="menu.iconSize ?? 20"
+            [tooltip]="'layoutBase.menu.' + menu.id | translate"
+            [ariaLabel]="'layoutBase.menu.' + menu.id | translate"
+          />
+        </p-tab>
       }
-      <span>{{ item.label | translate }}</span>
-    </button>
-  </ng-template>
+    </p-tablist>
+  </p-tabs>
 
-  <ng-template #end>
+  <div>
     <button
       pButton
       type="button"
@@ -97,5 +94,5 @@
         }
       </ng-template>
     </p-tieredMenu>
-  </ng-template>
-</p-menubar>
+  </div>
+</div>
