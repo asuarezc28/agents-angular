@@ -1,31 +1,34 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartComponent } from '../../../../shared/components/chart/chart.component';
 import type { EChartsOption } from 'echarts';
+import { PanelViewFrameComponent } from '../panel-view-frame/panel-view-frame.component';
 
 @Component({
   selector: 'app-kpis-dashboard',
-  imports: [ChartComponent],
+  imports: [ChartComponent, PanelViewFrameComponent],
   template: `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="h-[300px]">
-        <app-chart [options]="performanceChart()" />
+    <app-panel-view-frame [titleKey]="'layoutBase.panel.analytics.kpis.title'">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="h-[300px]">
+          <app-chart [options]="performanceChart()" />
+        </div>
+        <div class="h-[300px]">
+          <app-chart [options]="satisfactionChart()" />
+        </div>
+        <div class="h-[320px]">
+          <app-chart [options]="teamRadarChart()" />
+        </div>
+        <div class="h-[320px]">
+          <app-chart [options]="goalGaugeChart()" />
+        </div>
+        <div class="h-[320px]">
+          <app-chart [options]="qualityScatterChart()" />
+        </div>
+        <div class="h-[320px]">
+          <app-chart [options]="conversionFunnelChart()" />
+        </div>
       </div>
-      <div class="h-[300px]">
-        <app-chart [options]="satisfactionChart()" />
-      </div>
-      <div class="h-[320px]">
-        <app-chart [options]="teamRadarChart()" />
-      </div>
-      <div class="h-[320px]">
-        <app-chart [options]="goalGaugeChart()" />
-      </div>
-      <div class="h-[320px]">
-        <app-chart [options]="qualityScatterChart()" />
-      </div>
-      <div class="h-[320px]">
-        <app-chart [options]="conversionFunnelChart()" />
-      </div>
-    </div>
+    </app-panel-view-frame>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,8 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { ButtonModule } from 'primeng/button';
+import { TranslateModule } from '@ngx-translate/core';
 import { MenuConfig, PanelConfig } from './models/navigation-config';
 import { NavigationService } from './services/navigation.service';
 import { MenubarComponent } from './components/menubar/menubar';
@@ -14,6 +22,7 @@ import { ContextSelectorComponent } from './components/context-selector/context-
 @Component({
   selector: 'app-shell',
   imports: [
+    ButtonModule,
     TranslateModule,
     MenubarComponent,
     SidebarComponent,
@@ -22,27 +31,51 @@ import { ContextSelectorComponent } from './components/context-selector/context-
   ],
   template: `
     <div class="min-h-screen p-4 md:p-6">
-      <header class="mb-6">
-        <app-menubar
-          [menus]="menus()"
-          [activeMenuId]="activeMenu().id"
-          (menuSelected)="selectMenu($event)"
-          (userActionSelected)="handleUserAction($event)"
-        />
-      </header>
+      <div class="mb-6 flex flex-col items-center">
+        <header class="relative z-10 w-full">
+          <app-menubar
+            [menus]="menus()"
+            [activeMenuId]="activeMenu().id"
+            (menuSelected)="selectMenu($event)"
+            (userActionSelected)="handleUserAction($event)"
+          />
+        </header>
 
-      <div class="mb-6 flex justify-center items-center">
-        <div class="w-full lg:max-w-[30%]">
+        <div class="w-full">
           <app-context-selector />
         </div>
       </div>
 
-      <section class="grid grid-cols-1 lg:grid-cols-[88px_1fr] gap-4">
-        <app-sidebar
-          [panels]="sidebarPanels()"
-          [activePanelId]="activePanel()?.id ?? ''"
-          (panelSelected)="selectPanel($event)"
-        />
+      <div class="mb-3 flex items-center">
+        <button
+          pButton
+          type="button"
+          size="small"
+          outlined
+          [icon]="isSidebarVisible() ? 'pi pi-angle-left' : 'pi pi-angle-right'"
+          [label]="
+            isSidebarVisible()
+              ? ('layoutBase.sidebar.hide' | translate)
+              : ('layoutBase.sidebar.show' | translate)
+          "
+          [attr.aria-label]="
+            isSidebarVisible()
+              ? ('layoutBase.sidebar.hide' | translate)
+              : ('layoutBase.sidebar.show' | translate)
+          "
+          [attr.aria-expanded]="isSidebarVisible()"
+          (click)="toggleSidebar()"
+        ></button>
+      </div>
+
+      <section [class]="contentLayoutClass()">
+        @if (isSidebarVisible()) {
+          <app-sidebar
+            [panels]="sidebarPanels()"
+            [activePanelId]="activePanel()?.id ?? ''"
+            (panelSelected)="selectPanel($event)"
+          />
+        }
 
         <main>
           <app-content [panel]="activePanel()" />
@@ -63,6 +96,7 @@ export class ShellComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly navigation = inject(NavigationService);
+  protected readonly isSidebarVisible = signal(true);
 
   readonly menus = this.navigation.menus;
 
@@ -81,6 +115,12 @@ export class ShellComponent {
   });
 
   readonly sidebarPanels = computed(() => this.activeMenu().panels);
+
+  protected readonly contentLayoutClass = computed(() =>
+    this.isSidebarVisible()
+      ? 'grid grid-cols-1 gap-4 lg:grid-cols-[88px_1fr]'
+      : 'grid grid-cols-1 gap-4',
+  );
 
   readonly activePanel = computed(() => {
     const panel = this.navigation.getPanelById(this.activeMenu().id, this.panelId());
@@ -120,6 +160,10 @@ export class ShellComponent {
     if (action === 'settings') {
       return;
     }
+  }
+
+  protected toggleSidebar(): void {
+    this.isSidebarVisible.update((visible) => !visible);
   }
 
   private navigateTo(menuId: string, panelId: string): void {

@@ -1,32 +1,9 @@
-<p-card>
-  <div>
-    @if (panel(); as activePanel) {
-      <ng-template pTemplate="header">
-        <div class="p-4">
-          <h2 class="text-xl font-semibold">{{ activePanel.titleKey | translate }}</h2>
-        </div>
-      </ng-template>
-
-      @if (activePanel.component) {
-        <ng-container [ngComponentOutlet]="activePanel.component" />
-      } @else {
-        <p class="opacity-80">
-          {{ activePanel.descriptionKey | translate }}
-        </p>
-      }
-    } @else {
-      <p class="opacity-80">{{ 'messages.noData' | translate }}</p>
-    }
-
-    <div class="mt-4 flex justify-end">
-      <img
-        ngSrc="assets/img/GEN-AI-SAE.png"
-        width="160"
-        height="160"
-        alt=""
-        aria-hidden="true"
-        class="opacity-90 pointer-events-none select-none"
-      />
-    </div>
-  </div>
-</p-card>
+@if (panel(); as activePanel) {
+  @if (activePanel.component; as activePanelComponent) {
+    <ng-container [ngComponentOutlet]="activePanelComponent" />
+  } @else {
+    <p class="opacity-80">{{ activePanel.descriptionKey | translate }}</p>
+  }
+} @else {
+  <p class="opacity-80">{{ 'messages.noData' | translate }}</p>
+}
