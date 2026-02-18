@@ -2,7 +2,7 @@
    Global Styles - SAE Analytics
    ============================================ */
 
-/* Tailwind directives - includes plugin-generated CSS variables */
+/* Tailwind directives (with PrimeNG-Tailwind official plugin integration) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,12 +41,17 @@
     box-sizing: border-box;
     font-size: 16px;
     line-height: 1.5;
-    background-color: var(--p-surface-0);
+    background-color: var(--p-content-background, var(--p-surface-0));
     color: var(--p-text-color);
     /* Smooth transition for theme changes */
     transition:
       background-color 200ms ease-in-out,
       color 200ms ease-in-out;
+    font-family: var(--app-font-family, theme('fontFamily.sans'));
+  }
+
+  html {
+    background-color: var(--p-content-background, var(--p-surface-0));
   }
 
   /* Asegurar que todos los textos hereden el color correcto */
@@ -82,12 +87,12 @@
 
 /* Override PrimeNG card variables with translucent backgrounds */
 :root {
-  --p-card-background: rgba(252, 252, 252, 0.82) !important;
+  /* --p-card-background: rgba(252, 252, 252, 0.82) !important; */
   --p-card-border-color: rgba(224, 224, 224, 0.7) !important;
 }
 
 :root.dark {
-  --p-card-background: rgba(38, 38, 38, 0.82) !important;
+  /* --p-card-background: rgba(38, 38, 38, 0.82) !important; */
   --p-card-border-color: rgba(158, 158, 158, 0.7) !important;
 }
 

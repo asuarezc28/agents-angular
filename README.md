@@ -1,4 +1,4 @@
-# 🚀 SAE Analytics - Angular 21 + Tailwind + PrimeNG + Konecta
+# 🚀 SAE Analytics - Angular 21 + Tailwind + PrimeNG
 
 Proyecto generado con [Angular CLI](https://github.com/angular/angular-cli) versión 21.1.3.
 
@@ -9,55 +9,15 @@ Proyecto generado con [Angular CLI](https://github.com/angular/angular-cli) vers
 | **Angular**             | ^21.1.0 | Framework (Standalone por defecto, Signals API) |
 | **Angular CLI / Build** | ^21.1.3 | Tooling de desarrollo y build                   |
 | **TypeScript**          | ~5.9.2  | Lenguaje (strict mode)                          |
-| **Tailwind CSS**        | 3.x     | Utility-first CSS + plugin custom               |
+| **Tailwind CSS**        | 3.x     | Utility-first CSS + `tailwindcss-primeui`       |
 | **PrimeNG**             | 21.1.1  | Componentes UI                                  |
-| **Lucide Angular**      | 0.563.0 | 1,400+ iconos outline                           |
-| **PrimeIcons**          | 7.0.0   | Iconos de PrimeNG internals                     |
+| **Lucide Angular**      | 0.563.0 | 1,400+ iconos Custom                            |
+| **PrimeIcons**          | 7.0.0   | Iconos de PrimeNG PrimeNG                       |
 | **ECharts**             | ^6.0.0  | Visualización de datos                          |
 | **ngx-translate**       | 17.x    | Internacionalización (i18n)                     |
 | **RxJS**                | ~7.8.0  | Programación reactiva                           |
 | **Vitest**              | ^4.0.8  | Dependencia de testing disponible               |
 | **pnpm**                | 9.15.0  | Gestor de paquetes recomendado                  |
-
-## 🎨 Sistema de Temas Konecta
-
-### Integración PrimeNG + Tailwind
-
-Este proyecto usa una integración custom entre **PrimeNG** y **Tailwind CSS** con la **paleta de colores Konecta**. Todos los componentes PrimeNG se adaptan automáticamente al modo claro/oscuro.
-
-**Características clave:**
-
-- 🎯 **Single Source of Truth**: Colores en `src/app/core/constants/colors.constants.ts`
-- 🔤 **Tipografía centralizada**: `src/app/core/constants/typography.constants.ts`
-- 🌗 **Dark mode automático**: Clase `.dark` en documentElement
-- 🎨 **Paleta Konecta**: `primary-500: #2A01CD`, `surface-0/50/900/950`
-- ⚡ **Build-time CSS variables**: Plugin genera `--p-*` vars automáticamente
-- 🔧 **Cero configuración manual**: PrimeNG usa variables CSS directamente
-
-### Colores Principales
-
-```typescript
-primary-500: #2A01CD   // Konecta Blue
-surface-0:   #ffffff   // White
-surface-50:  #F2F3F7   // Light
-surface-900: #262626   // Dark
-surface-950: #0F0F0F   // Black
-success-500: #0E9F6E   // Green
-danger-500:  #F05252   // Red
-warning-500: #F0FA00   // Yellow
-```
-
-### Arquitectura del Sistema
-
-```
-colors.constants.ts + tailwind.config.ts + tailwind-css-variables.mjs → CSS Variables (--p-*)
-                                                         ↓
-                                    ThemeService → .dark class
-                                                         ↓
-                                        PrimeNG Components + Custom UI
-```
-
----
 
 ## 🚀 Comandos de Desarrollo
 
@@ -123,6 +83,46 @@ Ejemplo:
 pnpm ng -- version
 ```
 
+## 🎨 Sistema de Temas
+
+### Integración PrimeNG + Tailwind
+
+Este proyecto usa la integración oficial entre **PrimeNG** y **Tailwind CSS**. Todos los componentes PrimeNG se adaptan automáticamente al modo claro/oscuro mediante el theme configurado.
+
+**Características clave:**
+
+- 🎯 **Theme global oficial**: PrimeNG `Aura` en `src/app/app.config.ts`
+- 🔤 **Tipografía centralizada**: `src/app/core/constants/typography.constants.ts`
+- 🌗 **Dark mode automático**: Clase `.dark` en documentElement
+- 🎨 **Paleta (uso actual)**: `colors.constants.ts` para charts/TS específicos vía `ThemeColorsService`
+- ⚡ **Integración oficial**: `tailwindcss-primeui` alinea utilidades Tailwind con tokens de PrimeNG
+- 🔧 **Sin plugin custom**: PrimeNG usa sus tokens oficiales (`--p-*`) del preset `Aura`
+
+### Colores Principales
+
+```typescript
+primary-500: #2A01CD   // Blue
+surface-0:   #ffffff   // White
+surface-50:  #F2F3F7   // Light
+surface-900: #262626   // Dark
+surface-950: #0F0F0F   // Black
+success-500: #0E9F6E   // Green
+danger-500:  #F05252   // Red
+warning-500: #F0FA00   // Yellow
+```
+
+### Arquitectura del Sistema
+
+```
+ThemeService → aplica clase `.dark` en `<html>`
+                    ↓
+PrimeNG Aura (`app.config.ts`) → tokens de theme (`--p-*`)
+                    ↓
+Tailwind + `tailwindcss-primeui` → utilidades alineadas con PrimeNG
+                    ↓
+ThemeColorsService + `colors.constants.ts` → colores programáticos (charts/TS)
+```
+
 ---
 
 ## 🎓 Documentación del Proyecto
@@ -144,7 +144,7 @@ pnpm ng -- version
 
 ### 🎨 Colores
 
-1. ✅ Edita colores **SOLO** en `src/app/core/constants/colors.constants.ts`
+1. ✅ Usa `src/app/core/constants/colors.constants.ts` solo para colores programáticos (charts/TS)
 2. ❌ **NO** agregues CSS variables manualmente
 3. ❌ **NO** uses `theme()` en CSS (builds lentos)
 4. ❌ **NO** hardcodees valores de color
@@ -181,14 +181,14 @@ pnpm ng -- version
 
 ## 🐛 Troubleshooting
 
-| Problema                        | Solución                                                                                                           |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **Texto oscuro en modo oscuro** | Verifica que NO hay clases `text-surface-*`. El texto debe heredar de `body`.                                      |
-| **Colores no actualizan**       | Reinicia dev server (`pnpm start`) después de editar `src/app/core/constants/colors.constants.ts`                  |
-| **Tipografía no actualiza**     | Verifica `typography.constants.ts` y que `body` use `@apply font-sans`                                             |
-| **Build tarda 60+ segundos**    | Verifica que NO hay llamadas `theme()` en CSS. Usa `var(--p-*)` directamente.                                      |
-| **Iconos no se ven**            | Importa específicos: `import { Home } from 'lucide-angular'`                                                       |
-| **PrimeNG sin estilos**         | Verifica `providePrimeNG()` en `src/app/app.config.ts` y que existan las variables `--p-*` generadas por el plugin |
+| Problema                            | Solución                                                                                                              |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Texto oscuro en modo oscuro**     | Verifica que NO hay clases `text-surface-*`. El texto debe heredar de `body`.                                         |
+| **Colores de charts no actualizan** | Reinicia dev server (`pnpm start`) después de editar `src/app/core/constants/colors.constants.ts`                     |
+| **Tipografía no actualiza**         | Verifica `typography.constants.ts` y que `body` use `@apply font-sans`                                                |
+| **Build tarda 60+ segundos**        | Verifica que NO hay llamadas `theme()` en CSS. Usa `var(--p-*)` directamente.                                         |
+| **Iconos no se ven**                | Importa específicos: `import { Home } from 'lucide-angular'`                                                          |
+| **PrimeNG sin estilos**             | Verifica `providePrimeNG()` en `src/app/app.config.ts` y la integración `tailwindcss-primeui` en `tailwind.config.ts` |
 
 ---
 
@@ -199,7 +199,7 @@ src/
 ├── app/
 │   ├── core/
 │   │   ├── constants/
-│   │   │   ├── colors.constants.ts     # Single source of truth de colores
+│   │   │   ├── colors.constants.ts     # Colores programáticos para charts/TS
 │   │   │   └── typography.constants.ts # Configuración central de tipografía
 │   │   └── services/
 │   │       └── theme.service.ts        # ThemeService con signals
@@ -218,7 +218,6 @@ src/
 
 Raíz:
 ├── tailwind.config.ts                 # Config Tailwind + tipografía central
-├── tailwind-css-variables.mjs         # Plugin CSS vars (build-time)
 ```
 
 ---
