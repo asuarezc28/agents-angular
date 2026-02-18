@@ -1,16 +1,15 @@
 /**
  * Color constants used across the application
- * This is the SINGLE SOURCE OF TRUTH for all color values
+ * These constants are currently consumed directly by ThemeColorsService
+ * (used by ECharts and other TS-driven visual logic).
  *
  * These values are imported by:
- * - tailwind.config.ts (for Tailwind CSS class generation: bg-*, text-*, etc.)
- * - tailwind-css-variables.mjs (Tailwind plugin that generates CSS variables: --p-*)
  * - theme-colors.service.ts (for programmatic access in TypeScript/ECharts)
  *
  * Workflow:
  * 1. Edit colors here
- * 2. Build/restart dev server (plugin generates CSS variables automatically)
- * 3. All systems updated ✅
+ * 2. Build/restart dev server
+ * 3. ThemeColorsService-based visuals (charts) update ✅
  */
 
 export const COLORS = {
