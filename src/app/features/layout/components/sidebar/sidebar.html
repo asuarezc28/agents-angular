@@ -1,20 +1,25 @@
 <aside
-  class="rounded-xl border border-surface-300 dark:border-surface-700 p-2"
+  class="sidebar-frame rounded-xl border p-1.5"
   [attr.aria-label]="'layoutBase.sidebar.ariaLabel' | translate"
 >
-  <div class="flex lg:flex-col gap-2">
+  <div class="sidebar-content">
     @for (panel of panels(); track panel.id) {
       <button
         pButton
         type="button"
-        [text]="!isActive(panel.id)"
+        [text]="true"
         [rounded]="true"
-        [severity]="isActive(panel.id) ? 'primary' : 'secondary'"
+        [class]="buttonClass(panel.id)"
         (click)="selectPanel(panel)"
         [attr.aria-label]="panel.titleKey | translate"
-        class="w-10 h-10 flex items-center justify-center"
+        class="flex items-center justify-center"
       >
-        <lucide-icon [img]="iconFor(panel.icon)" [size]="30" />
+        <app-tooltip-icon
+          [icon]="iconFor(panel.icon)"
+          [size]="24"
+          [tooltip]="panel.titleKey | translate"
+          [ariaLabel]="panel.titleKey | translate"
+        />
       </button>
     }
   </div>

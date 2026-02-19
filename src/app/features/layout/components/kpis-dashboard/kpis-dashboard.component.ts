@@ -8,14 +8,15 @@ import { PanelViewFrameComponent } from '../panel-view-frame/panel-view-frame.co
   imports: [ChartComponent, PanelViewFrameComponent],
   template: `
     <app-panel-view-frame [titleKey]="'layoutBase.panel.analytics.kpis.title'">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="h-[300px]">
+      <!-- class="grid grid-cols-1 md:grid-cols-2 gap-4" -->
+      <div>
+        <!-- <div class="h-[300px]">
           <app-chart [options]="performanceChart()" />
-        </div>
+        </div> -->
         <div class="h-[300px]">
           <app-chart [options]="satisfactionChart()" />
         </div>
-        <div class="h-[320px]">
+        <!-- <div class="h-[320px]">
           <app-chart [options]="teamRadarChart()" />
         </div>
         <div class="h-[320px]">
@@ -26,7 +27,7 @@ import { PanelViewFrameComponent } from '../panel-view-frame/panel-view-frame.co
         </div>
         <div class="h-[320px]">
           <app-chart [options]="conversionFunnelChart()" />
-        </div>
+        </div> -->
       </div>
     </app-panel-view-frame>
   `,

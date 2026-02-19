@@ -5,13 +5,14 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { of, switchMap } from 'rxjs';
 import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
-import { LucideAngularModule, Filter, FilterX } from 'lucide-angular';
+import { Filter, FilterX } from 'lucide-angular';
+import { TooltipIconComponent } from '../../../../shared/components/tooltip-icon/tooltip-icon.component';
 import { ContextDataService } from '../../../../core/services/context-data.service';
 import { Company, Project } from '../../../../core/mocks';
 
 @Component({
   selector: 'app-context-selector',
-  imports: [FormsModule, TranslateModule, SelectModule, CardModule, LucideAngularModule],
+  imports: [FormsModule, TranslateModule, SelectModule, CardModule, TooltipIconComponent],
   template: `
     <div class="w-full flex flex-col items-center">
       <div
@@ -97,7 +98,20 @@ import { Company, Project } from '../../../../core/mocks';
           [attr.aria-expanded]="isVisible()"
           aria-controls="context-selector-panel"
         >
-          <lucide-icon [img]="isVisible() ? FilterX : Filter" [size]="20" />
+          <app-tooltip-icon
+            [icon]="isVisible() ? FilterX : Filter"
+            [size]="20"
+            [tooltip]="
+              isVisible()
+                ? ('layoutBase.context.hideFiltersTooltip' | translate)
+                : ('layoutBase.context.showFiltersTooltip' | translate)
+            "
+            [ariaLabel]="
+              isVisible()
+                ? ('layoutBase.context.hideSelectorAria' | translate)
+                : ('layoutBase.context.showSelectorAria' | translate)
+            "
+          />
         </button>
       </div>
     </div>
@@ -122,7 +136,8 @@ import { Company, Project } from '../../../../core/mocks';
         justify-content: center;
         overflow: hidden;
         border-radius: 0 0 var(--p-border-radius, 0.5rem) var(--p-border-radius, 0.5rem);
-        border: 1px solid var(--p-content-border-color, var(--p-surface-300));
+        border: 1px solid
+          var(--p-card-border-color, var(--p-content-border-color, var(--p-surface-300)));
         border-top: 0;
         background-color: var(--p-content-background, var(--p-surface-0));
         color: var(--p-text-color, var(--p-surface-700));
@@ -142,20 +157,14 @@ import { Company, Project } from '../../../../core/mocks';
         height: 1px;
         background-color: var(--p-content-background, var(--p-surface-0));
         pointer-events: none;
-        transition: background-color 200ms ease-in-out;
       }
 
       .context-selector-toggle:hover {
-        background-color: var(--p-content-hover-background, var(--p-surface-100));
-      }
-
-      .context-selector-toggle:hover::before {
-        background-color: var(--p-content-hover-background, var(--p-surface-100));
+        color: var(--p-primary-color, var(--p-primary-500));
       }
 
       .context-selector-toggle:active {
         color: var(--p-primary-color, var(--p-primary-500));
-        background-color: var(--p-content-hover-background, var(--p-surface-100));
       }
 
       .context-selector-toggle:focus {

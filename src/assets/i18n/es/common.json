@@ -139,7 +139,9 @@
       "projectPlaceholder": "Seleccionar proyecto",
       "projectAria": "Selector de proyecto",
       "hideSelectorAria": "Ocultar selector de contexto",
-      "showSelectorAria": "Mostrar selector de contexto"
+      "showSelectorAria": "Mostrar selector de contexto",
+      "hideFiltersTooltip": "Ocultar filtros",
+      "showFiltersTooltip": "Mostrar filtros"
     },
     "menu": {
       "analytics": "Analítica",

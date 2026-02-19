@@ -179,3 +179,45 @@ src/assets/i18n/
 └── fr/
     └── ...
 ```
+
+### Convención de i18n (aprobada para escalar)
+
+Objetivo: reducir conflictos entre ramas/equipos y mantener trazabilidad por dominio funcional.
+
+#### Reglas de organización
+
+- `common.json`: solo textos globales y reutilizables (botones, labels genéricos, mensajes transversales).
+- `validation.json` y `errors.json`: catálogos transversales de validación/errores, sin textos de negocio específicos.
+- `*.json` de feature (`auth.json`, `dashboard.json`, `users.json`, etc.): textos exclusivos de ese dominio.
+
+#### Convención de claves (namespaces)
+
+- Cada archivo define su prefijo raíz único:
+  - `common.*`
+  - `validation.*`
+  - `errors.*`
+  - `auth.*`, `dashboard.*`, `users.*`, `settings.*`
+- No mezclar claves de un dominio en otro archivo.
+- Evitar claves ambiguas sin prefijo (ejemplo inválido: `title`, `subtitle`).
+
+#### Ownership y mantenimiento
+
+- Cada equipo/feature es owner de su archivo de traducción.
+- Cambios en `common.json` requieren revisión funcional adicional (impacto global).
+- Cuando un texto deja de usarse, se elimina en la misma tarea para evitar deuda i18n.
+
+#### Carga de traducciones (criterio arquitectónico)
+
+- Se permite carga múltiple por idioma (merge de varios JSON).
+- Preferencia:
+  - Base global al arranque (`common`, `validation`, `errors`).
+  - Carga por feature en rutas lazy cuando aplique.
+- El consumo en componentes siempre será por key namespaced (no cambia la API de `translate`).
+
+#### Ejemplos de claves
+
+- `common.buttons.save`
+- `errors.network.timeout`
+- `validation.required.email`
+- `users.list.title`
+- `dashboard.kpis.conversionRate`

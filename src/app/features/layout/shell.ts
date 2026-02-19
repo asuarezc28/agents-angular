@@ -9,7 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { ButtonModule } from 'primeng/button';
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { MenuConfig, PanelConfig } from './models/navigation-config';
 import { NavigationService } from './services/navigation.service';
@@ -18,16 +18,17 @@ import { UserMenuAction } from './components/menubar/menubar';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { ContentComponent } from './components/content/content';
 import { ContextSelectorComponent } from './components/context-selector/context-selector.component';
+import { TooltipIconComponent } from '../../shared/components/tooltip-icon/tooltip-icon.component';
 
 @Component({
   selector: 'app-shell',
   imports: [
-    ButtonModule,
     TranslateModule,
     MenubarComponent,
     SidebarComponent,
     ContentComponent,
     ContextSelectorComponent,
+    TooltipIconComponent,
   ],
   template: `
     <div class="min-h-screen p-4 md:p-6">
@@ -46,36 +47,69 @@ import { ContextSelectorComponent } from './components/context-selector/context-
         </div>
       </div>
 
-      <div class="mb-3 flex items-center">
-        <button
-          pButton
-          type="button"
-          size="small"
-          outlined
-          [icon]="isSidebarVisible() ? 'pi pi-angle-left' : 'pi pi-angle-right'"
-          [label]="
-            isSidebarVisible()
-              ? ('layoutBase.sidebar.hide' | translate)
-              : ('layoutBase.sidebar.show' | translate)
-          "
-          [attr.aria-label]="
-            isSidebarVisible()
-              ? ('layoutBase.sidebar.hide' | translate)
-              : ('layoutBase.sidebar.show' | translate)
-          "
-          [attr.aria-expanded]="isSidebarVisible()"
-          (click)="toggleSidebar()"
-        ></button>
-      </div>
-
       <section [class]="contentLayoutClass()">
-        @if (isSidebarVisible()) {
-          <app-sidebar
-            [panels]="sidebarPanels()"
-            [activePanelId]="activePanel()?.id ?? ''"
-            (panelSelected)="selectPanel($event)"
-          />
-        }
+        <div class="sidebar-rail">
+          <div
+            id="app-sidebar-panel"
+            class="sidebar-panel"
+            [class.sidebar-panel--hidden]="!isSidebarVisible()"
+          >
+            <div class="sidebar-panel-content">
+              <app-sidebar
+                [panels]="sidebarPanels()"
+                [activePanelId]="activePanel()?.id ?? ''"
+                (panelSelected)="selectPanel($event)"
+              />
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="sidebar-toggle"
+            [class.sidebar-toggle--attached]="isSidebarVisible()"
+            [class.sidebar-toggle--detached]="!isSidebarVisible()"
+            [attr.aria-label]="
+              isSidebarVisible()
+                ? ('layoutBase.sidebar.hide' | translate)
+                : ('layoutBase.sidebar.show' | translate)
+            "
+            [attr.aria-expanded]="isSidebarVisible()"
+            aria-controls="app-sidebar-panel"
+            (click)="toggleSidebar()"
+          >
+            <app-tooltip-icon
+              [icon]="isSidebarVisible() ? ChevronLeft : ChevronRight"
+              [size]="18"
+              class="block lg:hidden"
+              [tooltip]="
+                isSidebarVisible()
+                  ? ('layoutBase.sidebar.hide' | translate)
+                  : ('layoutBase.sidebar.show' | translate)
+              "
+              [ariaLabel]="
+                isSidebarVisible()
+                  ? ('layoutBase.sidebar.hide' | translate)
+                  : ('layoutBase.sidebar.show' | translate)
+              "
+            />
+
+            <app-tooltip-icon
+              [icon]="isSidebarVisible() ? ChevronUp : ChevronDown"
+              [size]="18"
+              class="hidden lg:block"
+              [tooltip]="
+                isSidebarVisible()
+                  ? ('layoutBase.sidebar.hide' | translate)
+                  : ('layoutBase.sidebar.show' | translate)
+              "
+              [ariaLabel]="
+                isSidebarVisible()
+                  ? ('layoutBase.sidebar.hide' | translate)
+                  : ('layoutBase.sidebar.show' | translate)
+              "
+            />
+          </button>
+        </div>
 
         <main>
           <app-content [panel]="activePanel()" />
@@ -88,6 +122,229 @@ import { ContextSelectorComponent } from './components/context-selector/context-
       :host {
         display: block;
       }
+
+      .layout-shell {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .sidebar-rail {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        justify-self: start;
+        gap: 0;
+        overflow: visible;
+      }
+
+      .sidebar-panel {
+        order: 1;
+        width: auto;
+        flex: 1 1 auto;
+        max-width: 100%;
+        max-height: 120px;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        transition:
+          max-width 300ms ease-in-out,
+          max-height 300ms ease-in-out,
+          opacity 220ms ease-in-out,
+          visibility 0s linear;
+        will-change: max-width, max-height, opacity;
+        contain: layout paint;
+      }
+
+      .sidebar-panel-content {
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity 90ms ease-out,
+          visibility 0s linear;
+      }
+
+      .sidebar-panel--hidden {
+        max-width: 0;
+        max-height: 120px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          max-width 300ms ease-in-out,
+          max-height 300ms ease-in-out,
+          opacity 110ms ease-out,
+          visibility 0s linear 120ms;
+      }
+
+      .sidebar-panel--hidden .sidebar-panel-content {
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 70ms ease-out,
+          visibility 0s linear 80ms;
+      }
+
+      .sidebar-toggle {
+        order: 0;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        height: 2.5rem;
+        width: 2.75rem;
+        min-width: 2.75rem;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid
+          var(--p-card-border-color, var(--p-content-border-color, var(--p-surface-300)));
+        background-color: var(--p-content-background, var(--p-surface-0));
+        color: var(--p-text-color, var(--p-surface-700));
+        transition:
+          background-color 200ms ease-in-out,
+          border-color 200ms ease-in-out,
+          color 200ms ease-in-out,
+          box-shadow 200ms ease-in-out;
+      }
+
+      .sidebar-toggle::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 1px;
+        right: 1px;
+        height: 1px;
+        background-color: var(--p-content-background, var(--p-surface-0));
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+      }
+
+      .sidebar-toggle::after {
+        content: '';
+        position: absolute;
+        top: 1px;
+        right: -1px;
+        bottom: 1px;
+        width: 2px;
+        background-color: var(--p-content-background, var(--p-surface-0));
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 200ms ease-in-out;
+      }
+
+      .sidebar-toggle--attached {
+        margin-right: -1px;
+        border: 1px solid
+          var(--p-card-border-color, var(--p-content-border-color, var(--p-surface-300)));
+        border-right: 0;
+        border-radius: var(--p-border-radius, 0.5rem) 0 0 var(--p-border-radius, 0.5rem);
+      }
+
+      .sidebar-toggle--attached::before {
+        opacity: 0;
+      }
+
+      .sidebar-toggle--attached::after {
+        opacity: 1;
+      }
+
+      .sidebar-toggle--detached {
+        border-radius: var(--p-border-radius, 0.5rem);
+        margin-right: 0.5rem;
+      }
+
+      .sidebar-toggle:hover {
+        color: var(--p-primary-color, var(--p-primary-500));
+      }
+
+      .sidebar-toggle:active {
+        color: var(--p-primary-color, var(--p-primary-500));
+      }
+
+      .sidebar-toggle:focus {
+        outline: none;
+      }
+
+      .sidebar-toggle:focus-visible {
+        border-color: var(--p-primary-color, var(--p-primary-500));
+        box-shadow: 0 0 0 2px
+          color-mix(in srgb, var(--p-primary-color, var(--p-primary-500)) 22%, transparent);
+      }
+
+      @media (min-width: 1024px) {
+        .layout-shell {
+          grid-template-columns: var(--sidebar-column-width, 72px) minmax(0, 1fr);
+        }
+
+        .sidebar-rail {
+          flex-direction: column;
+          align-items: center;
+          width: var(--sidebar-column-width, 72px);
+          transition: width 300ms ease-in-out;
+        }
+
+        .sidebar-panel {
+          order: 1;
+          width: 72px;
+          flex: 0 0 auto;
+          max-width: 72px;
+          max-height: 420px;
+          visibility: visible;
+        }
+
+        .sidebar-panel--hidden {
+          max-width: 72px;
+          max-height: 0;
+          visibility: hidden;
+        }
+
+        .layout-shell--expanded {
+          --sidebar-column-width: 72px;
+        }
+
+        .layout-shell--collapsed {
+          --sidebar-column-width: 48px;
+        }
+
+        .sidebar-rail {
+          align-self: start;
+        }
+
+        .sidebar-toggle {
+          order: 0;
+          width: 3rem;
+          min-width: 3rem;
+        }
+
+        .sidebar-toggle--attached {
+          margin-right: 0;
+          margin-top: 0;
+          margin-bottom: -1px;
+          border: 1px solid
+            var(--p-card-border-color, var(--p-content-border-color, var(--p-surface-300)));
+          border-bottom: 0;
+          border-radius: var(--p-border-radius, 0.5rem) var(--p-border-radius, 0.5rem) 0 0;
+        }
+
+        .sidebar-toggle--attached::before {
+          top: auto;
+          bottom: 0;
+          opacity: 1;
+        }
+
+        .sidebar-toggle--attached::after {
+          opacity: 0;
+        }
+
+        .sidebar-toggle--detached {
+          margin-right: 0;
+          margin-top: 0;
+          margin-bottom: 0.5rem;
+        }
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,6 +354,10 @@ export class ShellComponent {
   private readonly router = inject(Router);
   private readonly navigation = inject(NavigationService);
   protected readonly isSidebarVisible = signal(true);
+  protected readonly ChevronLeft = ChevronLeft;
+  protected readonly ChevronRight = ChevronRight;
+  protected readonly ChevronUp = ChevronUp;
+  protected readonly ChevronDown = ChevronDown;
 
   readonly menus = this.navigation.menus;
 
@@ -118,8 +379,8 @@ export class ShellComponent {
 
   protected readonly contentLayoutClass = computed(() =>
     this.isSidebarVisible()
-      ? 'grid grid-cols-1 gap-4 lg:grid-cols-[88px_1fr]'
-      : 'grid grid-cols-1 gap-4',
+      ? 'layout-shell layout-shell--expanded'
+      : 'layout-shell layout-shell--collapsed',
   );
 
   readonly activePanel = computed(() => {

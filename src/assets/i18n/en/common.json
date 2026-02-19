@@ -110,7 +110,9 @@
       "projectPlaceholder": "Select project",
       "projectAria": "Project selector",
       "hideSelectorAria": "Hide context selector",
-      "showSelectorAria": "Show context selector"
+      "showSelectorAria": "Show context selector",
+      "hideFiltersTooltip": "Hide filters",
+      "showFiltersTooltip": "Show filters"
     },
     "language": {
       "ariaLabel": "Language selector",
