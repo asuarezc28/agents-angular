@@ -80,7 +80,9 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
 
       ::ng-deep .user-menu-popup .p-tieredmenu-item-content,
       ::ng-deep .user-menu-popup .p-menu-item-content {
-        margin: 0.5rem 1rem;
+        margin: 0rem 0.5rem;
+        min-height: 2.75rem;
+        padding-block: 0.5rem;
       }
     `,
   ],
