@@ -74,9 +74,13 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
         border-bottom: 2px solid var(--p-primary-color);
       }
 
+      :host ::ng-deep .user-avatar-trigger.p-button.p-button-text:not(:disabled):hover {
+        background: transparent;
+      }
+
       ::ng-deep .user-menu-popup .p-tieredmenu-item-content,
       ::ng-deep .user-menu-popup .p-menu-item-content {
-        margin: 0.25rem 1rem;
+        margin: 0.5rem 1rem;
       }
     `,
   ],
