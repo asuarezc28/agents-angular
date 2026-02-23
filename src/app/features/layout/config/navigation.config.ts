@@ -18,13 +18,13 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
           ),
       },
       {
-        id: 'kpis',
-        icon: 'activity',
-        titleKey: 'layoutBase.panel.analytics.kpis.title',
-        descriptionKey: 'layoutBase.panel.analytics.kpis.description',
+        id: 'settings',
+        icon: 'settings',
+        titleKey: 'layoutBase.panel.analytics.settings.title',
+        descriptionKey: 'layoutBase.panel.analytics.settings.description',
         loadComponent: () =>
-          import('../components/kpis-dashboard/kpis-dashboard.component').then(
-            (module) => module.KpisDashboardComponent,
+          import('../../settings/components/settings-dashboard/settings-dashboard.component').then(
+            (module) => module.SettingsDashboardComponent,
           ),
       },
     ],

@@ -78,6 +78,14 @@ export type UserMenuAction = 'profile' | 'settings' | 'logout';
         background: transparent;
       }
 
+      :host ::ng-deep .user-avatar-trigger.p-button {
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+
       ::ng-deep .user-menu-popup .p-tieredmenu-item-content,
       ::ng-deep .user-menu-popup .p-menu-item-content {
         margin: 0rem 0.5rem;
@@ -118,9 +126,7 @@ export class MenubarComponent {
       'es',
   );
   protected readonly isDarkMode = computed(() => this.themeService.isDarkMode());
-  protected readonly logoSrc = computed(() =>
-    this.isDarkMode() ? '/assets/branding/cyra-black.png' : '/assets/branding/cyra-white.png',
-  );
+  protected readonly logoSrc = computed(() => '/assets/branding/cyra-white.png');
 
   protected readonly userMenuItems = computed<MenuItem[]>(() => {
     this.translationChanges();

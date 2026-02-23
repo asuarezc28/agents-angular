@@ -154,9 +154,9 @@
           "title": "Analytics Overview",
           "description": "General module view with key indicators and current status."
         },
-        "kpis": {
-          "title": "KPIs",
-          "description": "Panel to visualize key metrics and their trend over time."
+        "settings": {
+          "title": "Settings",
+          "description": "Configuration view for analytics options and module parameters."
         }
       },
       "operations": {

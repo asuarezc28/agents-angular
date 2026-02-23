@@ -154,9 +154,9 @@
           "title": "Resumen Analítico",
           "description": "Vista general del módulo analítico con indicadores principales y estado actual."
         },
-        "kpis": {
-          "title": "KPIs",
-          "description": "Panel para visualizar métricas clave y su evolución en el tiempo."
+        "settings": {
+          "title": "Configuración",
+          "description": "Vista de configuración para opciones de analítica y parámetros del módulo."
         }
       },
       "operations": {

@@ -7,6 +7,11 @@ export const routes: Routes = [
     redirectTo: 'analytics/overview',
   },
   {
+    path: 'analytics/kpis',
+    pathMatch: 'full',
+    redirectTo: 'analytics/settings',
+  },
+  {
     path: ':menuId',
     loadComponent: () => import('./features/layout/shell').then((m) => m.ShellComponent),
   },
