@@ -130,6 +130,7 @@ ThemeColorsService + `colors.constants.ts` → colores programáticos (charts/TS
 ### Guías Principales
 
 - **[ARCHITECTURE.MD](./ARCHITECTURE.MD)** - Arquitectura general del proyecto
+- **[DEVELOPMENT-GUIDELINES.md](./DEVELOPMENT-GUIDELINES.md)** - Reglas base para crear nuevas features y mantener consistencia técnica
 
 ### Recursos Externos
 

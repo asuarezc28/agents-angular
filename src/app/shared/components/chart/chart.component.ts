@@ -9,8 +9,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import * as echarts from 'echarts';
-import type { EChartsOption } from 'echarts';
+import type { ECharts, EChartsOption } from 'echarts';
 import { APP_FONT_FAMILY } from '../../../core/constants/typography.constants';
 import { ThemeColorsService } from '../../../core/services/theme-colors.service';
 
@@ -24,7 +23,8 @@ export class ChartComponent {
   private chartContainer = viewChild<ElementRef>('chartContainer');
   private readonly platformId = inject(PLATFORM_ID);
   private readonly colors = inject(ThemeColorsService);
-  private chart?: echarts.ECharts;
+  private chart?: ECharts;
+  private echartsLoader?: Promise<typeof import('echarts')>;
   private resizeObserver?: ResizeObserver;
   private listeningWindowResize = false;
 
@@ -42,26 +42,38 @@ export class ChartComponent {
         const themeBackgroundColor = this.colors.backgroundColor();
 
         if (container && opts) {
-          if (!this.chart) {
-            this.chart = echarts.init(container);
-            this.setupResizeHandling(container);
-          }
-
-          this.chart.setOption(
-            this.applyThemeToOptions(opts, {
-              textColor: themeTextColor,
-              borderColor: themeBorderColor,
-              backgroundColor: themeBackgroundColor,
-            }),
-            {
-              notMerge: true,
-              lazyUpdate: true,
-            },
-          );
-          this.chart.resize();
+          void this.renderChart(container, opts, {
+            textColor: themeTextColor,
+            borderColor: themeBorderColor,
+            backgroundColor: themeBackgroundColor,
+          });
         }
       }
     });
+  }
+
+  private async renderChart(
+    container: HTMLElement,
+    opts: EChartsOption,
+    theme: { textColor: string; borderColor: string; backgroundColor: string },
+  ): Promise<void> {
+    const echarts = await this.loadEcharts();
+
+    if (!this.chart) {
+      this.chart = echarts.init(container);
+      this.setupResizeHandling(container);
+    }
+
+    this.chart.setOption(this.applyThemeToOptions(opts, theme), {
+      notMerge: true,
+      lazyUpdate: true,
+    });
+    this.chart.resize();
+  }
+
+  private loadEcharts(): Promise<typeof import('echarts')> {
+    this.echartsLoader ??= import('echarts');
+    return this.echartsLoader;
   }
 
   ngOnDestroy(): void {

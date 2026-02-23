@@ -1,8 +1,4 @@
 import { MenuConfig } from '../models/navigation-config';
-import { OverviewDashboardComponent } from '../components/overview-dashboard/overview-dashboard.component';
-import { KpisDashboardComponent } from '../components/kpis-dashboard/kpis-dashboard.component';
-import { TreeDemoComponent } from '../../../shared/components/tree-demo/tree-demo.component';
-import { PlainPanelViewComponent } from '../components/plain-panel-view/plain-panel-view.component';
 
 export const NAVIGATION_CONFIG: MenuConfig[] = [
   {
@@ -16,14 +12,20 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
         icon: 'home',
         titleKey: 'layoutBase.panel.analytics.overview.title',
         descriptionKey: 'layoutBase.panel.analytics.overview.description',
-        component: OverviewDashboardComponent,
+        loadComponent: () =>
+          import('../components/overview-dashboard/overview-dashboard.component').then(
+            (module) => module.OverviewDashboardComponent,
+          ),
       },
       {
         id: 'kpis',
         icon: 'activity',
         titleKey: 'layoutBase.panel.analytics.kpis.title',
         descriptionKey: 'layoutBase.panel.analytics.kpis.description',
-        component: KpisDashboardComponent,
+        loadComponent: () =>
+          import('../components/kpis-dashboard/kpis-dashboard.component').then(
+            (module) => module.KpisDashboardComponent,
+          ),
       },
     ],
   },
@@ -38,7 +40,10 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
         icon: 'file',
         titleKey: 'layoutBase.panel.operations.projects.title',
         descriptionKey: 'layoutBase.panel.operations.projects.description',
-        component: TreeDemoComponent,
+        loadComponent: () =>
+          import('../../../shared/components/tree-demo/tree-demo.component').then(
+            (module) => module.TreeDemoComponent,
+          ),
       },
       {
         id: 'security',
@@ -59,7 +64,10 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
         icon: 'users',
         titleKey: 'layoutBase.panel.users.directory.title',
         descriptionKey: 'layoutBase.panel.users.directory.description',
-        component: PlainPanelViewComponent,
+        loadComponent: () =>
+          import('../components/plain-panel-view/plain-panel-view.component').then(
+            (module) => module.PlainPanelViewComponent,
+          ),
       },
       {
         id: 'roles',

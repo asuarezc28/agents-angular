@@ -15,6 +15,7 @@ import { routes } from './app.routes';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { APP_FONT_FAMILY, TYPOGRAPHY } from './core/constants/typography.constants';
+import { MessageService } from 'primeng/api';
 
 const initializeTypography = (): (() => void) => {
   const document = inject(DOCUMENT);
@@ -74,6 +75,7 @@ export const appConfig: ApplicationConfig = {
       // Configuración para usar Lucide en lugar de PrimeIcons
       // Los iconos se manejan mediante templates personalizados en cada componente
     }),
+    MessageService,
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: './assets/i18n/',

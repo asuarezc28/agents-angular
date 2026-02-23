@@ -3,7 +3,7 @@ import { TreeModule } from 'primeng/tree';
 import { TreeNode } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { LucideAngularModule, FolderTree, RefreshCw } from 'lucide-angular';
+import { FolderTree, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-tree-demo',
@@ -66,7 +66,6 @@ import { LucideAngularModule, FolderTree, RefreshCw } from 'lucide-angular';
 })
 export class TreeDemoComponent {
   protected readonly FolderTree = FolderTree;
-  protected readonly RefreshCw = RefreshCw;
 
   selectedNode = signal<TreeNode | null>(null);
 

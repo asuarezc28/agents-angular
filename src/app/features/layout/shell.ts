@@ -19,6 +19,7 @@ import { SidebarComponent } from './components/sidebar/sidebar';
 import { ContentComponent } from './components/content/content';
 import { ContextSelectorComponent } from './components/context-selector/context-selector.component';
 import { TooltipIconComponent } from '../../shared/components/tooltip-icon/tooltip-icon.component';
+import { AppMessageService } from '../../core/services/app-message.service';
 
 @Component({
   selector: 'app-shell',
@@ -44,6 +45,18 @@ import { TooltipIconComponent } from '../../shared/components/tooltip-icon/toolt
 
         <div class="w-full">
           <app-context-selector />
+        </div>
+
+        <div class="mt-3 flex w-full flex-wrap items-center gap-2">
+          <button type="button" class="message-test-btn" (click)="showTestError()">
+            Probar error
+          </button>
+          <button type="button" class="message-test-btn" (click)="showTestWarning()">
+            Probar warning
+          </button>
+          <button type="button" class="message-test-btn" (click)="showTestSuccess()">
+            Probar success
+          </button>
         </div>
       </div>
 
@@ -274,6 +287,35 @@ import { TooltipIconComponent } from '../../shared/components/tooltip-icon/toolt
           color-mix(in srgb, var(--p-primary-color, var(--p-primary-500)) 22%, transparent);
       }
 
+      .message-test-btn {
+        border: 1px solid
+          var(--p-card-border-color, var(--p-content-border-color, var(--p-surface-300)));
+        border-radius: var(--p-border-radius, 0.5rem);
+        background-color: var(--p-content-background, var(--p-surface-0));
+        color: var(--p-text-color, var(--p-surface-700));
+        padding: 0.45rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.1;
+        transition:
+          color 180ms ease-in-out,
+          border-color 180ms ease-in-out,
+          box-shadow 180ms ease-in-out;
+      }
+
+      .message-test-btn:hover {
+        color: var(--p-primary-color, var(--p-primary-500));
+      }
+
+      .message-test-btn:focus {
+        outline: none;
+      }
+
+      .message-test-btn:focus-visible {
+        border-color: var(--p-primary-color, var(--p-primary-500));
+        box-shadow: 0 0 0 2px
+          color-mix(in srgb, var(--p-primary-color, var(--p-primary-500)) 22%, transparent);
+      }
+
       @media (min-width: 1024px) {
         .layout-shell {
           grid-template-columns: var(--sidebar-column-width, 72px) minmax(0, 1fr);
@@ -353,6 +395,7 @@ export class ShellComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly navigation = inject(NavigationService);
+  private readonly appMessageService = inject(AppMessageService);
   protected readonly isSidebarVisible = signal(true);
   protected readonly ChevronLeft = ChevronLeft;
   protected readonly ChevronRight = ChevronRight;
@@ -425,6 +468,27 @@ export class ShellComponent {
 
   protected toggleSidebar(): void {
     this.isSidebarVisible.update((visible) => !visible);
+  }
+
+  protected showTestError(): void {
+    this.appMessageService.showError('No se pudo cargar la información solicitada.', {
+      title: 'Error de prueba',
+      detail: 'Este mensaje es solo para validar cómo se ve el modal global de error.',
+    });
+  }
+
+  protected showTestWarning(): void {
+    this.appMessageService.showWarning('Hay datos pendientes de sincronizar.', {
+      title: 'Warning de prueba',
+      detail: 'Este mensaje es solo para validar cómo se ve el modal global de warning.',
+    });
+  }
+
+  protected showTestSuccess(): void {
+    this.appMessageService.showSuccess('Cambios guardados correctamente.', {
+      title: 'Success de prueba',
+      detail: 'Este toast es solo para validar feedback no bloqueante en operaciones exitosas.',
+    });
   }
 
   private navigateTo(menuId: string, panelId: string): void {

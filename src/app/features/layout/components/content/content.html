@@ -1,6 +1,8 @@
 @if (panel(); as activePanel) {
-  @if (activePanel.component; as activePanelComponent) {
+  @if (resolvedComponent(); as activePanelComponent) {
     <ng-container [ngComponentOutlet]="activePanelComponent" />
+  } @else if (isLoadingComponent()) {
+    <p class="opacity-80">{{ 'messages.loading' | translate }}</p>
   } @else {
     <p class="opacity-80">{{ activePanel.descriptionKey | translate }}</p>
   }

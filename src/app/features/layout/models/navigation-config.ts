@@ -15,7 +15,8 @@ export interface PanelConfig {
   icon: NavIconKey;
   titleKey: string;
   descriptionKey: string;
-  component?: Type<any>; // Componente a renderizar en el content
+  component?: Type<unknown>; // Componente a renderizar en el content
+  loadComponent?: () => Promise<Type<unknown>>;
 }
 
 export interface MenuConfig {
