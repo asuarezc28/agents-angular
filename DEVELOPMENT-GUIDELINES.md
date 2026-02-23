@@ -146,6 +146,24 @@ appMessage.showSuccess('Cambios guardados correctamente.', {
   detail: 'La actualización se aplicó sin errores.',
   life: 3500,
 });
+
+// También soporta texto por i18n key + params
+appMessage.showError(
+  { key: 'messages.projects.loadError', params: { projectName: 'Apollo' } },
+  {
+    title: { key: 'messages.common.errorTitle' },
+    detail: { key: 'messages.common.tryAgainLater' },
+  },
+);
+
+// En success con toast, se puede mezclar key y texto directo
+appMessage.showSuccess(
+  { key: 'messages.users.savedOk' },
+  {
+    title: 'Guardado',
+    life: 2500,
+  },
+);
 ```
 
 ### Reglas UX mínimas
@@ -153,6 +171,7 @@ appMessage.showSuccess('Cambios guardados correctamente.', {
 - No usar modal para `success` salvo requerimiento explícito de negocio.
 - Mantener mensajes cortos y accionables (qué pasó + siguiente paso).
 - Si un flujo puede disparar muchos errores seguidos (HTTP), aplicar deduplicación/throttle en interceptor.
+- `AppMessageService` permite enviar `string` o `{ key, params }` para `title/message/detail`.
 
 ## 10) Checklist al crear una feature nueva
 
