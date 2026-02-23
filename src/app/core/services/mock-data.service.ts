@@ -2,8 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Company, Project } from '../mocks';
+import { Company, IdentitySegment, IdentityVertical, Project } from '../mocks';
 import { BaseDataService } from './base-data.service';
+
+interface IdentityProjectData {
+  verticals: IdentityVertical[];
+  segments: IdentitySegment[];
+}
 
 /**
  * Servicio genérico para cargar datos mock desde archivos JSON.
@@ -74,6 +79,18 @@ export class MockDataService extends BaseDataService {
   getProjectsByCompany(companyId: string): Observable<Project[]> {
     return this.loadJson<Project[]>('projects.json').pipe(
       map((projects) => projects.filter((project) => project.companyId === companyId)),
+    );
+  }
+
+  getIdentityVerticals(): Observable<IdentityVertical[]> {
+    return this.loadJson<IdentityProjectData>('identity-project.json').pipe(
+      map((data) => data.verticals),
+    );
+  }
+
+  getIdentitySegmentsByVertical(verticalId: string): Observable<IdentitySegment[]> {
+    return this.loadJson<IdentityProjectData>('identity-project.json').pipe(
+      map((data) => data.segments.filter((segment) => segment.verticalId === verticalId)),
     );
   }
 

@@ -20,8 +20,8 @@
             }}</label>
             <p-select
               inputId="vertical-select"
-              [options]="companies()"
-              formControlName="companyId"
+              [options]="verticals()"
+              formControlName="verticalId"
               optionLabel="name"
               optionValue="id"
               [placeholder]="'settingsDashboard.identity.verticalPlaceholder' | translate"
@@ -36,12 +36,12 @@
             }}</label>
             <p-select
               inputId="segment-select"
-              [options]="projects()"
-              formControlName="projectId"
+              [options]="segments()"
+              formControlName="segmentId"
               optionLabel="name"
               optionValue="id"
               [placeholder]="'settingsDashboard.identity.segmentPlaceholder' | translate"
-              [disabled]="!selectedCompanyId()"
+              [disabled]="!selectedVerticalId()"
               appendTo="body"
               class="w-full"
             />
