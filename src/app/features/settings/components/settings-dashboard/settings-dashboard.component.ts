@@ -23,73 +23,7 @@ import { Company, Project } from '../../../../core/mocks';
     ButtonModule,
     TranslateModule,
   ],
-  template: `
-    <app-panel-view-frame [titleKey]="''">
-      <p-card>
-        <p-tabs [value]="activeTab()" (valueChange)="onTabChange($event)">
-          <p-tablist>
-            <p-tab value="identity">{{ 'settingsDashboard.tabs.tab1' | translate }}</p-tab>
-            <p-tab value="tab2">{{ 'settingsDashboard.tabs.tab2' | translate }}</p-tab>
-            <p-tab value="tab3">{{ 'settingsDashboard.tabs.tab3' | translate }}</p-tab>
-            <p-tab value="tab4">{{ 'settingsDashboard.tabs.tab4' | translate }}</p-tab>
-          </p-tablist>
-
-          <p-tabpanels>
-            <p-tabpanel value="identity" class="pt-5">
-              <h2 class="mb-4 text-2xl font-semibold">
-                {{ 'settingsDashboard.identity.title' | translate }}
-              </h2>
-
-              <form [formGroup]="form" class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div class="min-w-0">
-                  <label for="vertical-select" class="mb-2 block text-sm font-medium">{{
-                    'settingsDashboard.identity.verticalLabel' | translate
-                  }}</label>
-                  <p-select
-                    inputId="vertical-select"
-                    [options]="companies()"
-                    formControlName="companyId"
-                    optionLabel="name"
-                    optionValue="id"
-                    [placeholder]="'settingsDashboard.identity.verticalPlaceholder' | translate"
-                    appendTo="body"
-                    class="w-full"
-                  />
-                </div>
-
-                <div class="min-w-0">
-                  <label for="segment-select" class="mb-2 block text-sm font-medium">{{
-                    'settingsDashboard.identity.segmentLabel' | translate
-                  }}</label>
-                  <p-select
-                    inputId="segment-select"
-                    [options]="projects()"
-                    formControlName="projectId"
-                    optionLabel="name"
-                    optionValue="id"
-                    [placeholder]="'settingsDashboard.identity.segmentPlaceholder' | translate"
-                    [disabled]="!selectedCompanyId()"
-                    appendTo="body"
-                    class="w-full"
-                  />
-                </div>
-              </form>
-
-              <div class="mt-6 border-t border-surface-200 pt-4 dark:border-surface-700">
-                <button pButton type="button" class="w-full md:w-auto" [disabled]="!canSave()">
-                  {{ 'settingsDashboard.actions.saveCurrentConfig' | translate }}
-                </button>
-              </div>
-            </p-tabpanel>
-
-            <p-tabpanel value="tab2"></p-tabpanel>
-            <p-tabpanel value="tab3"></p-tabpanel>
-            <p-tabpanel value="tab4"></p-tabpanel>
-          </p-tabpanels>
-        </p-tabs>
-      </p-card>
-    </app-panel-view-frame>
-  `,
+  templateUrl: './settings-dashboard.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsDashboardComponent {
