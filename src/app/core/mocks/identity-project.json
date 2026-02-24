@@ -1,0 +1,62 @@
+{
+  "verticals": [
+    {
+      "id": "v-retail",
+      "name": "Retail"
+    },
+    {
+      "id": "v-finance",
+      "name": "Finance"
+    },
+    {
+      "id": "v-health",
+      "name": "Healthcare"
+    },
+    {
+      "id": "v-public",
+      "name": "Public Sector"
+    }
+  ],
+  "segments": [
+    {
+      "id": "s-enterprise",
+      "name": "Enterprise",
+      "verticalId": "v-retail"
+    },
+    {
+      "id": "s-midmarket",
+      "name": "Mid Market",
+      "verticalId": "v-retail"
+    },
+    {
+      "id": "s-banking",
+      "name": "Banking",
+      "verticalId": "v-finance"
+    },
+    {
+      "id": "s-insurance",
+      "name": "Insurance",
+      "verticalId": "v-finance"
+    },
+    {
+      "id": "s-hospitals",
+      "name": "Hospitals",
+      "verticalId": "v-health"
+    },
+    {
+      "id": "s-pharma",
+      "name": "Pharma",
+      "verticalId": "v-health"
+    },
+    {
+      "id": "s-municipal",
+      "name": "Municipal",
+      "verticalId": "v-public"
+    },
+    {
+      "id": "s-education",
+      "name": "Education",
+      "verticalId": "v-public"
+    }
+  ]
+}
