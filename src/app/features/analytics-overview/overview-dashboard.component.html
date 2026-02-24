@@ -1,106 +1,116 @@
 <app-panel-view-frame [showDecoration]="false">
-  <section
-    class="flex min-h-[18rem] flex-col gap-5 overflow-x-hidden pr-1"
-    [class.overflow-y-auto]="shouldEnableInternalScroll()"
-    [class.overflow-y-visible]="!shouldEnableInternalScroll()"
-    [style.maxHeight]="shouldEnableInternalScroll() ? 'calc(100dvh - 24rem)' : 'none'"
-  >
-    <header class="flex items-center justify-between gap-4">
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-        <h1 class="m-0 text-base font-extrabold tracking-[0.01em] lg:text-[1.15rem]">
-          {{ 'analyticsOverview.header.brand' | translate }}
-        </h1>
-        <p
-          class="m-0 text-[0.86rem] font-medium text-[var(--p-text-muted-color,var(--p-surface-600))] lg:text-[0.94rem]"
-        >
-          | {{ briefingDateKey | translate }} | {{ editionLabelKey() | translate }}
-        </p>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <div
-          class="inline-flex items-center rounded-full border p-1"
-          [style.borderColor]="panelBorderColor"
-          role="tablist"
-          [attr.aria-label]="'analyticsOverview.tabs.aria' | translate"
-        >
-          @for (tab of modeTabs; track tab.id) {
-            <button
-              type="button"
-              class="rounded-full px-3 py-1 text-xs font-semibold transition-colors"
-              [style.backgroundColor]="
-                activeMode() === tab.id
-                  ? 'var(--p-surface-100, var(--p-surface-50))'
-                  : 'transparent'
-              "
-              [style.color]="
-                activeMode() === tab.id
-                  ? 'var(--p-surface-900, #262626)'
-                  : 'var(--p-text-muted-color)'
-              "
-              [style.opacity]="activeMode() === tab.id ? '1' : '0.9'"
-              [attr.aria-selected]="activeMode() === tab.id"
-              role="tab"
-              (click)="setMode(tab.id)"
-            >
-              {{ tab.labelKey | translate }}
-            </button>
-          }
+  @if (isLoadingData()) {
+    <ng-container *ngComponentOutlet="loadingStateComponent"></ng-container>
+  } @else if (hasLoadError()) {
+    <section class="flex min-h-[18rem] items-center justify-center">
+      <p class="m-0 text-sm opacity-80">{{ 'messages.error.generic' | translate }}</p>
+    </section>
+  } @else if (heroCard(); as activeHeroCard) {
+    <section
+      class="flex min-h-[18rem] flex-col gap-5 overflow-x-hidden pr-1"
+      [class.overflow-y-auto]="shouldEnableInternalScroll()"
+      [class.overflow-y-visible]="!shouldEnableInternalScroll()"
+      [style.maxHeight]="shouldEnableInternalScroll() ? 'calc(100dvh - 24rem)' : 'none'"
+    >
+      <header class="flex items-center justify-between gap-4">
+        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+          <h1 class="m-0 text-base font-extrabold tracking-[0.01em] lg:text-[1.15rem]">
+            {{ 'analyticsOverview.header.brand' | translate }}
+          </h1>
+          <p
+            class="m-0 text-[0.86rem] font-medium text-[var(--p-text-muted-color,var(--p-surface-600))] lg:text-[0.94rem]"
+          >
+            | {{ briefingDateKey | translate }} | {{ editionLabelKey() | translate }}
+          </p>
         </div>
 
-        <span
-          class="inline-flex h-8 w-8 items-center justify-center rounded-full border text-[1.1rem] font-extrabold"
-          [style.borderColor]="panelBorderColor"
-          aria-hidden="true"
-          >C</span
-        >
-      </div>
-    </header>
+        <div class="flex items-center gap-2">
+          <div
+            class="inline-flex items-center rounded-full border p-1"
+            [style.borderColor]="panelBorderColor"
+            role="tablist"
+            [attr.aria-label]="'analyticsOverview.tabs.aria' | translate"
+          >
+            @for (tab of modeTabs; track tab.id) {
+              <button
+                type="button"
+                class="rounded-full px-3 py-1 text-xs font-semibold transition-colors"
+                [style.backgroundColor]="
+                  activeMode() === tab.id
+                    ? 'var(--p-surface-100, var(--p-surface-50))'
+                    : 'transparent'
+                "
+                [style.color]="
+                  activeMode() === tab.id
+                    ? 'var(--p-surface-900, #262626)'
+                    : 'var(--p-text-muted-color)'
+                "
+                [style.opacity]="activeMode() === tab.id ? '1' : '0.9'"
+                [attr.aria-selected]="activeMode() === tab.id"
+                role="tab"
+                (click)="setMode(tab.id)"
+              >
+                {{ tab.labelKey | translate }}
+              </button>
+            }
+          </div>
 
-    <div class="border-t" [style.borderColor]="panelBorderColor"></div>
-
-    <section
-      class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.95fr)] lg:items-center lg:gap-6"
-      [attr.aria-label]="'analyticsOverview.sections.heroAria' | translate"
-    >
-      <div class="flex flex-col gap-3">
-        <h2
-          class="m-0 text-[clamp(1.6rem,3.2vw,3.1rem)] font-extrabold leading-[1.08] lg:leading-[1.1]"
-        >
-          <span [style.color]="dangerDeep">{{ 'analyticsOverview.hero.prefix' | translate }}</span>
-          {{ heroCard().title | translate }}
-        </h2>
-        <p class="m-0 text-[0.95rem] leading-[1.4] opacity-80">
-          {{ heroCard().description | translate }}
-        </p>
-      </div>
-
-      <div class="min-h-[260px]" [style.height]="heroCard().chartHeight ?? '300px'">
-        <app-chart [options]="heroCard().chartOptions" />
-      </div>
-    </section>
-
-    <div class="border-t" [style.borderColor]="panelBorderColor"></div>
-
-    <section
-      class="daily-brief-secondary grid grid-cols-1 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-5"
-      [style.--brief-border]="panelBorderColor"
-      [attr.aria-label]="'analyticsOverview.sections.summaryAria' | translate"
-    >
-      @for (card of secondaryCards(); track card.id) {
-        <div class="daily-brief-secondary__item">
-          <app-analytics-overview-item
-            [group]="card.group | translate"
-            [title]="card.title | translate"
-            [description]="card.description | translate"
-            [chartOptions]="card.chartOptions"
-            [compact]="true"
-            [chartWidth]="'44%'"
-            [chartMinWidth]="'132px'"
-            [chartHeight]="card.chartHeight ?? '150px'"
-          />
+          <span
+            class="inline-flex h-8 w-8 items-center justify-center rounded-full border text-[1.1rem] font-extrabold"
+            [style.borderColor]="panelBorderColor"
+            aria-hidden="true"
+            >C</span
+          >
         </div>
-      }
+      </header>
+
+      <div class="border-t" [style.borderColor]="panelBorderColor"></div>
+
+      <section
+        class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.95fr)] lg:items-center lg:gap-6"
+        [attr.aria-label]="'analyticsOverview.sections.heroAria' | translate"
+      >
+        <div class="flex flex-col gap-3">
+          <h2
+            class="m-0 text-[clamp(1.6rem,3.2vw,3.1rem)] font-extrabold leading-[1.08] lg:leading-[1.1]"
+          >
+            <span [style.color]="dangerDeep">{{
+              'analyticsOverview.hero.prefix' | translate
+            }}</span>
+            {{ activeHeroCard.title | translate }}
+          </h2>
+          <p class="m-0 text-[0.95rem] leading-[1.4] opacity-80">
+            {{ activeHeroCard.description | translate }}
+          </p>
+        </div>
+
+        <div class="min-h-[260px]" [style.height]="activeHeroCard.chartHeight ?? '300px'">
+          <app-chart [options]="activeHeroCard.chartOptions" />
+        </div>
+      </section>
+
+      <div class="border-t" [style.borderColor]="panelBorderColor"></div>
+
+      <section
+        class="daily-brief-secondary grid grid-cols-1 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-5"
+        [style.--brief-border]="panelBorderColor"
+        [attr.aria-label]="'analyticsOverview.sections.summaryAria' | translate"
+      >
+        @for (card of secondaryCards(); track card.id) {
+          <div class="daily-brief-secondary__item">
+            <app-analytics-overview-item
+              [group]="card.group | translate"
+              [title]="card.title | translate"
+              [description]="card.description | translate"
+              [chartOptions]="card.chartOptions"
+              [compact]="true"
+              [chartWidth]="'44%'"
+              [chartMinWidth]="'132px'"
+              [chartHeight]="card.chartHeight ?? '150px'"
+            />
+          </div>
+        }
+      </section>
     </section>
-  </section>
+  }
 </app-panel-view-frame>

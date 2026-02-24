@@ -1,0 +1,222 @@
+{
+  "heroCard": {
+    "id": "hero",
+    "group": "analyticsOverview.groups.alert",
+    "title": "analyticsOverview.hero.daily.title",
+    "description": "analyticsOverview.hero.daily.description",
+    "chartHeight": "300px",
+    "chartOptions": {
+      "tooltip": { "trigger": "axis" },
+      "grid": { "left": 14, "right": 10, "top": 16, "bottom": 18, "containLabel": true },
+      "xAxis": {
+        "type": "category",
+        "boundaryGap": true,
+        "data": ["Login issues", "Top reason", "Pics", "Others"],
+        "axisTick": { "show": false }
+      },
+      "yAxis": {
+        "type": "value",
+        "min": 0,
+        "max": 70,
+        "interval": 10
+      },
+      "series": [
+        {
+          "type": "line",
+          "smooth": true,
+          "areaStyle": { "color": "rgba(240, 82, 82, 0.16)" },
+          "lineStyle": { "color": "#F05252", "width": 3 },
+          "itemStyle": { "color": "#F05252" },
+          "z": 2,
+          "data": [20, 36, 30, 47, 44, 58, 73]
+        },
+        {
+          "type": "bar",
+          "data": [
+            { "value": 29, "itemStyle": { "color": "rgba(240, 82, 82, 0.9)" } },
+            { "value": 18, "itemStyle": { "color": "rgba(189, 189, 189, 0.75)" } },
+            { "value": 12, "itemStyle": { "color": "rgba(189, 189, 189, 0.6)" } },
+            { "value": 5, "itemStyle": { "color": "rgba(224, 224, 224, 0.75)" } }
+          ],
+          "barMaxWidth": 22,
+          "barGap": "-100%",
+          "xAxisIndex": 0
+        }
+      ]
+    }
+  },
+  "secondaryCards": [
+    {
+      "id": "business-1",
+      "group": "analyticsOverview.groups.business",
+      "title": "analyticsOverview.secondary.daily.business.title",
+      "description": "analyticsOverview.secondary.daily.business.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "axis" },
+        "grid": { "left": 6, "right": 6, "top": 12, "bottom": 14, "containLabel": true },
+        "xAxis": { "type": "category", "data": ["2013", "2014", "2015", "2016", "2017"] },
+        "yAxis": { "type": "value" },
+        "series": [
+          {
+            "type": "bar",
+            "data": [160, 220, 260, 300, 430],
+            "barMaxWidth": 10,
+            "itemStyle": { "color": "rgba(189, 189, 189, 0.7)" }
+          },
+          {
+            "type": "line",
+            "smooth": true,
+            "data": [180, 250, 270, 330, 520],
+            "lineStyle": { "color": "#F05252", "width": 2.5 },
+            "itemStyle": { "color": "#F05252" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "quality-1",
+      "group": "analyticsOverview.groups.quality",
+      "title": "analyticsOverview.secondary.daily.quality.title",
+      "description": "analyticsOverview.secondary.daily.quality.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "axis" },
+        "grid": { "left": 8, "right": 8, "top": 14, "bottom": 18, "containLabel": true },
+        "xAxis": {
+          "type": "category",
+          "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          "axisLabel": { "interval": 1 }
+        },
+        "yAxis": { "type": "value" },
+        "series": [
+          {
+            "type": "bar",
+            "data": [
+              { "value": 58, "itemStyle": { "color": "rgba(189, 189, 189, 0.75)" } },
+              { "value": 48, "itemStyle": { "color": "rgba(189, 189, 189, 0.72)" } },
+              { "value": 39, "itemStyle": { "color": "rgba(189, 189, 189, 0.68)" } },
+              { "value": 30, "itemStyle": { "color": "rgba(189, 189, 189, 0.64)" } },
+              { "value": 34, "itemStyle": { "color": "rgba(189, 189, 189, 0.66)" } },
+              { "value": 44, "itemStyle": { "color": "rgba(189, 189, 189, 0.7)" } },
+              { "value": 57, "itemStyle": { "color": "rgba(240, 82, 82, 0.92)" } }
+            ],
+            "barMaxWidth": 14
+          }
+        ]
+      }
+    },
+    {
+      "id": "operations-1",
+      "group": "analyticsOverview.groups.operations",
+      "title": "analyticsOverview.secondary.daily.operations.title",
+      "description": "analyticsOverview.secondary.daily.operations.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "item" },
+        "radar": {
+          "indicator": [
+            { "name": "Login", "max": 100 },
+            { "name": "Checkout", "max": 100 },
+            { "name": "Support", "max": 100 },
+            { "name": "CRM", "max": 100 },
+            { "name": "API", "max": 100 }
+          ],
+          "radius": "58%"
+        },
+        "series": [
+          {
+            "type": "radar",
+            "data": [{ "value": [76, 64, 82, 58, 71] }],
+            "lineStyle": { "color": "#F05252", "width": 2 },
+            "itemStyle": { "color": "#F05252" },
+            "areaStyle": { "color": "rgba(240, 82, 82, 0.22)" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "business-2",
+      "group": "analyticsOverview.groups.business",
+      "title": "analyticsOverview.secondary.daily.business.title",
+      "description": "analyticsOverview.secondary.daily.business.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "axis" },
+        "grid": { "left": 6, "right": 6, "top": 12, "bottom": 14, "containLabel": true },
+        "xAxis": { "type": "category", "data": ["2013", "2014", "2015", "2016", "2017"] },
+        "yAxis": { "type": "value" },
+        "series": [
+          {
+            "type": "bar",
+            "data": [160, 220, 260, 300, 430],
+            "barMaxWidth": 10,
+            "itemStyle": { "color": "rgba(189, 189, 189, 0.7)" }
+          },
+          {
+            "type": "line",
+            "smooth": true,
+            "data": [180, 250, 270, 330, 520],
+            "lineStyle": { "color": "#F05252", "width": 2.5 },
+            "itemStyle": { "color": "#F05252" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "quality-2",
+      "group": "analyticsOverview.groups.quality",
+      "title": "analyticsOverview.secondary.daily.quality.title",
+      "description": "analyticsOverview.secondary.daily.quality.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "axis" },
+        "grid": { "left": 8, "right": 8, "top": 14, "bottom": 18, "containLabel": true },
+        "xAxis": {
+          "type": "category",
+          "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          "axisLabel": { "interval": 1 }
+        },
+        "yAxis": { "type": "value" },
+        "series": [
+          {
+            "type": "bar",
+            "data": [
+              { "value": 58, "itemStyle": { "color": "rgba(189, 189, 189, 0.75)" } },
+              { "value": 48, "itemStyle": { "color": "rgba(189, 189, 189, 0.72)" } },
+              { "value": 39, "itemStyle": { "color": "rgba(189, 189, 189, 0.68)" } },
+              { "value": 30, "itemStyle": { "color": "rgba(189, 189, 189, 0.64)" } },
+              { "value": 34, "itemStyle": { "color": "rgba(189, 189, 189, 0.66)" } },
+              { "value": 44, "itemStyle": { "color": "rgba(189, 189, 189, 0.7)" } },
+              { "value": 57, "itemStyle": { "color": "rgba(240, 82, 82, 0.92)" } }
+            ],
+            "barMaxWidth": 14
+          }
+        ]
+      }
+    },
+    {
+      "id": "operations-2",
+      "group": "analyticsOverview.groups.operations",
+      "title": "analyticsOverview.secondary.daily.operations.title",
+      "description": "analyticsOverview.secondary.daily.operations.description",
+      "chartOptions": {
+        "tooltip": { "trigger": "item" },
+        "radar": {
+          "indicator": [
+            { "name": "Login", "max": 100 },
+            { "name": "Checkout", "max": 100 },
+            { "name": "Support", "max": 100 },
+            { "name": "CRM", "max": 100 },
+            { "name": "API", "max": 100 }
+          ],
+          "radius": "58%"
+        },
+        "series": [
+          {
+            "type": "radar",
+            "data": [{ "value": [76, 64, 82, 58, 71] }],
+            "lineStyle": { "color": "#F05252", "width": 2 },
+            "itemStyle": { "color": "#F05252" },
+            "areaStyle": { "color": "rgba(240, 82, 82, 0.22)" }
+          }
+        ]
+      }
+    }
+  ]
+}
