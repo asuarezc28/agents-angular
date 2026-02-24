@@ -88,9 +88,9 @@ export class MockDataService extends BaseDataService {
     );
   }
 
-  getIdentitySegmentsByVertical(verticalId: string): Observable<IdentitySegment[]> {
+  getIdentitySegments(): Observable<IdentitySegment[]> {
     return this.loadJson<IdentityProjectData>('identity-project.json').pipe(
-      map((data) => data.segments.filter((segment) => segment.verticalId === verticalId)),
+      map((data) => data.segments),
     );
   }
 

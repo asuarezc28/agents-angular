@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-import { toObservable, toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { of, switchMap } from 'rxjs';
+import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TabsModule } from 'primeng/tabs';
 import { CardModule } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
@@ -39,40 +38,19 @@ export class SettingsDashboardComponent {
     segmentId: [null as string | null],
   });
 
-  protected readonly selectedVerticalId = toSignal(this.form.controls.verticalId.valueChanges, {
-    initialValue: this.form.controls.verticalId.value,
-  });
-
-  protected readonly selectedSegmentId = toSignal(this.form.controls.segmentId.valueChanges, {
-    initialValue: this.form.controls.segmentId.value,
-  });
-
   protected readonly verticals = toSignal(this.identityData.getVerticals(), {
     initialValue: [] as IdentityVertical[],
   });
 
-  protected readonly segments = toSignal(
-    toObservable(this.selectedVerticalId).pipe(
-      switchMap((verticalId) => {
-        if (!verticalId) {
-          return of([] as IdentitySegment[]);
-        }
-
-        return this.identityData.getSegmentsByVertical(verticalId);
-      }),
-    ),
-    { initialValue: [] as IdentitySegment[] },
-  );
+  protected readonly segments = toSignal(this.identityData.getSegments(), {
+    initialValue: [] as IdentitySegment[],
+  });
 
   protected readonly canSave = computed(() => {
-    return Boolean(this.selectedVerticalId() && this.selectedSegmentId());
+    return Boolean(this.form.controls.verticalId.value && this.form.controls.segmentId.value);
   });
 
   constructor() {
-    this.form.controls.verticalId.valueChanges.subscribe(() => {
-      this.form.controls.segmentId.setValue(null);
-    });
-
     const initialLang = this.translate.currentLang || this.translate.getFallbackLang() || 'es';
     this.loadViewTranslations(initialLang);
 

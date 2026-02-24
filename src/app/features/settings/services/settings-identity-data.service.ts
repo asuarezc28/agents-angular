@@ -15,11 +15,10 @@ export class SettingsIdentityDataService extends BaseDataService {
     });
   }
 
-  getSegmentsByVertical(verticalId: string): Observable<IdentitySegment[]> {
+  getSegments(): Observable<IdentitySegment[]> {
     return this.fromMockOrApi({
-      mockRequest: () => this.mockData.getIdentitySegmentsByVertical(verticalId),
-      apiRequest: () =>
-        this.apiGet<IdentitySegment[]>(`/settings/identity/verticals/${verticalId}/segments`),
+      mockRequest: () => this.mockData.getIdentitySegments(),
+      apiRequest: () => this.apiGet<IdentitySegment[]>('/settings/identity/segments'),
     });
   }
 }
