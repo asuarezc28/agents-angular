@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 
 export type NavIconKey =
-  | 'home'
+  | 'newspaper'
   | 'chart'
   | 'users'
   | 'settings'
