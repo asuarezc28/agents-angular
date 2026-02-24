@@ -1,0 +1,68 @@
+{
+  "analyticsOverview": {
+    "header": {
+      "brand": "THE CYRA DAILY BRIEF",
+      "date": "Thursday, Dec 12, 2025",
+      "edition": {
+        "daily": "Daily Edition",
+        "weekly": "Weekly Edition"
+      }
+    },
+    "tabs": {
+      "aria": "Select period",
+      "daily": "Daily",
+      "weekly": "Weekly"
+    },
+    "sections": {
+      "heroAria": "Main churn alert",
+      "summaryAria": "Summary indicators"
+    },
+    "hero": {
+      "prefix": "ALERT:",
+      "daily": {
+        "title": "Churn risk rises by 15%. The 'Login issue' is the main cause.",
+        "description": "The access incident pattern keeps growing and concentrates the biggest friction in high-value customers."
+      },
+      "weekly": {
+        "title": "Churn risk rises by 15%. The 'Login issue' is the main cause.",
+        "description": "On the weekly aggregate, the login friction pattern remains with increasing impact on recurring customers."
+      }
+    },
+    "groups": {
+      "alert": "Alert",
+      "business": "Business",
+      "quality": "Quality",
+      "operations": "Operations"
+    },
+    "secondary": {
+      "daily": {
+        "business": {
+          "title": "'Complaints' up 20%",
+          "description": "Sustained increase in tickets related to access and recovery experience."
+        },
+        "quality": {
+          "title": "Wall of Shame",
+          "description": "Higher concentration of complaints in authentication, recovery, and logout."
+        },
+        "operations": {
+          "title": "Unusual silence spike",
+          "description": "Team reaction time increases during the highest traffic window."
+        }
+      },
+      "weekly": {
+        "business": {
+          "title": "'Complaints' up 32%",
+          "description": "Weekly aggregate with higher ticket volume and escalations."
+        },
+        "quality": {
+          "title": "Wall of Shame",
+          "description": "Higher weekly accumulation in authentication and recovery."
+        },
+        "operations": {
+          "title": "Unusual silence spike",
+          "description": "Weekly behavior shows greater dispersion by channel."
+        }
+      }
+    }
+  }
+}

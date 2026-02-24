@@ -9,11 +9,11 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
     panels: [
       {
         id: 'overview',
-        icon: 'home',
+        icon: 'newspaper',
         titleKey: 'layoutBase.panel.analytics.overview.title',
         descriptionKey: 'layoutBase.panel.analytics.overview.description',
         loadComponent: () =>
-          import('../components/overview-dashboard/overview-dashboard.component').then(
+          import('../../analytics-overview/overview-dashboard.component').then(
             (module) => module.OverviewDashboardComponent,
           ),
       },
