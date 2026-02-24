@@ -1,8 +1,17 @@
-import { Activity, BarChart3, FileText, FolderKanban, Home, Settings, ShieldCheck, Users } from 'lucide-angular';
+import {
+  Activity,
+  BarChart3,
+  FileText,
+  FolderKanban,
+  Newspaper,
+  Settings,
+  ShieldCheck,
+  Users,
+} from 'lucide-angular';
 import { NavIconKey } from '../models/navigation-config';
 
-const iconMap: Record<NavIconKey, typeof Home> = {
-  home: Home,
+const iconMap: Record<NavIconKey, typeof Newspaper> = {
+  newspaper: Newspaper,
   chart: BarChart3,
   users: Users,
   settings: Settings,
@@ -12,6 +21,6 @@ const iconMap: Record<NavIconKey, typeof Home> = {
   activity: Activity,
 };
 
-export function getIcon(iconKey: NavIconKey): typeof Home {
+export function getIcon(iconKey: NavIconKey): typeof Newspaper {
   return iconMap[iconKey];
 }

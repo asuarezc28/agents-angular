@@ -1,0 +1,68 @@
+{
+  "analyticsOverview": {
+    "header": {
+      "brand": "THE CYRA DAILY BRIEF",
+      "date": "Jueves, 12 Dic, 2025",
+      "edition": {
+        "daily": "Edición Diaria",
+        "weekly": "Edición Semanal"
+      }
+    },
+    "tabs": {
+      "aria": "Seleccionar periodo",
+      "daily": "Diaria",
+      "weekly": "Semanal"
+    },
+    "sections": {
+      "heroAria": "Alerta principal de churn",
+      "summaryAria": "Indicadores de resumen"
+    },
+    "hero": {
+      "prefix": "ALERTA:",
+      "daily": {
+        "title": "Riesgo de Fuga (Churn) se dispara un 15%. El problema de 'Login' es el culpable principal.",
+        "description": "El patrón de incidencias de acceso crece de forma sostenida y concentra la mayor fricción en clientes de alto valor."
+      },
+      "weekly": {
+        "title": "Riesgo de Fuga (Churn) se dispara un 15%. El problema de 'Login' es el culpable principal.",
+        "description": "En el acumulado semanal se mantiene el patrón de fricción en login, con impacto creciente en clientes recurrentes."
+      }
+    },
+    "groups": {
+      "alert": "Alerta",
+      "business": "Negocio",
+      "quality": "Calidad",
+      "operations": "Operaciones"
+    },
+    "secondary": {
+      "daily": {
+        "business": {
+          "title": "'Reclamaciones' sube 20%",
+          "description": "Aumento sostenido en tickets asociados a experiencia de acceso y recuperación."
+        },
+        "quality": {
+          "title": "Muro de la Vergüenza",
+          "description": "Mayor concentración de quejas en autenticación, recuperación y cierre de sesión."
+        },
+        "operations": {
+          "title": "Pico de silencios inusual",
+          "description": "Tiempo de reacción del equipo aumenta en la franja de mayor tráfico."
+        }
+      },
+      "weekly": {
+        "business": {
+          "title": "'Reclamaciones' sube 32%",
+          "description": "Acumulado semanal con mayor volumen de tickets y escalaciones."
+        },
+        "quality": {
+          "title": "Muro de la Vergüenza",
+          "description": "Mayor acumulación semanal en autenticación y recuperación."
+        },
+        "operations": {
+          "title": "Pico de silencios inusual",
+          "description": "El comportamiento semanal muestra mayor dispersión por canal."
+        }
+      }
+    }
+  }
+}

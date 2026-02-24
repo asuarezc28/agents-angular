@@ -64,8 +64,17 @@ component: MyPanelComponent;
 ## 7) Estilos y diseño
 
 - Usar tokens/variables de PrimeNG (`--p-*`) y utilidades Tailwind.
+- **Tailwind-first obligatorio**: antes de escribir CSS puro, intentar resolver maquetación/espaciado/typography con utilidades Tailwind.
+- CSS puro solo se permite cuando Tailwind no cubre el caso (selectores complejos, pseudo-elementos o límites técnicos claros).
 - Evitar hardcodear colores fuera del sistema visual.
 - Mantener coherencia entre dark/light en cualquier componente nuevo.
+
+## 7.1) Reglas del agente principal (copilot)
+
+- Al generar o refactorizar UI, aplicar siempre enfoque **Tailwind-first**.
+- Si se usa CSS puro, documentar brevemente por qué Tailwind no resolvía el caso.
+- En componentes principales de cada feature (panel/root view), usar plantilla en archivo separado con `templateUrl`.
+- Evitar templates inline extensos en componentes principales para facilitar revisión rápida del layout.
 
 ## 8) Servicios, guards, interceptors (cómo y dónde)
 
@@ -203,6 +212,7 @@ src/app/features/<feature>/
   components/
     <feature>-panel/
       <feature>-panel.component.ts
+      <feature>-panel.component.html
   services/
     <feature>.service.ts
   models/
@@ -219,14 +229,7 @@ import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/c
 @Component({
   selector: 'app-my-feature-panel',
   imports: [],
-  template: `
-    <section>
-      <h2>{{ title() }}</h2>
-      @if (items().length === 0) {
-        <p>No data</p>
-      }
-    </section>
-  `,
+  templateUrl: './my-feature-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyFeaturePanelComponent {
@@ -234,6 +237,17 @@ export class MyFeaturePanelComponent {
   protected readonly items = computed(() => this.state());
   protected readonly title = computed(() => 'My Feature');
 }
+```
+
+`my-feature-panel.component.html`:
+
+```html
+<section>
+  <h2>{{ title() }}</h2>
+  @if (items().length === 0) {
+  <p>No data</p>
+  }
+</section>
 ```
 
 Registro del panel en navegación (obligatorio lazy):
