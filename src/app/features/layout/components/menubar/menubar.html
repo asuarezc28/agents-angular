@@ -1,12 +1,13 @@
 <div
-  class="menu-layout rounded-xl border border-surface-200 dark:border-[var(--p-card-border-color)] px-2 pt-2 pb-0"
+  class="menu-layout rounded-xl border border-surface-200 dark:border-[var(--p-card-border-color)] px-2 py-1.5"
 >
   <img
     [ngSrc]="logoSrc()"
     width="180"
     height="56"
-    class="h-8 w-auto"
+    class="h-12 w-auto"
     [alt]="'layoutBase.brand.logoAlt' | translate"
+    priority
   />
 
   <p-tabs
