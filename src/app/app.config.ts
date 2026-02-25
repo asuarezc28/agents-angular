@@ -72,8 +72,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
       ripple: false,
-      // Configuración para usar Lucide en lugar de PrimeIcons
-      // Los iconos se manejan mediante templates personalizados en cada componente
     }),
     MessageService,
     provideTranslateService({
