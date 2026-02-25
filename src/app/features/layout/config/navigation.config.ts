@@ -41,8 +41,8 @@ export const NAVIGATION_CONFIG: MenuConfig[] = [
         titleKey: 'layoutBase.panel.operations.projects.title',
         descriptionKey: 'layoutBase.panel.operations.projects.description',
         loadComponent: () =>
-          import('../../../shared/components/tree-demo/tree-demo.component').then(
-            (module) => module.TreeDemoComponent,
+          import('../components/plain-panel-view/plain-panel-view.component').then(
+            (module) => module.PlainPanelViewComponent,
           ),
       },
       {
