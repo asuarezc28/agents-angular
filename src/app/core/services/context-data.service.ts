@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Company, Project } from '../mocks';
+import type { Company } from '@models/company.model';
+import type { Project } from '@models/project.model';
 import { BaseDataService } from './base-data.service';
 import { MockDataService } from './mock-data.service';
 

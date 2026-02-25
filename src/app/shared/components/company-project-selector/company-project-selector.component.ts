@@ -6,7 +6,8 @@ import { of, switchMap } from 'rxjs';
 import { SelectModule } from 'primeng/select';
 import { CardModule } from 'primeng/card';
 import { ContextDataService } from '../../../core/services/context-data.service';
-import { Company, Project } from '../../../core/mocks';
+import type { Company } from '@models/company.model';
+import type { Project } from '@models/project.model';
 
 @Component({
   selector: 'company-project-selector',
