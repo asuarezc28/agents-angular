@@ -3,8 +3,8 @@ import { Observable, shareReplay } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import type { Company } from '@models/company.model';
+import type { IdentitySegment, IdentityVertical } from '@models/identity-project.model';
 import type { Project } from '@models/project.model';
-import { IdentitySegment, IdentityVertical } from '../mocks';
 import { BaseDataService } from './base-data.service';
 
 interface IdentityProjectData {

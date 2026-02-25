@@ -7,8 +7,8 @@ import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TranslateModule, TranslateService, type TranslationObject } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import type { IdentitySegment, IdentityVertical } from '@models/identity-project.model';
 import { PanelViewFrameComponent } from '../../../layout/components/panel-view-frame/panel-view-frame.component';
-import { IdentitySegment, IdentityVertical } from '../../../../core/mocks';
 import { SettingsIdentityDataService } from '../../services/settings-identity-data.service';
 
 @Component({

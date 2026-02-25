@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IdentitySegment, IdentityVertical } from '../../../core/mocks';
+import type { IdentitySegment, IdentityVertical } from '@models/identity-project.model';
 import { BaseDataService } from '../../../core/services/base-data.service';
 import { MockDataService } from '../../../core/services/mock-data.service';
 
